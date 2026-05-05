@@ -68,7 +68,6 @@ output  wire          Sink_TREADY,
 input   wire [8-1:0]  Sink_TDATA
 );
 
-
 (* KEEP_HIERARCHY = "TRUE" *)
 RGMII_Rx_To_AXISx8  
 #(
@@ -93,8 +92,6 @@ RGMII_Rx_To_AXISx8
 .Source_TLAST               (Source_TLAST ),
 .Source_TDATA               (Source_TDATA)
 );
-
-
 
 (* KEEP_HIERARCHY = "TRUE" *)
 RGMII_TX_PHY 
@@ -122,10 +119,5 @@ RGMII_TX_PHY_INST
 .RGMII_TX_CTL               (RGMII_TX_CTL               ),
 .RGMII_TXD                  (RGMII_TXD                  )
 );
-
-
-
-
-
 
 endmodule
