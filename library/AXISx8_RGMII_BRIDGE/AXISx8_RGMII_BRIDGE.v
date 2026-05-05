@@ -30,19 +30,23 @@
 
 module AXISx8_RGMII_BRIDGE
 #(
-parameter RX_ARCH = "DEFAULT_LOGIC",
-parameter TX_ARCH = "DEFAULT_LOGIC",
-parameter OVER_SAMPLING = "NO",
+parameter RX_ARCH = "DEFAULT_LOGIC",                        // "XLX_SERIES7", XLX_ULTRASCALE, "DEFAULT_LOGIC"
+parameter TX_ARCH = "DEFAULT_LOGIC",                        // "XLX_SERIES7", XLX_ULTRASCALE, "DEFAULT_LOGIC"
+parameter OVER_SAMPLING = "NO",                             // "YES" or "NO"
 parameter RGMII_TXC_FRONT_POSITION = "EDGE_ALIGNED",        // EDGE_ALIGNED , CENTER_ALIGNED
-parameter RGMII_TXD_REFERENCE_CLK  = "REFERENCE_PHY_RXC",   // REFERENCE_PHY_RXC, REFERENCE_125MHz,
-parameter RGMII_TXC_REFERENCE_CLK  = "REFERENCE_PHY_RXC"    // REFERENCE_PHY_RXC, REFERENCE_125MHz, REFERENCE_125MHz_90, REFERENCE_250MHz,    
+parameter RGMII_TXD_REFERENCE_CLK  = "REFERENCE_PHY_RXC",   // REFERENCE_PHY_RXC, REFERENCE_125MHz
+parameter RGMII_TXC_REFERENCE_CLK  = "REFERENCE_PHY_RXC"    // REFERENCE_PHY_RXC, REFERENCE_125MHz, REFERENCE_125MHz_90, REFERENCE_250MHz    
 )
 (
-input   wire          CLK625MHZ,
+input   wire          CLK625MHZ,                            // Used in OVER_SAMPLING mode. If not used - > tie to 1'b0.
 
-output  wire          RGMII_LINK_UP,
-output  wire          RGMII_DUPLEX,
-output  wire  [2-1:0] RGMII_SPEED,
+output  wire          RGMII_LINK_UP,                        // PHY InBand Status. Link is Up.
+output  wire          RGMII_DUPLEX,                         // PHY InBand Status. Duplex is enabled.
+output  wire  [2-1:0] RGMII_SPEED,                          // PHY InBand Status. Ethernet PHY speed.
+
+input   wire          RGMII_TxClockSync,                    // Low speed TxClock synchronization. Look description. If not used - > tie to 1'b0.
+input   wire          RGMII_TXC_REFERENCE,                  // Reference CLK for RGMII TXC signal
+input   wire          RGMII_TXD_REFERENCE,                  // Reference CLK for RGMII TXD signal
 
 input   wire          RGMII_RXC,
 input   wire          RGMII_RX_CTL,
@@ -58,9 +62,6 @@ output wire           Source_TFIRST ,
 output wire           Source_TLAST  ,
 output wire  [8-1:0]  Source_TDATA  ,
 
-input   wire          RGMII_TxClockSync,
-input   wire          RGMII_TXC_REFERENCE,
-input   wire          RGMII_TXD_REFERENCE,
 input   wire          Sink_TVALID,
 input   wire          Sink_TERROR,
 output  wire          Sink_TREADY,
