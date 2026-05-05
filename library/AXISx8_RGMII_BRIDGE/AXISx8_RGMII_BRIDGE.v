@@ -28,7 +28,7 @@
 // RGMII_SPEED==2'b10   1000 Mhz
 // RGMII_SPEED==2'b11   Reserved
 
-module RGMII_AXISx8_BRIDGE
+module AXISx8_RGMII_BRIDGE
 #(
 parameter RX_ARCH = "DEFAULT_LOGIC",
 parameter TX_ARCH = "DEFAULT_LOGIC",
