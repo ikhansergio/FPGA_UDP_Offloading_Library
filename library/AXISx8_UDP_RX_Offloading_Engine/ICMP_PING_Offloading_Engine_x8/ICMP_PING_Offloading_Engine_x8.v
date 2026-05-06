@@ -69,9 +69,9 @@ localparam MAX_IP4_PayloadSize      = ETHERNET_MTU - 20;
 localparam MAX_ICMP_PayloadSize     = ETHERNET_MTU - 28;
 //localparam MAX_ICMP_PayloadSize_BUF = BufferSize - 28;
 
-if ( ETHERNET_MTU <= 28                         )             begin AXISx32_UDP_Tx_Offload_Engine_Error MTU_Erorr ( );           end
+if ( ETHERNET_MTU <= 28                         )             begin Error_Generation MTU_Erorr ( );           end
 //if ((BufferSize*4) < MAX_ICMP_PayloadSize_MTU   )             begin AXISx32_UDP_Tx_Offload_Engine_Error BufferSize_Erorr ( );    end
-if ((BUFFER_COUNT_1K==0)||(BUFFER_COUNT_1K>16)  )             begin AXISx32_UDP_Tx_Offload_Engine_Error BufferCount_Erorr ( );   end
+if ((BUFFER_COUNT_1K==0)||(BUFFER_COUNT_1K>16)  )             begin Error_Generation BufferCount_Erorr ( );   end
 
 wire         wSink_TFIRST;
 wire         wSink_TVALID;
@@ -100,15 +100,15 @@ PacketTypeValidation
 .Source_TDATA          (wSink_TDATA)
 );
 
-wire            wICMP_Core_TFIRST_x32 ;
-wire            wICMP_Core_TVALID_x32 ;
-wire            wICMP_Core_TERROR_x32 ;
-wire            wICMP_Core_TLAST_x32  ;
-wire   [ 4-1:0] wICMP_Core_TKEEP_x32  ;
-wire   [ 4-1:0] wICMP_Core_TKEEP; 
-wire   [32-1:0] wICMP_Core_TDATA  ;
-wire   [32-1:0] wICMP_Core_TDATA_x32;
-wire   [ 4-1:0] wICMP_Core_DATA_COUNT_x32;  
+(* KEEP = "TRUE" *)wire            wICMP_Core_TFIRST_x32 ;
+(* KEEP = "TRUE" *)wire            wICMP_Core_TVALID_x32 ;
+(* KEEP = "TRUE" *)wire            wICMP_Core_TERROR_x32 ;
+(* KEEP = "TRUE" *)wire            wICMP_Core_TLAST_x32  ;
+(* KEEP = "TRUE" *)wire   [ 4-1:0] wICMP_Core_TKEEP_x32  ;
+//(* KEEP = "TRUE" *)wire   [ 4-1:0] wICMP_Core_TKEEP; 
+//(* KEEP = "TRUE" *)wire   [32-1:0] wICMP_Core_TDATA  ;
+(* KEEP = "TRUE" *)wire   [32-1:0] wICMP_Core_TDATA_x32;
+(* KEEP = "TRUE" *)wire   [ 3-1:0] wICMP_Core_Byte_COUNT_x32;  
 
 (* KEEP_HIERARCHY = "TRUE" *)
 AXIS_Width_Up_Converter
@@ -117,7 +117,7 @@ AXIS_Width_Up_Converter
 . N                     (4),
 . BIG_ENDIAN            (1),         
 . TFIRST_ReSTORE        (0) 
-) AXIS_x8_To_X32_AXIS_Width_Up_Converter_inst
+) AXIS_x8_To_x32_AXIS_Width_Up_Converter_inst
 (
             
 . CLK                       (ICMP_PING_Sink_CLK             ),
@@ -131,27 +131,24 @@ AXIS_Width_Up_Converter
 . TVALID_OUT                (wICMP_Core_TVALID_x32          ),
 . TERROR_OUT                (wICMP_Core_TERROR_x32          ), 
 . TLAST_OUT                 (wICMP_Core_TLAST_x32           ),
-. TKEEP_OUT                 (wICMP_Core_TKEEP               ),
-. TDATA_OUT                 (wICMP_Core_TDATA               )
+. TKEEP_OUT                 (wICMP_Core_TKEEP_x32           ),
+. TCOUNT_OUT                (wICMP_Core_Byte_COUNT_x32      ),
+. TDATA_OUT                 (wICMP_Core_TDATA_x32           )
  );  
  
 
+//assign     wICMP_Core_TKEEP_x32 [ 4-1:0]   =    { wICMP_Core_TKEEP[3]&& wICMP_Core_TKEEP[2],wICMP_Core_TKEEP[2]&&wICMP_Core_TKEEP[1], wICMP_Core_TKEEP[1]&&wICMP_Core_TKEEP[0],wICMP_Core_TKEEP[0]};
 
-assign      wICMP_Core_TDATA_x32  [32-1:0] =    ((wICMP_Core_TKEEP==4'b0001)&&wICMP_Core_TLAST_x32) ? {24'h00,wICMP_Core_TDATA[ 7:0]} :
-                                                ((wICMP_Core_TKEEP==4'b0011)&&wICMP_Core_TLAST_x32) ? {16'h00,wICMP_Core_TDATA[15:0]} :
-                                                ((wICMP_Core_TKEEP==4'b0111)&&wICMP_Core_TLAST_x32) ? { 8'h00,wICMP_Core_TDATA[23:0]} :
-                                                ((wICMP_Core_TKEEP==4'b1111)&&wICMP_Core_TLAST_x32) ? wICMP_Core_TDATA[31:0] : wICMP_Core_TDATA[31:0];  
-                                
-                                
-assign     wICMP_Core_TKEEP_x32 [ 4-1:0]  =     { wICMP_Core_TKEEP[3]&& wICMP_Core_TKEEP[2],wICMP_Core_TKEEP[2]&&wICMP_Core_TKEEP[1], wICMP_Core_TKEEP[1]&&wICMP_Core_TKEEP[0],wICMP_Core_TKEEP[0]};
-                                
-
-
-assign wICMP_Core_DATA_COUNT_x32[ 4-1:0]  =     ((wICMP_Core_TKEEP_x32==4'b0001)&&wICMP_Core_TLAST_x32) ? 4'h1 :
-                                                ((wICMP_Core_TKEEP_x32==4'b0011)&&wICMP_Core_TLAST_x32) ? 4'h2 :
-                                                ((wICMP_Core_TKEEP_x32==4'b0111)&&wICMP_Core_TLAST_x32) ? 4'h3 :
-                                                ((wICMP_Core_TKEEP_x32==4'b1111)&&wICMP_Core_TLAST_x32) ? 4'h4 :
-                                                4'h4;                              
+//assign      wICMP_Core_TDATA_x32  [32-1:0] =    ((wICMP_Core_TKEEP==4'b0001)&&wICMP_Core_TLAST_x32) ? {24'h00,wICMP_Core_TDATA[ 7:0]} :
+//                                                ((wICMP_Core_TKEEP==4'b0011)&&wICMP_Core_TLAST_x32) ? {16'h00,wICMP_Core_TDATA[15:0]} :
+//                                                ((wICMP_Core_TKEEP==4'b0111)&&wICMP_Core_TLAST_x32) ? { 8'h00,wICMP_Core_TDATA[23:0]} :
+//                                                ((wICMP_Core_TKEEP==4'b1111)&&wICMP_Core_TLAST_x32) ? wICMP_Core_TDATA[31:0] : wICMP_Core_TDATA[31:0];  
+ 
+//assign wICMP_Core_Byte_COUNT_x32[ 4-1:0]  =     ((wICMP_Core_TKEEP_x32==4'b0001)&&wICMP_Core_TLAST_x32) ? 4'h1 :
+//                                                ((wICMP_Core_TKEEP_x32==4'b0011)&&wICMP_Core_TLAST_x32) ? 4'h2 :
+//                                                ((wICMP_Core_TKEEP_x32==4'b0111)&&wICMP_Core_TLAST_x32) ? 4'h3 :
+//                                                ((wICMP_Core_TKEEP_x32==4'b1111)&&wICMP_Core_TLAST_x32) ? 4'h4 :
+//                                                4'h4;                              
                                         
 (* KEEP = "TRUE" *)reg [32-1:0] ICMP_CheckSUM_Packet_L=0;
 (* KEEP = "TRUE" *)reg [32-1:0] ICMP_CheckSUM_Packet_H=0;
@@ -183,10 +180,10 @@ reg [16-1:0] ICMP_PING_RxData_Length_Counter=0;
 
 always @(posedge ICMP_PING_Sink_CLK)
 begin
-	if (wICMP_Core_TVALID_x32 && wICMP_Core_TFIRST_x32) ICMP_PING_RxData_Length_Counter <= wICMP_Core_DATA_COUNT_x32;  
+	if (wICMP_Core_TVALID_x32 && wICMP_Core_TFIRST_x32) ICMP_PING_RxData_Length_Counter <= wICMP_Core_Byte_COUNT_x32;  
 	   else if (wICMP_Core_TVALID_x32&&(ICMP_PING_RxData_Length_Counter>MAX_ICMP_PayloadSize)) ICMP_PING_RxData_Length_Counter <= ICMP_PING_RxData_Length_Counter;
 	       else if (wICMP_Core_TVALID_x32&&(ICMP_PING_RxData_Length_Counter>BufferSize)) ICMP_PING_RxData_Length_Counter <= ICMP_PING_RxData_Length_Counter;    
-	           else if (wICMP_Core_TVALID_x32) ICMP_PING_RxData_Length_Counter <= ICMP_PING_RxData_Length_Counter + wICMP_Core_DATA_COUNT_x32;  
+	           else if (wICMP_Core_TVALID_x32) ICMP_PING_RxData_Length_Counter <= ICMP_PING_RxData_Length_Counter + wICMP_Core_Byte_COUNT_x32;  
 
     if (wICMP_Core_TVALID_x32 && wICMP_Core_TFIRST_x32) ICMP_PING_CheckSUM_Sub <= wICMP_Core_TDATA_x32[32-1:16] + wICMP_Core_TDATA_x32[16-1:0 ];
 

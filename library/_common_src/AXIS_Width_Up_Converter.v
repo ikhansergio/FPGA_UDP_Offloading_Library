@@ -33,21 +33,22 @@ module AXIS_Width_Up_Converter
    )
     (
     
-    input CLK ,
+    input                               CLK ,
     
-    input [BIT_WIDTH-1:0] TDATA ,
-    input TVALID,
-    input TFIRST,
-    input TLAST,
-    input TERROR,
+    input [BIT_WIDTH-1:0]               TDATA ,
+    input                               TVALID,
+    input                               TFIRST,
+    input                               TLAST,
+    input                               TERROR,
     
-    output reg TFIRST_OUT,
-    output reg TVALID_OUT,
-    output reg TERROR_OUT,
-    output reg TLAST_OUT,
-	output reg [WordCount-1:0] EMPTY_OUT,
-	output reg [N-1:0] TKEEP_OUT,
-    output reg [(N*BIT_WIDTH)-1:0] TDATA_OUT 
+    output reg                          TFIRST_OUT,
+    output reg                          TVALID_OUT,
+    output reg                          TERROR_OUT,
+    output reg                          TLAST_OUT,
+    output reg [N-1:0]                  TKEEP_OUT,
+	output reg [WordCount-1:0]          EMPTY_OUT,
+	output reg [WordCount  :0]          TCOUNT_OUT,
+    output reg [(N*BIT_WIDTH)-1:0]      TDATA_OUT 
 
     );
     
@@ -107,6 +108,9 @@ module AXIS_Width_Up_Converter
     TERROR_OUT <=TERROR_REG;
 	if (TLAST_REG&&TVALID_REG) EMPTY_OUT <= ~wShiftPos; else EMPTY_OUT <= 0; 
 	
+	if (wTFIRST) TCOUNT_OUT<=0;
+	   else if (((ShiftPos==(N-1))||TLAST_REG)&&TVALID_REG) TCOUNT_OUT <= ShiftPos+1;
+	
 	
 	if (BIG_ENDIAN==0)
 	   begin
@@ -129,5 +133,7 @@ module AXIS_Width_Up_Converter
         end
     end
     endgenerate
+    
+    
 
 endmodule
