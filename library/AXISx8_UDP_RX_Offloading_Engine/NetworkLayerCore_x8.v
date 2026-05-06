@@ -42,12 +42,14 @@ output wire			   IPv4_Core_Source_TERROR,
 output wire			   IPv4_Core_Source_TLAST,
 output wire [ 8-1:0]   IPv4_Core_Source_TDATA,
 	
-input  wire [32-1:0]   IP4_LOCAL_ADDR,
-output wire [32-1:0]   IP4_REMOTE_ADDR,
-output wire [ 8-1:0]   IP4_Used_Protocol,	
+input  wire [32-1:0]   IP4_LOCAL_ADDR_IN,
+output wire [32-1:0]   IP4_REMOTE_ADDR_OUT,
+output wire [ 8-1:0]   IP4_Used_Protocol_OUT,	
 
-input  wire [48-1:0]   Internal_MAC_ADDR ,
-output wire [48-1:0]   External_MAC_ADDR ,
+
+
+input  wire [48-1:0]   MAC_LOCAL_ADDR_IN ,
+output wire [48-1:0]   MAC_REMOTE_ADDR_OUT ,
 
 /////////////////////////////////////////////////////////////////////////////////////
 //  Tx Interface                                                                  ///
@@ -100,7 +102,7 @@ Ethernet_II_MAC_Core_x8  #(.TxPortCount(TxPortCount+2)) Ethernet_II_MAC_Core_x8_
 .Ethernet_II_Frame_TLAST                               (wEthernet_II_Frame_TLAST   ),
 .Ethernet_II_Frame_TDATA                               (wEthernet_II_Frame_TDATA   ),
 .Ethernet_II_TypeCode                                  (wEthernet_TypeCode         ),
-.Ethernet_II_Internal_MAC                              ( Internal_MAC_ADDR         ),
+.Ethernet_II_Internal_MAC                              ( MAC_LOCAL_ADDR_IN         ),
 .Ethernet_II_External_MAC                              (wExternal_MAC_ADDR         ),
 /////////////////////////////////////////////////////////////////////////////////////
 // MAC Tx Interface                                                               ///
@@ -130,9 +132,9 @@ ARP_Offloading_Engine_x8            ARP_Offloading_Engine_x8_inst
 .RX_TDATA                           (wEthernet_II_Frame_TDATA   ),
 	
 .Ethernet_TypeCode                  (wEthernet_TypeCode         ),
-.Internal_MAC_ADDR                  ( Internal_MAC_ADDR         ),
+.Internal_MAC_ADDR                  ( MAC_LOCAL_ADDR_IN         ),
 .External_MAC_ADDR                  (wExternal_MAC_ADDR         ),
-.Internal_IP4_ADDR                  ( IP4_LOCAL_ADDR            ),
+.Internal_IP4_ADDR                  ( IP4_LOCAL_ADDR_IN         ),
 /////////////////////////////////////////////////////////////////////////////////////
 // ARP Tx Interface                                                               ///
 /////////////////////////////////////////////////////////////////////////////////////
@@ -160,11 +162,11 @@ IPv4_Core_x8                        IPv4_Core_x8_inst
 .IPv4_Core_Sink_TDATA               (wEthernet_II_Frame_TDATA   ),
 
 .Ethernet_TypeCode                  (wEthernet_TypeCode         ),
-.IP4_Used_Protocol                  ( IP4_Used_Protocol         ),
-.Internal_IP4_ADDR                  ( IP4_LOCAL_ADDR            ),
+.IP4_Used_Protocol                  ( IP4_Used_Protocol_OUT     ),
+.Internal_IP4_ADDR                  ( IP4_LOCAL_ADDR_IN         ),
 .External_MAC_ADDR_IN               (wExternal_MAC_ADDR         ),
-.External_MAC_ADDR_OUT              (External_MAC_ADDR          ),
-.External_IP4_ADDR                  ( IP4_REMOTE_ADDR           ),
+.External_MAC_ADDR_OUT              (MAC_REMOTE_ADDR_OUT        ),
+.External_IP4_ADDR                  ( IP4_REMOTE_ADDR_OUT       ),
 
 .IPv4_Core_Source_TFIRST             (),
 .IPv4_Core_Source_TVALID            (IPv4_Core_Source_TVALID    ),
@@ -189,12 +191,12 @@ ICMP_PING_Offloading_Engine_x8  ICMP_PING_Offloading_Engine_x8_inst
 .ICMP_PING_Sink_TLAST       (IPv4_Core_Source_TLAST             ),
 .ICMP_PING_Sink_TDATA       (IPv4_Core_Source_TDATA             ),
 	
-.IP4_Used_Protocol_IN       (IP4_Used_Protocol                  ),
+.IP4_Used_Protocol_IN       (IP4_Used_Protocol_OUT              ),
 	
-.MAC_LOCAL_ADDR_IN          (Internal_MAC_ADDR                  ),
-.MAC_REMOTE_ADDR_IN         (External_MAC_ADDR                  ),
-.IP4_LOCAL_ADDR_IN          (IP4_LOCAL_ADDR                     ),
-.IP4_REMOTE_ADDR_IN         (IP4_REMOTE_ADDR                    ),
+.MAC_LOCAL_ADDR_IN          (MAC_LOCAL_ADDR_IN                  ),
+.MAC_REMOTE_ADDR_IN         (MAC_REMOTE_ADDR_OUT                ),
+.IP4_LOCAL_ADDR_IN          (IP4_LOCAL_ADDR_IN                  ),
+.IP4_REMOTE_ADDR_IN         (IP4_REMOTE_ADDR_OUT                ),
 
 .ICMP_PING_Source_CLK       (TX_CLK                             ),
 .ICMP_PING_Source_TRDY      (wICMP_PING_Core_TRDY               ),

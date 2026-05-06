@@ -35,16 +35,15 @@ input wire 	                            RX_CLK,
 input wire 	                            RX_TLAST,
 input wire 	                            RX_TVALID,
 input wire 	                            RX_TERROR,
-input wire [ 8-1:0]                     RX_TDATA,
+input wire  [ 8-1:0]                    RX_TDATA,
 
-input  wire [16-1:0]                    UDP_LOCAL_PORT ,
-output wire [16-1:0]                    UDP_REMOTE_PORT,
+input  wire [48-1:0]                    MAC_LOCAL_ADDR_IN,
+input  wire [32-1:0]                    IP4_LOCAL_ADDR_IN,
+input  wire [16-1:0]                    UDP_LOCAL_PORT_IN,
 
-input  wire [32-1:0]                    IP4_LOCAL_ADDR,
-output wire [32-1:0]                    IP4_REMOTE_ADDR,
-
-input  wire [48-1:0]                    MAC_LOCAL_ADDR,
-output wire [48-1:0]                    MAC_REMOTE_ADDR,
+output wire [48-1:0]                    MAC_REMOTE_ADDR_OUT,
+output wire [32-1:0]                    IP4_REMOTE_ADDR_OUT,
+output wire [16-1:0]                    UDP_REMOTE_PORT_OUT,
 
 output wire  					        UDP_Data_Source_TFIRST,
 output wire 					        UDP_Data_Source_TVALID,
@@ -100,11 +99,11 @@ NetworkLayerCore_x8   #(.TxPortCount(TxPortCount))   NetworkLayerCore_x8_inst
     .IPv4_Core_Source_TLAST                (wNetworkLayerCore_Source_TLAST  ),
     .IPv4_Core_Source_TDATA                (wNetworkLayerCore_Source_TDATA  ),
 
-    .IP4_Used_Protocol                     (wNetwork_Layer_IP4_Used_Protocol),
-    .IP4_LOCAL_ADDR                        ( IP4_LOCAL_ADDR),	
-    .IP4_REMOTE_ADDR                       (wIP4_REMOTE_ADDR),
-    .Internal_MAC_ADDR                     ( MAC_LOCAL_ADDR),
-    .External_MAC_ADDR                     (wDataLinkLayer_Remote_MAC_ADDR),
+    .IP4_Used_Protocol_OUT                 (wNetwork_Layer_IP4_Used_Protocol),
+    .IP4_LOCAL_ADDR_IN                     ( IP4_LOCAL_ADDR_IN),	
+    .IP4_REMOTE_ADDR_OUT                   (wIP4_REMOTE_ADDR),
+    .MAC_LOCAL_ADDR_IN                     ( MAC_LOCAL_ADDR_IN),
+    .MAC_REMOTE_ADDR_OUT                   (wDataLinkLayer_Remote_MAC_ADDR),
 /////////////////////////////////////////////////////////////////////////////////////
 //  Tx Interface                                                                  ///
 /////////////////////////////////////////////////////////////////////////////////////
@@ -136,15 +135,15 @@ UDP_RxDatagramProcessing_Core_x8           UDP_RxDatagramProcessing_Core_x8_inst
 	.UDP_Core_Sink_TLAST                   (wNetworkLayerCore_Source_TLAST),
 	.UDP_Core_Sink_TDATA                   (wNetworkLayerCore_Source_TDATA),
 	
-	.UDP_LOCAL_PORT_IN                     (UDP_LOCAL_PORT ),
+	.UDP_LOCAL_PORT_IN                     (UDP_LOCAL_PORT_IN ),
     .IP4_Used_Protocol_IN                  (wNetwork_Layer_IP4_Used_Protocol),
-	.IP4_LOCAL_ADDR_IN                     ( IP4_LOCAL_ADDR),
+	.IP4_LOCAL_ADDR_IN                     ( IP4_LOCAL_ADDR_IN),
 	.IP4_REMOTE_ADDR_IN                    (wIP4_REMOTE_ADDR),
 	.MAC_REMOTE_ADDR_IN                    (wDataLinkLayer_Remote_MAC_ADDR),
 	
-	.UDP_REMOTE_PORT_OUT                   ( UDP_REMOTE_PORT               ),
-	.IP4_REMOTE_ADDR_OUT                   ( IP4_REMOTE_ADDR               ),
-	.MAC_REMOTE_ADDR_OUT                   ( MAC_REMOTE_ADDR               ),
+	.UDP_REMOTE_PORT_OUT                   ( UDP_REMOTE_PORT_OUT           ),
+	.IP4_REMOTE_ADDR_OUT                   ( IP4_REMOTE_ADDR_OUT           ),
+	.MAC_REMOTE_ADDR_OUT                   ( MAC_REMOTE_ADDR_OUT           ),
     	
 	.UDP_Core_Source_TFIRST                (UDP_Data_Source_TFIRST),
 	.UDP_Core_Source_TVALID                (UDP_Data_Source_TVALID),
