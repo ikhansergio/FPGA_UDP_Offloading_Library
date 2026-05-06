@@ -57,6 +57,29 @@ module UDP_RxDatagramProcessing_Core_x8
 
 localparam UDP_ProtocolCode        = 8'd17;
 
+
+(* KEEP_HIERARCHY = "TRUE" *)
+PacketTypeValidation                
+#(
+.PackTypePattern(UDP_ProtocolCode)                        
+)UDP_ProtocolCode_Validation_inst
+(
+.CLK                   (CLK),
+.Sink_TVALID           (UDP_Core_Sink_TVALID),
+.Sink_TERROR           (UDP_Core_Sink_TERROR),
+.Sink_TLAST            (UDP_Core_Sink_TLAST),
+.Sink_TDATA            (UDP_Core_Sink_TDATA),
+	
+.PackTypeCode          ({8'h00,IP4_Used_Protocol_IN}),
+
+.Source_TVALID         (),
+.Source_TFIRST         (),
+.Source_TLAST          (),
+.Source_TERROR         (),
+.Source_TDATA          ()
+);
+
+
 //////////////////////////////////////////////////////////////////////////////////////
 // find the beginning of a package 
 reg  TLAST_DONE_FLAG=1;

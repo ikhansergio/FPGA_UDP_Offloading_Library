@@ -46,6 +46,31 @@ module ARP_Offloading_Engine_x8
 );
 
 localparam EtherType = 16'h0806;
+
+
+(* KEEP_HIERARCHY = "TRUE" *)
+PacketTypeValidation                
+#(
+.PackTypePattern(EtherType)                        
+)Ethernet_TypeCode_Validation_inst
+(
+.CLK                   (RX_CLK),
+.Sink_TVALID           (RX_TVALID),
+.Sink_TERROR           (RX_TERROR),
+.Sink_TLAST            (RX_TLAST),
+.Sink_TDATA            (RX_TDATA),
+	
+.PackTypeCode          (Ethernet_TypeCode),
+
+.Source_TVALID         (),
+.Source_TFIRST         (),
+.Source_TLAST          (),
+.Source_TERROR         (),
+.Source_TDATA          ()
+);
+
+
+
 //////////////////////////////////////////////////////////////////////////////////////
 // find the beginning of a package 
 reg  TLAST_DONE_FLAG=1;

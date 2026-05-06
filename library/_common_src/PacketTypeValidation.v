@@ -36,6 +36,7 @@ parameter PackTypePattern = 1
 	
 	input  wire	[16-1:0]           PackTypeCode            ,
 
+    output reg	                   OutSyncPulse  =0        ,
 	output reg	                   Source_TVALID =0        ,
 	output reg	                   Source_TFIRST =0        ,
 	output reg	                   Source_TLAST  =0        ,
@@ -61,13 +62,21 @@ reg [8-1:0] RX_REG_TDATA            =0;
 
 always @(posedge CLK)
 begin
-if (TLAST_DONE_FLAG&&Sink_TVALID) PackTypeValidFlag    <=  (PackTypeCode == PackTypePattern);
+OutSyncPulse <= (PackTypeCode == PackTypePattern)&&RX_TFIRST ;
 
-RX_REG_TFIRST     <=	RX_TFIRST;
-RX_REG_TVALID     <=    Sink_TVALID;
-RX_REG_TERROR     <=    Sink_TERROR;
-RX_REG_TLAST      <=    Sink_TLAST;
-RX_REG_TDATA      <=    Sink_TDATA;
+if (TLAST_DONE_FLAG&&Sink_TVALID) PackTypeValidFlag <=  (PackTypeCode == PackTypePattern);
+
+RX_REG_TFIRST     <=	RX_TFIRST       ;
+RX_REG_TVALID     <=    Sink_TVALID     ;
+RX_REG_TERROR     <=    Sink_TERROR     ;
+RX_REG_TLAST      <=    Sink_TLAST      ;
+RX_REG_TDATA      <=    Sink_TDATA      ;
+
+//RX_REG_TFIRST     <=	RX_TFIRST       &&      (PackTypeCode == PackTypePattern) ;
+//RX_REG_TVALID     <=    Sink_TVALID     &&      (PackTypeCode == PackTypePattern) ;
+//RX_REG_TERROR     <=    Sink_TERROR     &&      (PackTypeCode == PackTypePattern) ;
+//RX_REG_TLAST      <=    Sink_TLAST      &&      (PackTypeCode == PackTypePattern) ;
+//RX_REG_TDATA      <=    Sink_TDATA      &&      (PackTypeCode == PackTypePattern) ;
 
 if (PackTypeValidFlag)  Source_TFIRST <= RX_REG_TFIRST;   else Source_TFIRST <=  0;
 if (PackTypeValidFlag)  Source_TVALID <= RX_REG_TVALID;   else Source_TVALID <=  0;
