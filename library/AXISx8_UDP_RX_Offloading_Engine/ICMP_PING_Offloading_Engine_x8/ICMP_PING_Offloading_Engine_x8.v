@@ -73,45 +73,32 @@ if ( ETHERNET_MTU <= 28                         )             begin AXISx32_UDP_
 //if ((BufferSize*4) < MAX_ICMP_PayloadSize_MTU   )             begin AXISx32_UDP_Tx_Offload_Engine_Error BufferSize_Erorr ( );    end
 if ((BUFFER_COUNT_1K==0)||(BUFFER_COUNT_1K>16)  )             begin AXISx32_UDP_Tx_Offload_Engine_Error BufferCount_Erorr ( );   end
 
+wire         wSink_TFIRST;
+wire         wSink_TVALID;
+wire         wSink_TERROR;
+wire         wSink_TLAST ;
+wire [8-1:0] wSink_TDATA ;
 
+(* KEEP_HIERARCHY = "TRUE" *)
+PacketTypeValidation                
+#(
+.PackTypePattern(ICMP_ProtocolCode)                        
+)ICMP_PING_PacketTypeValidation_inst
+(
+.CLK                   (ICMP_PING_Sink_CLK),
+.Sink_TVALID           (ICMP_PING_Sink_TVALID),
+.Sink_TERROR           (ICMP_PING_Sink_TERROR),
+.Sink_TLAST            (ICMP_PING_Sink_TLAST),
+.Sink_TDATA            (ICMP_PING_Sink_TDATA),
+	
+.PackTypeCode          ({8'h00,IP4_Used_Protocol_IN}),
 
-//////////////////////////////////////////////////////////////////////////////////////
-// find the beginning of a package 
-reg  TLAST_DONE_FLAG=1;
-wire RX_TFIRST;
-always @(posedge ICMP_PING_Sink_CLK) begin if (ICMP_PING_Sink_TVALID&&ICMP_PING_Sink_TLAST) TLAST_DONE_FLAG<=1; else if (ICMP_PING_Sink_TVALID) TLAST_DONE_FLAG<=0; end
-assign RX_TFIRST =  TLAST_DONE_FLAG && ICMP_PING_Sink_TVALID ;
-//////////////////////////////////////////////////////////////////////////////////////
-reg         RX_REG_ICMP_PackTypeFlag =0;
-
-reg         RX_REG_TFIRST           =0;
-reg         RX_REG_TVALID           =0;
-reg         RX_REG_TERROR           =0;
-reg         RX_REG_TLAST            =0;
-reg [8-1:0] RX_REG_TDATA            =0;
-
-reg         ICMP_Core_TFIRST         =0;
-reg         ICMP_Core_TVALID         =0;
-reg         ICMP_Core_TERROR         =0;
-reg         ICMP_Core_TLAST          =0;
-reg [8-1:0] ICMP_Core_TDATA          =0;
-
-always @(posedge ICMP_PING_Sink_CLK)
-begin
-if (TLAST_DONE_FLAG&&ICMP_PING_Sink_TVALID) RX_REG_ICMP_PackTypeFlag    <=  (IP4_Used_Protocol_IN     == ICMP_ProtocolCode);
-
-RX_REG_TFIRST     <=	RX_TFIRST;
-RX_REG_TVALID     <=    ICMP_PING_Sink_TVALID;
-RX_REG_TERROR     <=    ICMP_PING_Sink_TERROR;
-RX_REG_TLAST      <=    ICMP_PING_Sink_TLAST;
-RX_REG_TDATA      <=    ICMP_PING_Sink_TDATA;
-
-if (RX_REG_ICMP_PackTypeFlag)  ICMP_Core_TFIRST <= RX_REG_TFIRST;   else ICMP_Core_TFIRST <=  0;
-if (RX_REG_ICMP_PackTypeFlag)  ICMP_Core_TVALID <= RX_REG_TVALID;   else ICMP_Core_TVALID <=  0;
-if (RX_REG_ICMP_PackTypeFlag)  ICMP_Core_TLAST  <= RX_REG_TLAST;    else ICMP_Core_TLAST  <=  0; 
-if (RX_REG_ICMP_PackTypeFlag)  ICMP_Core_TERROR <= RX_REG_TERROR;   else ICMP_Core_TERROR <=  0;  
-if (RX_REG_ICMP_PackTypeFlag)  ICMP_Core_TDATA <=  RX_REG_TDATA;    else ICMP_Core_TDATA <=  0; 
-end
+.Source_TVALID         (wSink_TVALID),
+.Source_TFIRST         (wSink_TFIRST),
+.Source_TLAST          (wSink_TLAST),
+.Source_TERROR         (wSink_TERROR),
+.Source_TDATA          (wSink_TDATA)
+);
 
 wire            wICMP_Core_TFIRST_x32 ;
 wire            wICMP_Core_TVALID_x32 ;
@@ -130,15 +117,15 @@ AXIS_Width_Up_Converter
 . N                     (4),
 . BIG_ENDIAN            (1),         
 . TFIRST_ReSTORE        (0) 
-) AXIS_width_converter_inst
+) AXIS_x8_To_X32_AXIS_Width_Up_Converter_inst
 (
             
 . CLK                       (ICMP_PING_Sink_CLK             ),
-. TFIRST                    (ICMP_Core_TFIRST               ),            
-. TDATA                     (ICMP_Core_TDATA                ),
-. TVALID                    (ICMP_Core_TVALID               ),
-. TERROR                    (ICMP_Core_TERROR               ),
-. TLAST                     (ICMP_Core_TLAST                ),
+. TFIRST                    (wSink_TFIRST                   ),            
+. TDATA                     (wSink_TDATA                    ),
+. TVALID                    (wSink_TVALID                   ),
+. TERROR                    (wSink_TERROR                   ),
+. TLAST                     (wSink_TLAST                    ),
  
 . TFIRST_OUT                (wICMP_Core_TFIRST_x32          ),
 . TVALID_OUT                (wICMP_Core_TVALID_x32          ),
@@ -214,9 +201,6 @@ begin
 	
 	ICMP_PING_CheckSUM_Reply         <=  ICMP_PING_CheckSUM_FullPacket - ICMP_PING_CheckSUM_Sub;
 
-//if (wICMP_Core_TFIRST_x32&&wICMP_Core_TVALID_x32) ICMP_PING_TypeFlag <= (wICMP_Core_TDATA_x32[ 7:0] == 8'h8);
-//if (wICMP_Core_TFIRST_x32&&wICMP_Core_TVALID_x32) ICMP_PING_CodeFlag <= (wICMP_Core_TDATA_x32[15:8] == 8'h0);
-
 if (wICMP_Core_TFIRST_x32&&wICMP_Core_TVALID_x32) ICMP_PING_TypeFlag <= (wICMP_Core_TDATA_x32[31:24] == 8'h8);
 if (wICMP_Core_TFIRST_x32&&wICMP_Core_TVALID_x32) ICMP_PING_CodeFlag <= (wICMP_Core_TDATA_x32[23:16] == 8'h0);
 
@@ -272,18 +256,12 @@ if (ICMP_PING_ReplyPulse) ICMP_PING_ReplyWiderCouter<=1'b1;
 ICMP_PING_ReplyWidePulse <= ICMP_PING_ReplyWiderCouter!=0;
 
 end
-
-
-
-
-
-
+ 
 reg ICMP_PING_ReplyWidePulse_ResyncD0=0;
 reg ICMP_PING_ReplyWidePulse_ResyncD1=0;
 reg ICMP_PING_ReplyWidePulse_ResyncD2=0;
 
 reg ICMP_PING_StartReplyPulse =   0;
-
 
 
 always @(posedge ICMP_PING_Source_CLK)
@@ -378,15 +356,7 @@ wDataLength_Rd <=  ICMP_PING_RxData_Length_Counter;
 
             if ((Tx_MAC_FrameBody_ByteCounter ==33 )&&Tx_MAC_FrameBody_VALID) ReadDataState <= 1'b1; 
                 else if ((DATA_TotalLength == 0)&&RdPointerIncPulse) ReadDataState<=1'b0;
-                
-                        
-                
-          
-          
-          
-          
-          
-          
+
           
 //////////////////////////////////////////////////////////////////////////////////////
           
