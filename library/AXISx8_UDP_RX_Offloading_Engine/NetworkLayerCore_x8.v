@@ -42,14 +42,12 @@ output wire			   IPv4_Core_Source_TERROR,
 output wire			   IPv4_Core_Source_TLAST,
 output wire [ 8-1:0]   IPv4_Core_Source_TDATA,
 	
+input  wire [48-1:0]   MAC_LOCAL_ADDR_IN ,
 input  wire [32-1:0]   IP4_LOCAL_ADDR_IN,
+
+output wire [48-1:0]   MAC_REMOTE_ADDR_OUT ,
 output wire [32-1:0]   IP4_REMOTE_ADDR_OUT,
 output wire [ 8-1:0]   IP4_Used_Protocol_OUT,	
-
-
-
-input  wire [48-1:0]   MAC_LOCAL_ADDR_IN ,
-output wire [48-1:0]   MAC_REMOTE_ADDR_OUT ,
 
 /////////////////////////////////////////////////////////////////////////////////////
 //  Tx Interface                                                                  ///

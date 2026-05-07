@@ -25,7 +25,7 @@
 
 module UDP_Offloading_Engine_x8
 #(
-    parameter TxPortCount = 3    //  Number of UDP Tx Masters + ARP
+parameter TxPortCount = 3    //  Number of UDP Tx Masters + ARP
 )
 (
 /////////////////////////////////////////////////////////////////////////////////////
@@ -45,20 +45,21 @@ output wire [48-1:0]                    MAC_REMOTE_ADDR_OUT,
 output wire [32-1:0]                    IP4_REMOTE_ADDR_OUT,
 output wire [16-1:0]                    UDP_REMOTE_PORT_OUT,
 
-output wire  					        UDP_Data_Source_TFIRST,
-output wire 					        UDP_Data_Source_TVALID,
-output wire 					        UDP_Data_Source_TERROR,
-output wire				                UDP_Data_Source_TLAST ,
-output wire [ 8-1:0]		            UDP_Data_Source_TDATA ,
+output wire  					        Source_TFIRST,
+output wire 					        Source_TVALID,
+output wire 					        Source_TERROR,
+output wire				                Source_TLAST ,
+output wire [ 8-1:0]		            Source_TDATA ,
 /////////////////////////////////////////////////////////////////////////////////////
 //  Tx Interface                                                                  ///
 /////////////////////////////////////////////////////////////////////////////////////
-input  wire 	                        TX_CLK,
-output wire [1*TxPortCount-1:0]	        MAC_TxFrameBody_TRDY,
-input  wire [1*TxPortCount-1:0]	        MAC_TxFrameBody_TVALID,
-input  wire [1*TxPortCount-1:0]	        MAC_TxFrameBody_TLAST,
-input  wire [8*TxPortCount-1:0]         MAC_TxFrameBody_TDATA,
-	
+
+output wire [1*TxPortCount-1:0]	        Sink_TRDY,
+input  wire [1*TxPortCount-1:0]	        Sink_TVALID,
+input  wire [1*TxPortCount-1:0]	        Sink_TLAST,
+input  wire [8*TxPortCount-1:0]         Sink_TDATA,
+
+input  wire 	                        TX_CLK,	
 input  wire                             TX_TRDY,
 output wire                             TX_TVALID,
 output wire                             TX_TLAST,
@@ -107,12 +108,12 @@ NetworkLayerCore_x8   #(.TxPortCount(TxPortCount))   NetworkLayerCore_x8_inst
 /////////////////////////////////////////////////////////////////////////////////////
 //  Tx Interface                                                                  ///
 /////////////////////////////////////////////////////////////////////////////////////
+    .MAC_TxFrameBody_TRDY                  (Sink_TRDY),
+    .MAC_TxFrameBody_TVALID                (Sink_TVALID),
+    .MAC_TxFrameBody_TLAST                 (Sink_TLAST),
+    .MAC_TxFrameBody_TDATA                 (Sink_TDATA),
+    
     .TX_CLK                                (TX_CLK),
-    .MAC_TxFrameBody_TRDY                  (MAC_TxFrameBody_TRDY),
-    .MAC_TxFrameBody_TVALID                (MAC_TxFrameBody_TVALID),
-    .MAC_TxFrameBody_TLAST                 (MAC_TxFrameBody_TLAST),
-    .MAC_TxFrameBody_TDATA                 (MAC_TxFrameBody_TDATA),
-
     .TX_TRDY                               (TX_TRDY),
     .TX_TVALID                             (TX_TVALID),
     .TX_TLAST                              (TX_TLAST),
@@ -128,28 +129,28 @@ NetworkLayerCore_x8   #(.TxPortCount(TxPortCount))   NetworkLayerCore_x8_inst
 (* KEEP_HIERARCHY = "TRUE" *)
 UDP_RxDatagramProcessing_Core_x8           UDP_RxDatagramProcessing_Core_x8_inst
 (
-	.CLK                                   (RX_CLK),
+	.CLK                                   (RX_CLK                             ),
 	
-	.UDP_Core_Sink_TVALID                  (wNetworkLayerCore_Source_TVALID),
-	.UDP_Core_Sink_TERROR                  (wNetworkLayerCore_Source_TERROR ),
-	.UDP_Core_Sink_TLAST                   (wNetworkLayerCore_Source_TLAST),
-	.UDP_Core_Sink_TDATA                   (wNetworkLayerCore_Source_TDATA),
+	.UDP_Core_Sink_TVALID                  (wNetworkLayerCore_Source_TVALID    ),
+	.UDP_Core_Sink_TERROR                  (wNetworkLayerCore_Source_TERROR    ),
+	.UDP_Core_Sink_TLAST                   (wNetworkLayerCore_Source_TLAST     ),
+	.UDP_Core_Sink_TDATA                   (wNetworkLayerCore_Source_TDATA     ),
 	
-	.UDP_LOCAL_PORT_IN                     (UDP_LOCAL_PORT_IN ),
-    .IP4_Used_Protocol_IN                  (wNetwork_Layer_IP4_Used_Protocol),
-	.IP4_LOCAL_ADDR_IN                     ( IP4_LOCAL_ADDR_IN),
-	.IP4_REMOTE_ADDR_IN                    (wIP4_REMOTE_ADDR),
-	.MAC_REMOTE_ADDR_IN                    (wDataLinkLayer_Remote_MAC_ADDR),
+	.UDP_LOCAL_PORT_IN                     (UDP_LOCAL_PORT_IN                  ),
+    .IP4_Used_Protocol_IN                  (wNetwork_Layer_IP4_Used_Protocol   ),
+	.IP4_LOCAL_ADDR_IN                     ( IP4_LOCAL_ADDR_IN                 ),
+	.IP4_REMOTE_ADDR_IN                    (wIP4_REMOTE_ADDR                   ),
+	.MAC_REMOTE_ADDR_IN                    (wDataLinkLayer_Remote_MAC_ADDR     ),
 	
-	.UDP_REMOTE_PORT_OUT                   ( UDP_REMOTE_PORT_OUT           ),
-	.IP4_REMOTE_ADDR_OUT                   ( IP4_REMOTE_ADDR_OUT           ),
-	.MAC_REMOTE_ADDR_OUT                   ( MAC_REMOTE_ADDR_OUT           ),
+	.UDP_REMOTE_PORT_OUT                   ( UDP_REMOTE_PORT_OUT               ),
+	.IP4_REMOTE_ADDR_OUT                   ( IP4_REMOTE_ADDR_OUT               ),
+	.MAC_REMOTE_ADDR_OUT                   ( MAC_REMOTE_ADDR_OUT               ),
     	
-	.UDP_Core_Source_TFIRST                (UDP_Data_Source_TFIRST),
-	.UDP_Core_Source_TVALID                (UDP_Data_Source_TVALID),
-	.UDP_Core_Source_TERROR                (UDP_Data_Source_TERROR),
-	.UDP_Core_Source_TLAST                 (UDP_Data_Source_TLAST),
-	.UDP_Core_Source_TDATA                 (UDP_Data_Source_TDATA)
+	.UDP_Core_Source_TFIRST                (Source_TFIRST                      ),
+	.UDP_Core_Source_TVALID                (Source_TVALID                      ),
+	.UDP_Core_Source_TERROR                (Source_TERROR                      ),
+	.UDP_Core_Source_TLAST                 (Source_TLAST                       ),
+	.UDP_Core_Source_TDATA                 (Source_TDATA                       )
 );
 
     

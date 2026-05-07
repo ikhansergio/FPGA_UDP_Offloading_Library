@@ -75,22 +75,22 @@ RGMII_Rx_To_AXISx8
 .OVER_SAMPLING(OVER_SAMPLING)
 )  RGMII_Rx_To_AXISx8_Inst  
 (
-.CLK625MHZ                  (CLK625MHZ),
+.CLK625MHZ                  (CLK625MHZ      ),
 
-.RGMII_LINK_UP              (RGMII_LINK_UP),
-.RGMII_DUPLEX               (RGMII_DUPLEX),
-.RGMII_SPEED                (RGMII_SPEED),
+.RGMII_LINK_UP              (RGMII_LINK_UP  ),
+.RGMII_DUPLEX               (RGMII_DUPLEX   ),
+.RGMII_SPEED                (RGMII_SPEED    ),
 
-.RGMII_RXC                  (RGMII_RXC),
-.RGMII_RX_CTL               (RGMII_RX_CTL),
-.RGMII_RXD                  (RGMII_RXD),
+.RGMII_RXC                  (RGMII_RXC      ),
+.RGMII_RX_CTL               (RGMII_RX_CTL   ),
+.RGMII_RXD                  (RGMII_RXD      ),
 
-.Source_CLK                 (Source_CLK   ),
-.Source_TVALID              (Source_TVALID),
-.Source_TERROR              (Source_TERROR),
-.Source_TFIRST              (Source_TFIRST),
-.Source_TLAST               (Source_TLAST ),
-.Source_TDATA               (Source_TDATA)
+.Source_CLK                 (Source_CLK     ),
+.Source_TVALID              (Source_TVALID  ),
+.Source_TERROR              (Source_TERROR  ),
+.Source_TFIRST              (Source_TFIRST  ),
+.Source_TLAST               (Source_TLAST   ),
+.Source_TDATA               (Source_TDATA   )
 );
 
 (* KEEP_HIERARCHY = "TRUE" *)
