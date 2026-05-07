@@ -25,24 +25,23 @@
 
 module ARP_Offloading_Engine_x8
 (
-	input  wire	                   RX_CLK,
-	input  wire	                   RX_TVALID,
-	input  wire	                   RX_TERROR,
-	input  wire	                   RX_TLAST,
-	input  wire	[ 8-1:0]           RX_TDATA,
+	input  wire	                   Sink_CLK            ,
+	input  wire	                   Sink_TVALID         ,
+	input  wire	                   Sink_TERROR         ,
+	input  wire	                   Sink_TLAST          ,
+	input  wire	[ 8-1:0]           Sink_TDATA          ,
 	
 	input  wire [16-1:0]           Ethernet_TypeCode,
 	
-	input  wire	[48-1:0]           Internal_MAC_ADDR ,
-	input  wire	[48-1:0]           External_MAC_ADDR ,
-	input  wire	[32-1:0]           Internal_IP4_ADDR ,
+	input  wire	[48-1:0]           MAC_LOCAL_ADDR_IN ,
+	input  wire	[48-1:0]           MAC_REMOTE_ADDR_IN ,
+	input  wire	[32-1:0]           IP4_LOCAL_ADDR_IN ,
 
-
-    input  wire 	               TX_CLK,
-	input  wire	                   TX_TRDY,
-	output wire	                   TX_TVALID,
-	output wire	                   TX_TLAST,
-	output wire	[ 8-1:0]           TX_TDATA
+    input  wire 	               Source_CLK,
+	input  wire	                   Source_TRDY,
+	output wire	                   Source_TVALID,
+	output wire	                   Source_TLAST,
+	output wire	[ 8-1:0]           Source_TDATA
 );
 
 localparam EtherType = 16'h0806;
@@ -54,11 +53,11 @@ PacketTypeValidation
 .PackTypePattern(EtherType)                        
 )Ethernet_TypeCode_Validation_inst
 (
-.CLK                   (RX_CLK),
-.Sink_TVALID           (RX_TVALID),
-.Sink_TERROR           (RX_TERROR),
-.Sink_TLAST            (RX_TLAST),
-.Sink_TDATA            (RX_TDATA),
+.CLK                   (Sink_CLK        ),
+.Sink_TVALID           (Sink_TVALID     ),
+.Sink_TERROR           (Sink_TERROR     ),
+.Sink_TLAST            (Sink_TLAST      ),
+.Sink_TDATA            (Sink_TDATA      ),
 	
 .PackTypeCode          (Ethernet_TypeCode),
 
@@ -75,9 +74,9 @@ PacketTypeValidation
 // find the beginning of a package 
 reg  TLAST_DONE_FLAG=1;
 wire RX_TFIRST;
-always @(posedge RX_CLK) begin if (RX_TVALID&&RX_TLAST) TLAST_DONE_FLAG<=1; else if (RX_TVALID) TLAST_DONE_FLAG<=0; end
-assign RX_TFIRST =  TLAST_DONE_FLAG && RX_TVALID && (Ethernet_TypeCode == EtherType);
-//assign RX_TFIRST =  TLAST_DONE_FLAG && RX_TVALID ;
+always @(posedge Sink_CLK) begin if (Sink_TVALID&&Sink_TLAST) TLAST_DONE_FLAG<=1; else if (Sink_TVALID) TLAST_DONE_FLAG<=0; end
+assign RX_TFIRST =  TLAST_DONE_FLAG && Sink_TVALID && (Ethernet_TypeCode == EtherType);
+//assign RX_TFIRST =  TLAST_DONE_FLAG && Sink_TVALID ;
 //////////////////////////////////////////////////////////////////////////////////////
 
 reg         RX_REG_ARP_PackTypeFlag =0;
@@ -94,15 +93,15 @@ reg         ARP_Core_TLAST          =0;
 reg [8-1:0] ARP_Core_TDATA          =0;
 
 
-always @(posedge RX_CLK)
+always @(posedge Sink_CLK)
 begin
-if (TLAST_DONE_FLAG&&RX_TVALID) RX_REG_ARP_PackTypeFlag    <=  (Ethernet_TypeCode == EtherType);
+if (TLAST_DONE_FLAG&&Sink_TVALID) RX_REG_ARP_PackTypeFlag    <=  (Ethernet_TypeCode == EtherType);
 
 RX_REG_TFIRST     <=	RX_TFIRST;
-RX_REG_TVALID     <=    RX_TVALID;
-RX_REG_TERROR     <=    RX_TERROR;
-RX_REG_TLAST      <=    RX_TLAST;
-RX_REG_TDATA      <=    RX_TDATA;
+RX_REG_TVALID     <=    Sink_TVALID;
+RX_REG_TERROR     <=    Sink_TERROR;
+RX_REG_TLAST      <=    Sink_TLAST;
+RX_REG_TDATA      <=    Sink_TDATA;
 
 if (RX_REG_ARP_PackTypeFlag)  ARP_Core_TVALID <= RX_REG_TVALID;   else ARP_Core_TVALID <=  0;
 if (RX_REG_ARP_PackTypeFlag)  ARP_Core_TLAST  <= RX_REG_TLAST;    else ARP_Core_TLAST  <=  0; 
@@ -134,7 +133,7 @@ reg [8-1:0] Ethernet_II_External_IP4_REG2 = 0;
 reg [8-1:0] Ethernet_II_External_IP4_REG3 = 0;
 
 
-always @(posedge RX_CLK)
+always @(posedge Sink_CLK)
 begin
 
 if (RX_REG_TFIRST) RX_ARP_FrameCounter<=1'b0; 	
@@ -177,10 +176,10 @@ if (RX_REG_TFIRST) Ethernet_II_External_IP4_REG0<=1'b0;
 	
 // Check ARP  InternalI IP
 if (RX_REG_TFIRST) RX_ARP_InternalIP4CheckCounter<=1'b0;
-	else if ((RX_ARP_FrameCounter==8'h18) && ARP_Core_TVALID&&(ARP_Core_TDATA==Internal_IP4_ADDR[31:24])) RX_ARP_InternalIP4CheckCounter<=RX_ARP_InternalIP4CheckCounter+1'b1;
-		else if ((RX_ARP_FrameCounter==8'h19) && ARP_Core_TVALID&&(ARP_Core_TDATA==Internal_IP4_ADDR[23:16])) RX_ARP_InternalIP4CheckCounter<=RX_ARP_InternalIP4CheckCounter+1'b1;
-			else if ((RX_ARP_FrameCounter==8'h1A) && ARP_Core_TVALID&&(ARP_Core_TDATA==Internal_IP4_ADDR[15: 8])) RX_ARP_InternalIP4CheckCounter<=RX_ARP_InternalIP4CheckCounter+1'b1;
-				else if ((RX_ARP_FrameCounter==8'h1B) && ARP_Core_TVALID&&(ARP_Core_TDATA==Internal_IP4_ADDR[ 7: 0])) RX_ARP_InternalIP4CheckCounter<=RX_ARP_InternalIP4CheckCounter+1'b1;
+	else if ((RX_ARP_FrameCounter==8'h18) && ARP_Core_TVALID&&(ARP_Core_TDATA==IP4_LOCAL_ADDR_IN[31:24])) RX_ARP_InternalIP4CheckCounter<=RX_ARP_InternalIP4CheckCounter+1'b1;
+		else if ((RX_ARP_FrameCounter==8'h19) && ARP_Core_TVALID&&(ARP_Core_TDATA==IP4_LOCAL_ADDR_IN[23:16])) RX_ARP_InternalIP4CheckCounter<=RX_ARP_InternalIP4CheckCounter+1'b1;
+			else if ((RX_ARP_FrameCounter==8'h1A) && ARP_Core_TVALID&&(ARP_Core_TDATA==IP4_LOCAL_ADDR_IN[15: 8])) RX_ARP_InternalIP4CheckCounter<=RX_ARP_InternalIP4CheckCounter+1'b1;
+				else if ((RX_ARP_FrameCounter==8'h1B) && ARP_Core_TVALID&&(ARP_Core_TDATA==IP4_LOCAL_ADDR_IN[ 7: 0])) RX_ARP_InternalIP4CheckCounter<=RX_ARP_InternalIP4CheckCounter+1'b1;
 
 RX_ARP_IP4ValidFlag         <=	 RX_ARP_InternalIP4CheckCounter==3'd4; 
 
@@ -224,7 +223,7 @@ reg [8-1:0]     TX_SwitchREG_ARP_REPLAY_External_MAC      =   0;
 reg [8-1:0]     TX_SwitchREG_ARP_REPLAY_External_IP4      =   0;
 
 
-always @(posedge TX_CLK)
+always @(posedge Source_CLK)
 begin
 ARP_ReplyWidePulse_ResyncD0<=ARP_ReplyWidePulse;
 ARP_ReplyWidePulse_ResyncD1<=ARP_ReplyWidePulse_ResyncD0;
@@ -237,30 +236,30 @@ ARP_StartReplyPulse<=ARP_ReplyWidePulse_ResyncD1 && ! ARP_ReplyWidePulse_ResyncD
 
         TX_ARP_Reply_FrameCounter               <=2;
         TX_SwitchREG_Decoder                    <=0;
-        TX_SwitchREG_Ethernet_II_External_MAC   <= External_MAC_ADDR [39:32] ;
+        TX_SwitchREG_Ethernet_II_External_MAC   <= MAC_REMOTE_ADDR_IN [39:32] ;
         
-        TX_ARP_Reply_TDATA                      <= External_MAC_ADDR [47:40] ;
+        TX_ARP_Reply_TDATA                      <= MAC_REMOTE_ADDR_IN [47:40] ;
         TX_ARP_Reply_TVALID         <=1'b1;
         TX_ARP_Reply_TLAST          <=1'b0;
         end
-        else if (TX_TRDY)
+        else if (Source_TRDY)
             begin
             TX_ARP_Reply_FrameCounter   <= TX_ARP_Reply_FrameCounter +1'b1;
 
-            if (TX_ARP_Reply_FrameCounter==7'd00) TX_SwitchREG_Ethernet_II_External_MAC<= External_MAC_ADDR [47:40] ;                         // never used condition
-                else if (TX_ARP_Reply_FrameCounter==7'd01) TX_SwitchREG_Ethernet_II_External_MAC<= External_MAC_ADDR [39:32] ;                // never used condition
-	               else if (TX_ARP_Reply_FrameCounter==7'd02) TX_SwitchREG_Ethernet_II_External_MAC<= External_MAC_ADDR [31:24] ;
-	                   else if (TX_ARP_Reply_FrameCounter==7'd03) TX_SwitchREG_Ethernet_II_External_MAC<= External_MAC_ADDR [23:16] ;
-	                       else if (TX_ARP_Reply_FrameCounter==7'd04) TX_SwitchREG_Ethernet_II_External_MAC<= External_MAC_ADDR [15: 8] ;
-	                           else if (TX_ARP_Reply_FrameCounter==7'd05) TX_SwitchREG_Ethernet_II_External_MAC<= External_MAC_ADDR [ 7: 0] ;
+            if (TX_ARP_Reply_FrameCounter==7'd00) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR_IN [47:40] ;                         // never used condition
+                else if (TX_ARP_Reply_FrameCounter==7'd01) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR_IN [39:32] ;                // never used condition
+	               else if (TX_ARP_Reply_FrameCounter==7'd02) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR_IN [31:24] ;
+	                   else if (TX_ARP_Reply_FrameCounter==7'd03) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR_IN [23:16] ;
+	                       else if (TX_ARP_Reply_FrameCounter==7'd04) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR_IN [15: 8] ;
+	                           else if (TX_ARP_Reply_FrameCounter==7'd05) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR_IN [ 7: 0] ;
 	                               else TX_SwitchREG_Ethernet_II_External_MAC<=0;
 	        
-	         if (TX_ARP_Reply_FrameCounter==7'd06) TX_SwitchREG_Ethernet_II_Internal_MAC<= Internal_MAC_ADDR [47:40] ;
-                else if (TX_ARP_Reply_FrameCounter==7'd07) TX_SwitchREG_Ethernet_II_Internal_MAC<= Internal_MAC_ADDR [39:32] ;
-	               else if (TX_ARP_Reply_FrameCounter==7'd08) TX_SwitchREG_Ethernet_II_Internal_MAC<= Internal_MAC_ADDR [31:24] ;
-	                   else if (TX_ARP_Reply_FrameCounter==7'd09) TX_SwitchREG_Ethernet_II_Internal_MAC<= Internal_MAC_ADDR [23:16] ;
-	                       else if (TX_ARP_Reply_FrameCounter==7'd10) TX_SwitchREG_Ethernet_II_Internal_MAC<= Internal_MAC_ADDR [15: 8] ;
-	                           else if (TX_ARP_Reply_FrameCounter==7'd11) TX_SwitchREG_Ethernet_II_Internal_MAC<= Internal_MAC_ADDR [ 7: 0] ;
+	         if (TX_ARP_Reply_FrameCounter==7'd06) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR_IN [47:40] ;
+                else if (TX_ARP_Reply_FrameCounter==7'd07) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR_IN [39:32] ;
+	               else if (TX_ARP_Reply_FrameCounter==7'd08) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR_IN [31:24] ;
+	                   else if (TX_ARP_Reply_FrameCounter==7'd09) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR_IN [23:16] ;
+	                       else if (TX_ARP_Reply_FrameCounter==7'd10) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR_IN [15: 8] ;
+	                           else if (TX_ARP_Reply_FrameCounter==7'd11) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR_IN [ 7: 0] ;
 	                               else if (TX_ARP_Reply_FrameCounter==7'd12) TX_SwitchREG_Ethernet_II_Internal_MAC<=8'h08;
 	                                   else if (TX_ARP_Reply_FrameCounter==7'd13) TX_SwitchREG_Ethernet_II_Internal_MAC<=8'h06;
 	                                       else TX_SwitchREG_Ethernet_II_Internal_MAC<=0;
@@ -275,18 +274,18 @@ ARP_StartReplyPulse<=ARP_ReplyWidePulse_ResyncD1 && ! ARP_ReplyWidePulse_ResyncD
 	                                   else if (TX_ARP_Reply_FrameCounter==7'd21) TX_SwitchREG_Ethernet_II_ARP_Header<=8'h02;
 	                                       else TX_SwitchREG_Ethernet_II_ARP_Header<=0;  
 	                                     
-	         if (TX_ARP_Reply_FrameCounter==7'd22) TX_SwitchREG_ARP_REPLAY_Internal_MAC<= Internal_MAC_ADDR [47:40] ;
-                else if (TX_ARP_Reply_FrameCounter==7'd23) TX_SwitchREG_ARP_REPLAY_Internal_MAC<= Internal_MAC_ADDR [39:32] ;
-	               else if (TX_ARP_Reply_FrameCounter==7'd24) TX_SwitchREG_ARP_REPLAY_Internal_MAC<= Internal_MAC_ADDR [31:24] ;
-	                   else if (TX_ARP_Reply_FrameCounter==7'd25) TX_SwitchREG_ARP_REPLAY_Internal_MAC<= Internal_MAC_ADDR [23:16] ;
-	                       else if (TX_ARP_Reply_FrameCounter==7'd26) TX_SwitchREG_ARP_REPLAY_Internal_MAC<= Internal_MAC_ADDR [15: 8] ;
-	                           else if (TX_ARP_Reply_FrameCounter==7'd27) TX_SwitchREG_ARP_REPLAY_Internal_MAC<= Internal_MAC_ADDR [ 7: 0] ;
+	         if (TX_ARP_Reply_FrameCounter==7'd22) TX_SwitchREG_ARP_REPLAY_Internal_MAC<= MAC_LOCAL_ADDR_IN [47:40] ;
+                else if (TX_ARP_Reply_FrameCounter==7'd23) TX_SwitchREG_ARP_REPLAY_Internal_MAC<= MAC_LOCAL_ADDR_IN [39:32] ;
+	               else if (TX_ARP_Reply_FrameCounter==7'd24) TX_SwitchREG_ARP_REPLAY_Internal_MAC<= MAC_LOCAL_ADDR_IN [31:24] ;
+	                   else if (TX_ARP_Reply_FrameCounter==7'd25) TX_SwitchREG_ARP_REPLAY_Internal_MAC<= MAC_LOCAL_ADDR_IN [23:16] ;
+	                       else if (TX_ARP_Reply_FrameCounter==7'd26) TX_SwitchREG_ARP_REPLAY_Internal_MAC<= MAC_LOCAL_ADDR_IN [15: 8] ;
+	                           else if (TX_ARP_Reply_FrameCounter==7'd27) TX_SwitchREG_ARP_REPLAY_Internal_MAC<= MAC_LOCAL_ADDR_IN [ 7: 0] ;
 	                               else TX_SwitchREG_ARP_REPLAY_Internal_MAC<=0;         
 	                           
-	         if (TX_ARP_Reply_FrameCounter==7'd28) TX_SwitchREG_ARP_REPLAY_Internal_IP4<= Internal_IP4_ADDR [31:24] ;
-                else if (TX_ARP_Reply_FrameCounter==7'd29) TX_SwitchREG_ARP_REPLAY_Internal_IP4<= Internal_IP4_ADDR [23:16] ;
-	               else if (TX_ARP_Reply_FrameCounter==7'd30) TX_SwitchREG_ARP_REPLAY_Internal_IP4<= Internal_IP4_ADDR [15: 8] ;
-	                   else if (TX_ARP_Reply_FrameCounter==7'd31) TX_SwitchREG_ARP_REPLAY_Internal_IP4<= Internal_IP4_ADDR [ 7: 0] ;
+	         if (TX_ARP_Reply_FrameCounter==7'd28) TX_SwitchREG_ARP_REPLAY_Internal_IP4<= IP4_LOCAL_ADDR_IN [31:24] ;
+                else if (TX_ARP_Reply_FrameCounter==7'd29) TX_SwitchREG_ARP_REPLAY_Internal_IP4<= IP4_LOCAL_ADDR_IN [23:16] ;
+	               else if (TX_ARP_Reply_FrameCounter==7'd30) TX_SwitchREG_ARP_REPLAY_Internal_IP4<= IP4_LOCAL_ADDR_IN [15: 8] ;
+	                   else if (TX_ARP_Reply_FrameCounter==7'd31) TX_SwitchREG_ARP_REPLAY_Internal_IP4<= IP4_LOCAL_ADDR_IN [ 7: 0] ;
 	                       else TX_SwitchREG_ARP_REPLAY_Internal_IP4<=0;
 
 	         if (TX_ARP_Reply_FrameCounter==7'd32) TX_SwitchREG_ARP_REPLAY_External_MAC<= Ethernet_II_External_MAC_REG5;
@@ -334,9 +333,9 @@ end
 
 
 
-	assign TX_TVALID     =   TX_ARP_Reply_TVALID;
-	assign TX_TLAST      =   TX_ARP_Reply_TLAST;
-	assign TX_TDATA      =   TX_ARP_Reply_TDATA;
+	assign Source_TVALID     =   TX_ARP_Reply_TVALID;
+	assign Source_TLAST      =   TX_ARP_Reply_TLAST;
+	assign Source_TDATA      =   TX_ARP_Reply_TDATA;
 
 
 endmodule

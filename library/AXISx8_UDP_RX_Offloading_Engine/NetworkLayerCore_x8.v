@@ -89,32 +89,32 @@ Ethernet_II_MAC_Core_x8  #(.TxPortCount(TxPortCount+2)) Ethernet_II_MAC_Core_x8_
 /////////////////////////////////////////////////////////////////////////////////////
 // MAC Rx Interface                                                               ///
 /////////////////////////////////////////////////////////////////////////////////////
-.RX_CLK                                                (RX_CLK                     ),
-.RX_TLAST                                              (RX_TLAST                   ),
-.RX_TVALID                                             (RX_TVALID                  ),
-.RX_TERROR                                             (RX_TERROR                  ),
-.RX_TDATA                                              (RX_TDATA                   ),
+.RX_CLK                            (RX_CLK                     ),
+.RX_TLAST                          (RX_TLAST                   ),
+.RX_TVALID                         (RX_TVALID                  ),
+.RX_TERROR                         (RX_TERROR                  ),
+.RX_TDATA                          (RX_TDATA                   ),
 
-.Ethernet_II_Frame_TVALID                              (wEthernet_II_Frame_TVALID  ),
-.Ethernet_II_Frame_TERROR                              (wEthernet_II_Frame_TERROR  ),
-.Ethernet_II_Frame_TLAST                               (wEthernet_II_Frame_TLAST   ),
-.Ethernet_II_Frame_TDATA                               (wEthernet_II_Frame_TDATA   ),
-.Ethernet_II_TypeCode                                  (wEthernet_TypeCode         ),
-.Ethernet_II_Internal_MAC                              ( MAC_LOCAL_ADDR_IN         ),
-.Ethernet_II_External_MAC                              (wExternal_MAC_ADDR         ),
+.Ethernet_II_Frame_TVALID          (wEthernet_II_Frame_TVALID  ),
+.Ethernet_II_Frame_TERROR          (wEthernet_II_Frame_TERROR  ),
+.Ethernet_II_Frame_TLAST           (wEthernet_II_Frame_TLAST   ),
+.Ethernet_II_Frame_TDATA           (wEthernet_II_Frame_TDATA   ),
+.Ethernet_II_TypeCode              (wEthernet_TypeCode         ),
+.Ethernet_II_Internal_MAC          ( MAC_LOCAL_ADDR_IN         ),
+.Ethernet_II_External_MAC          (wExternal_MAC_ADDR         ),
 /////////////////////////////////////////////////////////////////////////////////////
 // MAC Tx Interface                                                               ///
 /////////////////////////////////////////////////////////////////////////////////////
-.TX_CLK                                                (TX_CLK),
-.MAC_FrameBody_TRDY                                    ({MAC_TxFrameBody_TRDY   ,wARP_Core_TRDY  ,wICMP_PING_Core_TRDY  } ),
-.MAC_FrameBody_TVALID                                  ({MAC_TxFrameBody_TVALID ,wARP_Core_TVALID,wICMP_PING_Core_TVALID} ),
-.MAC_FrameBody_TLAST                                   ({MAC_TxFrameBody_TLAST  ,wARP_Core_TLAST ,wICMP_PING_Core_TLAST } ),
-.MAC_FrameBody_TDATA                                   ({MAC_TxFrameBody_TDATA  ,wARP_Core_TDATA ,wICMP_PING_Core_TDATA } ),
+.TX_CLK                            (TX_CLK),
+.MAC_FrameBody_TRDY                ({MAC_TxFrameBody_TRDY   ,wARP_Core_TRDY  ,wICMP_PING_Core_TRDY  } ),
+.MAC_FrameBody_TVALID              ({MAC_TxFrameBody_TVALID ,wARP_Core_TVALID,wICMP_PING_Core_TVALID} ),
+.MAC_FrameBody_TLAST               ({MAC_TxFrameBody_TLAST  ,wARP_Core_TLAST ,wICMP_PING_Core_TLAST } ),
+.MAC_FrameBody_TDATA               ({MAC_TxFrameBody_TDATA  ,wARP_Core_TDATA ,wICMP_PING_Core_TDATA } ),
 
-.TX_TRDY                                               (TX_TRDY),
-.TX_TVALID                                             (TX_TVALID),
-.TX_TLAST                                              (TX_TLAST),
-.TX_TDATA                                              (TX_TDATA)
+.TX_TRDY                           (TX_TRDY),
+.TX_TVALID                         (TX_TVALID),
+.TX_TLAST                          (TX_TLAST),
+.TX_TDATA                          (TX_TDATA)
 );
 
 (* KEEP_HIERARCHY = "TRUE" *)
@@ -123,24 +123,24 @@ ARP_Offloading_Engine_x8            ARP_Offloading_Engine_x8_inst
 /////////////////////////////////////////////////////////////////////////////////////
 // ARP Rx Interface                                                               ///
 /////////////////////////////////////////////////////////////////////////////////////
-.RX_CLK                             (RX_CLK                     ),
-.RX_TVALID                          (wEthernet_II_Frame_TVALID  ),
-.RX_TERROR                          (wEthernet_II_Frame_TERROR  ),
-.RX_TLAST                           (wEthernet_II_Frame_TLAST   ),
-.RX_TDATA                           (wEthernet_II_Frame_TDATA   ),
+.Sink_CLK                           (RX_CLK                     ),
+.Sink_TVALID                        (wEthernet_II_Frame_TVALID  ),
+.Sink_TERROR                        (wEthernet_II_Frame_TERROR  ),
+.Sink_TLAST                         (wEthernet_II_Frame_TLAST   ),
+.Sink_TDATA                         (wEthernet_II_Frame_TDATA   ),
 	
 .Ethernet_TypeCode                  (wEthernet_TypeCode         ),
-.Internal_MAC_ADDR                  ( MAC_LOCAL_ADDR_IN         ),
-.External_MAC_ADDR                  (wExternal_MAC_ADDR         ),
-.Internal_IP4_ADDR                  ( IP4_LOCAL_ADDR_IN         ),
+.MAC_LOCAL_ADDR_IN                  ( MAC_LOCAL_ADDR_IN         ),
+.MAC_REMOTE_ADDR_IN                 (wExternal_MAC_ADDR         ),
+.IP4_LOCAL_ADDR_IN                  ( IP4_LOCAL_ADDR_IN         ),
 /////////////////////////////////////////////////////////////////////////////////////
 // ARP Tx Interface                                                               ///
 /////////////////////////////////////////////////////////////////////////////////////
-.TX_CLK                             (TX_CLK),
-.TX_TRDY                            (wARP_Core_TRDY             ),
-.TX_TVALID                          (wARP_Core_TVALID           ),
-.TX_TLAST                           (wARP_Core_TLAST            ),
-.TX_TDATA                           (wARP_Core_TDATA            )
+.Source_CLK                         (TX_CLK),
+.Source_TRDY                        (wARP_Core_TRDY             ),
+.Source_TVALID                      (wARP_Core_TVALID           ),
+.Source_TLAST                       (wARP_Core_TLAST            ),
+.Source_TDATA                       (wARP_Core_TDATA            )
 );
 
 /////////////////////////////////////////////////////////////////////////////////////
