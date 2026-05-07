@@ -73,11 +73,11 @@ if ( ETHERNET_MTU <= 28                         )             begin Error_Genera
 //if ((BufferSize*4) < MAX_ICMP_PayloadSize_MTU   )             begin AXISx32_UDP_Tx_Offload_Engine_Error BufferSize_Erorr ( );    end
 if ((BUFFER_COUNT_1K==0)||(BUFFER_COUNT_1K>16)  )             begin Error_Generation BufferCount_Erorr ( );   end
 
-wire         wSink_TFIRST;
-wire         wSink_TVALID;
-wire         wSink_TERROR;
-wire         wSink_TLAST ;
-wire [8-1:0] wSink_TDATA ;
+(* KEEP = "TRUE" *) wire         wSink_TFIRST;
+(* KEEP = "TRUE" *) wire         wSink_TVALID;
+(* KEEP = "TRUE" *) wire         wSink_TERROR;
+(* KEEP = "TRUE" *) wire         wSink_TLAST ;
+(* KEEP = "TRUE" *) wire [8-1:0] wSink_TDATA ;
 
 (* KEEP_HIERARCHY = "TRUE" *)
 PacketTypeValidation                
@@ -117,7 +117,7 @@ AXIS_Width_Up_Converter
 . N                     (4),
 . BIG_ENDIAN            (1),         
 . TFIRST_ReSTORE        (0) 
-) AXIS_x8_To_x32_AXIS_Width_Up_Converter_inst
+) AXISx8_To_AXISx32_Width_Up_Converter_inst
 (
             
 . CLK                       (ICMP_PING_Sink_CLK             ),
@@ -165,7 +165,7 @@ AXIS_Width_Up_Converter
 (* KEEP = "TRUE" *)reg [16-1:0] ICMP_PING_Req_Header_SequenceNumber=0;
 
 
-reg [16-1:0] ICMP_PING_RxData_Length_Counter=0;
+(* KEEP = "TRUE" *)reg [16-1:0] ICMP_PING_RxData_Length_Counter=0;
 
 
 (* KEEP = "TRUE" *)reg [16-1:0] ICMP_PING_Payload_WrRAM_Pointer=0;
@@ -231,12 +231,12 @@ end
 
 
 
-reg [16-1:0] ICMP_PING_Payload_RdRAM_Pointer=0;
-wire [32-1:0] wICMP_PING_Payload_WrRAM_Data;
+(* KEEP = "TRUE" *) reg [16-1:0] ICMP_PING_Payload_RdRAM_Pointer=0;
+(* KEEP = "TRUE" *) wire [32-1:0] wICMP_PING_Payload_WrRAM_Data;
 
-reg             ICMP_PING_ReplyPulse                      =   1'b0;
-reg [8-1:0]     ICMP_PING_ReplyWiderCouter                =   1'b0;
-reg             ICMP_PING_ReplyWidePulse                  =   1'b0;
+(* KEEP = "TRUE" *) reg             ICMP_PING_ReplyPulse                      =   1'b0;
+(* KEEP = "TRUE" *) reg [8-1:0]     ICMP_PING_ReplyWiderCouter                =   1'b0;
+(* KEEP = "TRUE" *) reg             ICMP_PING_ReplyWidePulse                  =   1'b0;
 
 
 always @(posedge ICMP_PING_Sink_CLK)
@@ -254,11 +254,11 @@ ICMP_PING_ReplyWidePulse <= ICMP_PING_ReplyWiderCouter!=0;
 
 end
  
-reg ICMP_PING_ReplyWidePulse_ResyncD0=0;
-reg ICMP_PING_ReplyWidePulse_ResyncD1=0;
-reg ICMP_PING_ReplyWidePulse_ResyncD2=0;
+(* KEEP = "TRUE" *) reg ICMP_PING_ReplyWidePulse_ResyncD0=0;
+(* KEEP = "TRUE" *) reg ICMP_PING_ReplyWidePulse_ResyncD1=0;
+(* KEEP = "TRUE" *) reg ICMP_PING_ReplyWidePulse_ResyncD2=0;
 
-reg ICMP_PING_StartReplyPulse =   0;
+(* KEEP = "TRUE" *) reg ICMP_PING_StartReplyPulse =   0;
 
 
 always @(posedge ICMP_PING_Source_CLK)
@@ -275,49 +275,49 @@ ICMP_PING_StartReplyPulse<=ICMP_PING_ReplyWidePulse_ResyncD1 && ! ICMP_PING_Repl
 end 
 
 
-reg  [16-1:0]    DATA_TotalLength_Full                     =   0;
-reg  [14-1:0]    DATA_TotalLength                          =   0;
+(* KEEP = "TRUE" *) reg  [16-1:0]    DATA_TotalLength_Full                     =   0;
+(* KEEP = "TRUE" *) reg  [14-1:0]    DATA_TotalLength                          =   0;
 
-reg             Tx_MAC_FrameBody_VALID                    =   0;
-reg             Tx_MAC_FrameBody_TLAST                    =   0;
+(* KEEP = "TRUE" *) reg             Tx_MAC_FrameBody_VALID                    =   0;
+(* KEEP = "TRUE" *) reg             Tx_MAC_FrameBody_TLAST                    =   0;
 //reg [8-1:0]     Tx_MAC_FrameBody_TDATA                    =   0;
-reg [6-1:0]     Tx_MAC_FrameBody_ByteCounter              =   63;
+(* KEEP = "TRUE" *) reg [6-1:0]     Tx_MAC_FrameBody_ByteCounter              =   63;
 
-reg [4-1:0]     LoadDataPulse = 0;
+(* KEEP = "TRUE" *) reg [4-1:0]     LoadDataPulse = 0;
 
 //reg [3-1:0]     TX_SwitchREG_Decoder                      =   0;
 
-reg             ReadDataState = 0;
-reg             ReadDataState_Full = 0;
+(* KEEP = "TRUE" *) reg             ReadDataState = 0;
+(* KEEP = "TRUE" *) reg             ReadDataState_Full = 0;
 
-reg [8-1:0]     ShiftRegD0 = 0;
-reg [8-1:0]     ShiftRegD1 = 0;
-reg [8-1:0]     ShiftRegD2 = 0;
-reg [8-1:0]     ShiftRegD3 = 0;
+(* KEEP = "TRUE" *) reg [8-1:0]     ShiftRegD0 = 0;
+(* KEEP = "TRUE" *) reg [8-1:0]     ShiftRegD1 = 0;
+(* KEEP = "TRUE" *) reg [8-1:0]     ShiftRegD2 = 0;
+(* KEEP = "TRUE" *) reg [8-1:0]     ShiftRegD3 = 0;
 
-reg [8-1:0]     TX_SwitchREG_Ethernet_II_External_MAC     =   0;
-reg [8-1:0]     TX_SwitchREG_Ethernet_II_Internal_MAC     =   0;
-
-
-
-reg [8-1:0]     TX_SwitchREG_Ethernet_II_UDP_Header       =   0;
-
-wire [8-1:0]    wTX_SwitchREG_Ethernet_II_MAC;
-wire [8-1:0]    wTX_SwitchREG_Ethernet_II_IP4;
-wire [8-1:0]    wTX_SwitchREG_Ethernet_II_ICMP_PING;
-
-reg [8-1:0]     TX_SwitchREG_Ethernet_II_IP4_HeaderHi     =   0;
-reg [8-1:0]     TX_SwitchREG_Ethernet_II_IP4_HeaderLo     =   0;
-
-
-reg     [BitWidth(BufferSize)-1:0]  RdPointer       =0;
-reg [2-1:0]     RdPointerDivider  = 0;
-reg             RdPointerIncPulse = 0;
+(* KEEP = "TRUE" *) reg [8-1:0]     TX_SwitchREG_Ethernet_II_External_MAC     =   0;
+(* KEEP = "TRUE" *) reg [8-1:0]     TX_SwitchREG_Ethernet_II_Internal_MAC     =   0;
 
 
 
-reg [16-1:0]    wDataLength_Rd=0;
-reg [16-1:0]    IPv4_TotalLength                          =   0;
+(* KEEP = "TRUE" *) reg [8-1:0]     TX_SwitchREG_Ethernet_II_UDP_Header       =   0;
+
+(* KEEP = "TRUE" *) wire [8-1:0]    wTX_SwitchREG_Ethernet_II_MAC;
+(* KEEP = "TRUE" *) wire [8-1:0]    wTX_SwitchREG_Ethernet_II_IP4;
+(* KEEP = "TRUE" *) wire [8-1:0]    wTX_SwitchREG_Ethernet_II_ICMP_PING;
+
+(* KEEP = "TRUE" *) reg [8-1:0]     TX_SwitchREG_Ethernet_II_IP4_HeaderHi     =   0;
+(* KEEP = "TRUE" *) reg [8-1:0]     TX_SwitchREG_Ethernet_II_IP4_HeaderLo     =   0;
+
+
+(* KEEP = "TRUE" *) reg     [BitWidth(BufferSize)-1:0]  RdPointer       =0;
+(* KEEP = "TRUE" *) reg [2-1:0]     RdPointerDivider  = 0;
+(* KEEP = "TRUE" *) reg             RdPointerIncPulse = 0;
+
+
+
+(* KEEP = "TRUE" *) reg [16-1:0]    wDataLength_Rd=0;
+(* KEEP = "TRUE" *) reg [16-1:0]    IPv4_TotalLength                          =   0;
 always @(posedge ICMP_PING_Source_CLK)
 begin
 IPv4_TotalLength<= wDataLength_Rd+20;//+8;
@@ -352,7 +352,8 @@ wDataLength_Rd <=  ICMP_PING_RxData_Length_Counter;
                 else if (RdPointerIncPulse)  DATA_TotalLength <=DATA_TotalLength-1'b1;
 
             if ((Tx_MAC_FrameBody_ByteCounter ==33 )&&Tx_MAC_FrameBody_VALID) ReadDataState <= 1'b1; 
-                else if ((DATA_TotalLength == 0)&&RdPointerIncPulse) ReadDataState<=1'b0;
+                //else if ((DATA_TotalLength == 0)&&RdPointerIncPulse) ReadDataState<=1'b0;
+                else if (DATA_TotalLength_Full==0) ReadDataState<=1'b0;
 
           
 //////////////////////////////////////////////////////////////////////////////////////
@@ -380,7 +381,7 @@ wDataLength_Rd <=  ICMP_PING_RxData_Length_Counter;
             
             if (ReadDataState ) RdPointerDivider <= RdPointerDivider +1 ;  else RdPointerDivider <= 0;
                 
-            RdPointerIncPulse <= ( RdPointerDivider == 3 );
+            RdPointerIncPulse <= ( RdPointerDivider == 3 ) && ReadDataState;
             
             if (RdPointerIncPulse) 
                 begin
@@ -395,7 +396,7 @@ wDataLength_Rd <=  ICMP_PING_RxData_Length_Counter;
 end 
 
 
-wire [8-1:0]     wTx_MAC_FrameBody_TDATA;
+(* KEEP = "TRUE" *) wire [8-1:0]     wTx_MAC_FrameBody_TDATA;
 
 
 (* KEEP_HIERARCHY = "TRUE" *)
