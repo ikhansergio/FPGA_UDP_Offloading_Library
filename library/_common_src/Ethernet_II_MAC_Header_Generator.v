@@ -24,6 +24,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 module Ethernet_II_MAC_Header_Generator
+#(
+parameter EtherTypeValue = 16'h0800                       
+)
 (
 input  wire              CLK,
 
@@ -42,6 +45,9 @@ output wire    [8-1:0]   MAC_Header
 
 (* keep = "true" *) reg [3-1:0]     TX_SwitchREG_Decoder                      =   0;
 
+
+wire [15:0] wEtherTypeValue;
+assign wEtherTypeValue = EtherTypeValue;
 
 always @(posedge CLK)
 begin
@@ -66,8 +72,8 @@ begin
 	                   else if (MAC_Header_Position==7'd09) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR  [23:16] ;
 	                       else if (MAC_Header_Position==7'd10) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR  [15: 8] ;
 	                           else if (MAC_Header_Position==7'd11) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR  [ 7: 0] ;
-	                               else if (MAC_Header_Position==7'd12) TX_SwitchREG_Ethernet_II_Internal_MAC<=8'h08;
-	                                   else if (MAC_Header_Position==7'd13) TX_SwitchREG_Ethernet_II_Internal_MAC<=8'h00;
+	                               else if (MAC_Header_Position==7'd12) TX_SwitchREG_Ethernet_II_Internal_MAC<=wEtherTypeValue[15:8];
+	                                   else if (MAC_Header_Position==7'd13) TX_SwitchREG_Ethernet_II_Internal_MAC<=wEtherTypeValue[7:0];
 	                                       else TX_SwitchREG_Ethernet_II_Internal_MAC<=0;
 	                                       
 	         if ((MAC_Header_Position>=7'd00)&& (MAC_Header_Position<=7'd05)) TX_SwitchREG_Decoder <= 0;

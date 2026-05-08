@@ -212,11 +212,11 @@ begin
     (*KEEP_HIERARCHY = "TRUE"*)
     ICMP_PING_Offloading_Engine_x8  ICMP_PING_Offloading_Engine_x8_inst
     (
-    .ICMP_PING_Sink_CLK         (RX_CLK                             ),
-    .ICMP_PING_Sink_TVALID      (Source_TVALID                      ),
-    .ICMP_PING_Sink_TERROR      (Source_TERROR                      ),
-    .ICMP_PING_Sink_TLAST       (Source_TLAST                       ),
-    .ICMP_PING_Sink_TDATA       (Source_TDATA                       ),
+    .Sink_CLK                   (RX_CLK                             ),
+    .Sink_TVALID                (Source_TVALID                      ),
+    .Sink_TERROR                (Source_TERROR                      ),
+    .Sink_TLAST                 (Source_TLAST                       ),
+    .Sink_TDATA                 (Source_TDATA                       ),
 	
     .IP4_Used_Protocol_IN       (IP4_Used_Protocol_OUT              ),
 	

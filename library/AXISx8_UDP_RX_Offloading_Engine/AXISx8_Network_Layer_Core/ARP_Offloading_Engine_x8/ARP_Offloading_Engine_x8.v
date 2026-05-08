@@ -214,8 +214,8 @@ reg [4-1:0]     TX_SwitchREG_Decoder                      =   0;
 reg             TX_SwitchREG_LAST_FLAG                    =   0;
 
 wire[8-1:0]     wTX_SwitchREG_Ethernet_II_MAC;
-reg [8-1:0]     TX_SwitchREG_Ethernet_II_External_MAC     =   0;    //// TODO DellMe 
-reg [8-1:0]     TX_SwitchREG_Ethernet_II_Internal_MAC     =   0;    //// TODO DellMe 
+//reg [8-1:0]     TX_SwitchREG_Ethernet_II_External_MAC     =   0;    //// TODO DellMe 
+//reg [8-1:0]     TX_SwitchREG_Ethernet_II_Internal_MAC     =   0;    //// TODO DellMe 
 reg [8-1:0]     TX_SwitchREG_Ethernet_II_ARP_Header       =   0;
 reg [8-1:0]     TX_SwitchREG_ARP_REPLAY_Internal_MAC      =   0;
 reg [8-1:0]     TX_SwitchREG_ARP_REPLAY_Internal_IP4      =   0;
@@ -236,7 +236,7 @@ ARP_StartReplyPulse<=ARP_ReplyWidePulse_ResyncD1 && ! ARP_ReplyWidePulse_ResyncD
 
         TX_ARP_Reply_FrameCounter               <=2;
         TX_SwitchREG_Decoder                    <=0;
-        TX_SwitchREG_Ethernet_II_External_MAC   <= MAC_REMOTE_ADDR_IN [39:32] ;
+//        TX_SwitchREG_Ethernet_II_External_MAC   <= MAC_REMOTE_ADDR_IN [39:32] ;
         
         TX_ARP_Reply_TDATA                      <= MAC_REMOTE_ADDR_IN [47:40] ;
         TX_ARP_Reply_TVALID         <=1'b1;
@@ -246,23 +246,23 @@ ARP_StartReplyPulse<=ARP_ReplyWidePulse_ResyncD1 && ! ARP_ReplyWidePulse_ResyncD
             begin
             TX_ARP_Reply_FrameCounter   <= TX_ARP_Reply_FrameCounter +1'b1;
 
-            if (TX_ARP_Reply_FrameCounter==7'd00) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR_IN [47:40] ;                         // never used condition
-                else if (TX_ARP_Reply_FrameCounter==7'd01) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR_IN [39:32] ;                // never used condition
-	               else if (TX_ARP_Reply_FrameCounter==7'd02) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR_IN [31:24] ;
-	                   else if (TX_ARP_Reply_FrameCounter==7'd03) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR_IN [23:16] ;
-	                       else if (TX_ARP_Reply_FrameCounter==7'd04) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR_IN [15: 8] ;
-	                           else if (TX_ARP_Reply_FrameCounter==7'd05) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR_IN [ 7: 0] ;
-	                               else TX_SwitchREG_Ethernet_II_External_MAC<=0;
+//            if (TX_ARP_Reply_FrameCounter==7'd00) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR_IN [47:40] ;                         // never used condition
+//                else if (TX_ARP_Reply_FrameCounter==7'd01) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR_IN [39:32] ;                // never used condition
+//	               else if (TX_ARP_Reply_FrameCounter==7'd02) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR_IN [31:24] ;
+//	                   else if (TX_ARP_Reply_FrameCounter==7'd03) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR_IN [23:16] ;
+//	                       else if (TX_ARP_Reply_FrameCounter==7'd04) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR_IN [15: 8] ;
+//	                           else if (TX_ARP_Reply_FrameCounter==7'd05) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR_IN [ 7: 0] ;
+//	                               else TX_SwitchREG_Ethernet_II_External_MAC<=0;
 	        
-	         if (TX_ARP_Reply_FrameCounter==7'd06) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR_IN [47:40] ;
-                else if (TX_ARP_Reply_FrameCounter==7'd07) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR_IN [39:32] ;
-	               else if (TX_ARP_Reply_FrameCounter==7'd08) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR_IN [31:24] ;
-	                   else if (TX_ARP_Reply_FrameCounter==7'd09) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR_IN [23:16] ;
-	                       else if (TX_ARP_Reply_FrameCounter==7'd10) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR_IN [15: 8] ;
-	                           else if (TX_ARP_Reply_FrameCounter==7'd11) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR_IN [ 7: 0] ;
-	                               else if (TX_ARP_Reply_FrameCounter==7'd12) TX_SwitchREG_Ethernet_II_Internal_MAC<=8'h08;
-	                                   else if (TX_ARP_Reply_FrameCounter==7'd13) TX_SwitchREG_Ethernet_II_Internal_MAC<=8'h06;
-	                                       else TX_SwitchREG_Ethernet_II_Internal_MAC<=0;
+//	         if (TX_ARP_Reply_FrameCounter==7'd06) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR_IN [47:40] ;
+//                else if (TX_ARP_Reply_FrameCounter==7'd07) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR_IN [39:32] ;
+//	               else if (TX_ARP_Reply_FrameCounter==7'd08) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR_IN [31:24] ;
+//	                   else if (TX_ARP_Reply_FrameCounter==7'd09) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR_IN [23:16] ;
+//	                       else if (TX_ARP_Reply_FrameCounter==7'd10) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR_IN [15: 8] ;
+//	                           else if (TX_ARP_Reply_FrameCounter==7'd11) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR_IN [ 7: 0] ;
+//	                               else if (TX_ARP_Reply_FrameCounter==7'd12) TX_SwitchREG_Ethernet_II_Internal_MAC<=8'h08;
+//	                                   else if (TX_ARP_Reply_FrameCounter==7'd13) TX_SwitchREG_Ethernet_II_Internal_MAC<=8'h06;
+//	                                       else TX_SwitchREG_Ethernet_II_Internal_MAC<=0;
 	                                   
 	         if (TX_ARP_Reply_FrameCounter==7'd14) TX_SwitchREG_Ethernet_II_ARP_Header<=8'h00;
                 else if (TX_ARP_Reply_FrameCounter==7'd15) TX_SwitchREG_Ethernet_II_ARP_Header<=8'h01;
@@ -336,7 +336,10 @@ end
 
 
 (* KEEP_HIERARCHY = "TRUE" *)
-Ethernet_II_MAC_Header_Generator    Ethernet_II_MAC_Header_Generator_inst
+Ethernet_II_MAC_Header_Generator  
+#(
+.EtherTypeValue(16'h0806)
+)Ethernet_II_MAC_Header_Generator_inst
 (
 .CLK                                (Source_CLK),
 .MAC_TRY                            (Source_TRDY),

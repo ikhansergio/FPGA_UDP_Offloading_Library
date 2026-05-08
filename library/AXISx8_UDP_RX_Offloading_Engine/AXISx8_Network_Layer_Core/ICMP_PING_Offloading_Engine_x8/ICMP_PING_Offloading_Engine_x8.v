@@ -30,11 +30,11 @@ module ICMP_PING_Offloading_Engine_x8
     parameter PADDING_INSERTION = "YES"   // "YES" or "NO"
 ) 
 (
-	input  wire	                   ICMP_PING_Sink_CLK      ,
-	input  wire	                   ICMP_PING_Sink_TVALID   ,
-	input  wire	                   ICMP_PING_Sink_TERROR   ,
-	input  wire	                   ICMP_PING_Sink_TLAST    ,
-	input  wire	[ 8-1:0]           ICMP_PING_Sink_TDATA    ,
+	input  wire	                   Sink_CLK                ,
+	input  wire	                   Sink_TVALID             ,
+	input  wire	                   Sink_TERROR             ,
+	input  wire	                   Sink_TLAST              ,
+	input  wire	[ 8-1:0]           Sink_TDATA              ,
 	
 	input  wire	[48-1:0]           MAC_LOCAL_ADDR_IN       ,
 	input  wire	[48-1:0]           MAC_REMOTE_ADDR_IN      ,
@@ -85,11 +85,11 @@ PacketTypeValidation
 .PackTypePattern(ICMP_ProtocolCode)                        
 )ICMP_PING_PacketTypeValidation_inst
 (
-.CLK                   (ICMP_PING_Sink_CLK),
-.Sink_TVALID           (ICMP_PING_Sink_TVALID),
-.Sink_TERROR           (ICMP_PING_Sink_TERROR),
-.Sink_TLAST            (ICMP_PING_Sink_TLAST),
-.Sink_TDATA            (ICMP_PING_Sink_TDATA),
+.CLK                   (Sink_CLK                ),
+.Sink_TVALID           (Sink_TVALID             ),
+.Sink_TERROR           (Sink_TERROR             ),
+.Sink_TLAST            (Sink_TLAST              ),
+.Sink_TDATA            (Sink_TDATA              ),
 	
 .PackTypeCode          ({8'h00,IP4_Used_Protocol_IN}),
 
@@ -120,7 +120,7 @@ AXIS_Width_Up_Converter
 ) AXISx8_To_AXISx32_Width_Up_Converter_inst
 (
             
-. CLK                       (ICMP_PING_Sink_CLK             ),
+. CLK                       (Sink_CLK                       ),
 . TFIRST                    (wSink_TFIRST                   ),            
 . TDATA                     (wSink_TDATA                    ),
 . TVALID                    (wSink_TVALID                   ),
@@ -165,7 +165,7 @@ AXIS_Width_Up_Converter
 
 
 
-always @(posedge ICMP_PING_Sink_CLK)
+always @(posedge Sink_CLK)
 begin
 	if (wICMP_Core_TVALID_x32 && wICMP_Core_TFIRST_x32) ICMP_PING_RxData_Length_Counter <= wICMP_Core_Byte_COUNT_x32;  
 	   else if (wICMP_Core_TVALID_x32&&(ICMP_PING_RxData_Length_Counter>MAX_ICMP_PayloadSize)) ICMP_PING_RxData_Length_Counter <= ICMP_PING_RxData_Length_Counter;
@@ -226,7 +226,7 @@ end
 (* KEEP = "TRUE" *) reg             ICMP_PING_ReplyWidePulse                  =   1'b0;
 
 
-always @(posedge ICMP_PING_Sink_CLK)
+always @(posedge Sink_CLK)
 begin
 Start0 <= (wICMP_Core_TVALID_x32 && wICMP_Core_TLAST_x32 && !wICMP_Core_TERROR_x32);
 Start1 <= Start0;
@@ -388,7 +388,9 @@ end
 
 
 (* KEEP_HIERARCHY = "TRUE" *)
-Ethernet_II_MAC_Header_Generator    Ethernet_II_MAC_Header_Generator_inst
+Ethernet_II_MAC_Header_Generator
+ #(.EtherTypeValue(16'h0800))   
+Ethernet_II_MAC_Header_Generator_inst
 (
 .CLK                                (ICMP_PING_Source_CLK),
 .MAC_TRY                            (ICMP_PING_Source_TRDY),
@@ -454,16 +456,16 @@ ICMP_PING_RAM_DataBuffer_x32
 .BUFFER_COUNT_1K(1)
 ) ICMP_PING_RAM_DataBuffer_x32_inst
 (
-. WrClk       (ICMP_PING_Sink_CLK      ),
-. WrEna       (wICMP_Core_TVALID_x32   ),
-. WrWea       ({4{ICMP_PING_WrWea}}   ),
-. WrAddress   (ICMP_PING_Payload_WrRAM_Pointer    ),
-. WrData      (wICMP_Core_TDATA_x32       ),
+. WrClk       (Sink_CLK                             ),
+. WrEna       (wICMP_Core_TVALID_x32                ),
+. WrWea       ({4{ICMP_PING_WrWea}}                 ),
+. WrAddress   (ICMP_PING_Payload_WrRAM_Pointer      ),
+. WrData      (wICMP_Core_TDATA_x32                 ),
 
-. RdClk       (ICMP_PING_Source_CLK),
-. RdEna       (1'b1),
-. RdAddress   (ICMP_PING_Payload_RdRAM_Pointer),
-. RdData      (wICMP_PING_Payload_WrRAM_Data)
+. RdClk       (ICMP_PING_Source_CLK                 ),
+. RdEna       (1'b1                                 ),
+. RdAddress   (ICMP_PING_Payload_RdRAM_Pointer      ),
+. RdData      (wICMP_PING_Payload_WrRAM_Data        )
 );
 
 

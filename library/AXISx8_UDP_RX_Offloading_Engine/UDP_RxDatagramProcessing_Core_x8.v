@@ -42,10 +42,7 @@ module UDP_RxDatagramProcessing_Core_x8
 	output reg  [16-1:0]   			UDP_REMOTE_PORT_OUT=0   ,
 	output reg  [32-1:0]   			IP4_REMOTE_ADDR_OUT=0   ,
 	output reg  [48-1:0]   			MAC_REMOTE_ADDR_OUT=0   ,
-	
-	
-    	
-	
+
 	output	reg 					UDP_Core_ERROR_Pulse=0  ,
 	
 	output	reg  					UDP_Core_Source_TFIRST=0,
