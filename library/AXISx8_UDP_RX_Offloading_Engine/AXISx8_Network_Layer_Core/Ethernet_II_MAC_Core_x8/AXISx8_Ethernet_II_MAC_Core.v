@@ -23,27 +23,27 @@
 //SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-module Ethernet_II_MAC_Core_x8
+module AXISx8_Ethernet_II_MAC_Core
 #(
     parameter TxPortCount = 3    //  Number of UDP Tx Masters + ARP + ICMP PING
 )
 (
 /////////////////////////////////////////////////////////////////////////////////////
 //Rx Interface
-	input wire 	                           RX_CLK,
-	input wire 	                           RX_TVALID,
-	input wire 	                           RX_TERROR,
-	input wire 	                           RX_TLAST,
-	input wire [ 8-1:0]                    RX_TDATA,
+	input wire 	                            RX_CLK,
+	input wire 	                            RX_TVALID,
+	input wire 	                            RX_TERROR,
+	input wire 	                            RX_TLAST,
+	input wire [ 8-1:0]                     RX_TDATA,
 	
-	output wire                            Ethernet_II_Frame_TVALID,
-	output wire                            Ethernet_II_Frame_TERROR,
-	output wire                            Ethernet_II_Frame_TLAST,
-	output wire [ 8-1 :0]                  Ethernet_II_Frame_TDATA,
+	output wire                             Source_TVALID,
+	output wire                             Source_TERROR,
+	output wire                             Source_TLAST,
+	output wire [ 8-1 :0]                   Source_TDATA,
 	
-	input  wire [48-1:0]                   Ethernet_II_Internal_MAC ,
-	output wire [48-1:0]                   Ethernet_II_External_MAC,
-	output wire [16-1:0]                   Ethernet_II_TypeCode,
+	input  wire [48-1:0]                    MAC_LOCAL_ADDR_IN ,
+	output wire [48-1:0]                    MAC_REMOTE_ADDR_OUT,
+	output wire [16-1:0]                    MAC_Eth_II_TypeCode,
 	
 /////////////////////////////////////////////////////////////////////////////////////
 //Tx Interface
@@ -88,14 +88,14 @@ module Ethernet_II_MAC_Core_x8
 	.RX_TERROR                         (RX_TERROR),
 	.RX_TDATA                          (RX_TDATA),
 	
-	.Ethernet_II_Frame_TLAST           (Ethernet_II_Frame_TLAST),
-	.Ethernet_II_Frame_TVALID          (Ethernet_II_Frame_TVALID),
-	.Ethernet_II_Frame_TERROR          (Ethernet_II_Frame_TERROR),
-	.Ethernet_II_Frame_TDATA           (Ethernet_II_Frame_TDATA),
-	.Ethernet_II_Internal_MAC          (Ethernet_II_Internal_MAC),
+	.Ethernet_II_Frame_TLAST           (Source_TLAST            ),
+	.Ethernet_II_Frame_TVALID          (Source_TVALID           ),
+	.Ethernet_II_Frame_TERROR          (Source_TERROR           ),
+	.Ethernet_II_Frame_TDATA           (Source_TDATA            ),
+	.Ethernet_II_Internal_MAC          (MAC_LOCAL_ADDR_IN       ),
 
-	.Ethernet_II_External_MAC          (Ethernet_II_External_MAC),
-	.Ethernet_II_TypeCode              (Ethernet_II_TypeCode),
+	.Ethernet_II_External_MAC          (MAC_REMOTE_ADDR_OUT     ),
+	.Ethernet_II_TypeCode              (MAC_Eth_II_TypeCode     ),
     //////////////////////////////////////////////////////////////
     
     .TX_CLK                            (TX_CLK),
@@ -111,3 +111,4 @@ module Ethernet_II_MAC_Core_x8
     );
 
 endmodule
+

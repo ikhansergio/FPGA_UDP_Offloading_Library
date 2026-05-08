@@ -33,31 +33,31 @@ module AXISx8_Network_Layer_Core
 /////////////////////////////////////////////////////////////////////////////////////
 // Rx Interface                                                                   ///
 /////////////////////////////////////////////////////////////////////////////////////
-input wire 	           RX_CLK                   ,
-input wire 	           RX_TVALID                ,
-input wire 	           RX_TERROR                ,
-input wire 	           RX_TLAST                 ,
-input wire [ 8-1:0]    RX_TDATA                 ,
+input wire 	           RX_CLK                       ,
+input wire 	           RX_TVALID                    ,
+input wire 	           RX_TERROR                    ,
+input wire 	           RX_TLAST                     ,
+input wire [ 8-1:0]    RX_TDATA                     ,
 
-output wire			   Source_TVALID            ,
-output wire			   Source_TERROR            ,
-output wire			   Source_TLAST             ,
-output wire [ 8-1:0]   Source_TDATA             ,
+output wire			   Source_TVALID                ,
+output wire			   Source_TERROR                ,
+output wire			   Source_TLAST                 ,
+output wire [ 8-1:0]   Source_TDATA                 ,
 	
 /////////////////////////////////////////////////////////////////////////////////////
 //  Tx Interface                                                                  ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-input  wire 	                        TX_CLK,	
-input  wire                             TX_TRDY,
-output wire                             TX_TVALID,
-output wire                             TX_TLAST,
-output wire [8-1:0]                     TX_TDATA,
+input  wire 	                        TX_CLK      ,	
+input  wire                             TX_TRDY     ,
+output wire                             TX_TVALID   ,
+output wire                             TX_TLAST    ,
+output wire [8-1:0]                     TX_TDATA    ,
 
-output wire [1*TxPortCount-1:0]	        Sink_TRDY,
-input  wire [1*TxPortCount-1:0]	        Sink_TVALID,
-input  wire [1*TxPortCount-1:0]	        Sink_TLAST,
-input  wire [8*TxPortCount-1:0]         Sink_TDATA,
+output wire [1*TxPortCount-1:0]	        Sink_TRDY   ,
+input  wire [1*TxPortCount-1:0]	        Sink_TVALID ,
+input  wire [1*TxPortCount-1:0]	        Sink_TLAST  ,
+input  wire [8*TxPortCount-1:0]         Sink_TDATA  ,
 
 /////////////////////////////////////////////////////////////////////////////////////
 //  MACs,IPv4s,Ports                                                                  ///
@@ -86,45 +86,47 @@ wire            wEthernet_II_Frame_TVALID;
 wire            wEthernet_II_Frame_TLAST;
 wire            wEthernet_II_Frame_TERROR;
 wire [ 8-1 :0]  wEthernet_II_Frame_TDATA;
-wire [16-1:0]   wEthernet_TypeCode;
-wire [48-1:0]   wExternal_MAC_ADDR;
+wire [16-1:0]   wMAC_Eth_II_TypeCode;
+wire [48-1:0]   wMAC_REMOTE_ADDR;
 
 
 
-(* KEEP_HIERARCHY = "TRUE" *)
-Ethernet_II_MAC_Core_x8  #(.TxPortCount(TxPortCount+2)) Ethernet_II_MAC_Core_x8_inst(
+(*KEEP_HIERARCHY = "TRUE"*)
+AXISx8_Ethernet_II_MAC_Core  
+#(
+.TxPortCount(TxPortCount+2)
+) AXISx8_Ethernet_II_MAC_Core_inst
+(
 /////////////////////////////////////////////////////////////////////////////////////
 // MAC Rx Interface                                                               ///
 /////////////////////////////////////////////////////////////////////////////////////
-.RX_CLK                            (RX_CLK                     ),
-.RX_TLAST                          (RX_TLAST                   ),
-.RX_TVALID                         (RX_TVALID                  ),
-.RX_TERROR                         (RX_TERROR                  ),
-.RX_TDATA                          (RX_TDATA                   ),
+.RX_CLK                             (RX_CLK                     ),
+.RX_TLAST                           (RX_TLAST                   ),
+.RX_TVALID                          (RX_TVALID                  ),
+.RX_TERROR                          (RX_TERROR                  ),
+.RX_TDATA                           (RX_TDATA                   ),
 
-.Ethernet_II_Frame_TVALID          (wEthernet_II_Frame_TVALID  ),
-.Ethernet_II_Frame_TERROR          (wEthernet_II_Frame_TERROR  ),
-.Ethernet_II_Frame_TLAST           (wEthernet_II_Frame_TLAST   ),
-.Ethernet_II_Frame_TDATA           (wEthernet_II_Frame_TDATA   ),
-.Ethernet_II_TypeCode              (wEthernet_TypeCode         ),
-.Ethernet_II_Internal_MAC          ( MAC_LOCAL_ADDR_IN         ),
-.Ethernet_II_External_MAC          (wExternal_MAC_ADDR         ),
+.Source_TVALID                      (wEthernet_II_Frame_TVALID  ),
+.Source_TERROR                      (wEthernet_II_Frame_TERROR  ),
+.Source_TLAST                       (wEthernet_II_Frame_TLAST   ),
+.Source_TDATA                       (wEthernet_II_Frame_TDATA   ),
+.MAC_Eth_II_TypeCode                (wMAC_Eth_II_TypeCode       ),
+.MAC_LOCAL_ADDR_IN                  ( MAC_LOCAL_ADDR_IN         ),
+.MAC_REMOTE_ADDR_OUT                (wMAC_REMOTE_ADDR           ),
 /////////////////////////////////////////////////////////////////////////////////////
 // MAC Tx Interface                                                               ///
 /////////////////////////////////////////////////////////////////////////////////////
-.TX_CLK                            (TX_CLK),
-.MAC_FrameBody_TRDY                ({Sink_TRDY   ,wARP_Core_TRDY  ,wICMP_PING_Core_TRDY  } ),
-.MAC_FrameBody_TVALID              ({Sink_TVALID ,wARP_Core_TVALID,wICMP_PING_Core_TVALID} ),
-.MAC_FrameBody_TLAST               ({Sink_TLAST  ,wARP_Core_TLAST ,wICMP_PING_Core_TLAST } ),
-.MAC_FrameBody_TDATA               ({Sink_TDATA  ,wARP_Core_TDATA ,wICMP_PING_Core_TDATA } ),
+.TX_CLK                   (TX_CLK),
+.Sink_TRDY                ({Sink_TRDY   ,wARP_Core_TRDY  ,wICMP_PING_Core_TRDY  } ),
+.Sink_TVALID              ({Sink_TVALID ,wARP_Core_TVALID,wICMP_PING_Core_TVALID} ),
+.Sink_TLAST               ({Sink_TLAST  ,wARP_Core_TLAST ,wICMP_PING_Core_TLAST } ),
+.Sink_TDATA               ({Sink_TDATA  ,wARP_Core_TDATA ,wICMP_PING_Core_TDATA } ),
 
-.TX_TRDY                           (TX_TRDY),
-.TX_TVALID                         (TX_TVALID),
-.TX_TLAST                          (TX_TLAST),
-.TX_TDATA                          (TX_TDATA)
+.TX_TRDY                  (TX_TRDY),
+.TX_TVALID                (TX_TVALID),
+.TX_TLAST                 (TX_TLAST),
+.TX_TDATA                 (TX_TDATA)
 );
-
-
 
 /////////////////////////////////////////////////////////////////////////////////////
 //---------------------------------------------------------------------------------//
@@ -133,7 +135,7 @@ Ethernet_II_MAC_Core_x8  #(.TxPortCount(TxPortCount+2)) Ethernet_II_MAC_Core_x8_
 //      Check IP address, packet size, padding and checksum.                       //
 //---------------------------------------------------------------------------------//
 /////////////////////////////////////////////////////////////////////////////////////
-(* KEEP_HIERARCHY = "TRUE" *)
+(*KEEP_HIERARCHY = "TRUE"*)
 IPv4_Core_x8                        IPv4_Core_x8_inst
 (
 .CLK                                (RX_CLK                     ),
@@ -142,10 +144,10 @@ IPv4_Core_x8                        IPv4_Core_x8_inst
 .IPv4_Core_Sink_TLAST               (wEthernet_II_Frame_TLAST   ),
 .IPv4_Core_Sink_TDATA               (wEthernet_II_Frame_TDATA   ),
 
-.Ethernet_TypeCode                  (wEthernet_TypeCode         ),
+.Ethernet_TypeCode                  (wMAC_Eth_II_TypeCode       ),
 .IP4_Used_Protocol                  ( IP4_Used_Protocol_OUT     ),
 .Internal_IP4_ADDR                  ( IP4_LOCAL_ADDR_IN         ),
-.External_MAC_ADDR_IN               (wExternal_MAC_ADDR         ),
+.External_MAC_ADDR_IN               (wMAC_REMOTE_ADDR           ),
 .External_MAC_ADDR_OUT              (MAC_REMOTE_ADDR_OUT        ),
 .External_IP4_ADDR                  ( IP4_REMOTE_ADDR_OUT       ),
 
@@ -156,43 +158,39 @@ IPv4_Core_x8                        IPv4_Core_x8_inst
 .IPv4_Core_Source_TDATA             (Source_TDATA               )
 );
 
-
-
-
-
 if (Has_ARP_Proc == "YES") 
 begin
-(* KEEP_HIERARCHY = "TRUE" *)
-ARP_Offloading_Engine_x8            ARP_Offloading_Engine_x8_inst
-(
-/////////////////////////////////////////////////////////////////////////////////////
-// ARP Rx Interface                                                               ///
-/////////////////////////////////////////////////////////////////////////////////////
-.Sink_CLK                           (RX_CLK                     ),
-.Sink_TVALID                        (wEthernet_II_Frame_TVALID  ),
-.Sink_TERROR                        (wEthernet_II_Frame_TERROR  ),
-.Sink_TLAST                         (wEthernet_II_Frame_TLAST   ),
-.Sink_TDATA                         (wEthernet_II_Frame_TDATA   ),
+    (*KEEP_HIERARCHY = "TRUE"*)
+    ARP_Offloading_Engine_x8            ARP_Offloading_Engine_x8_inst
+    (
+    /////////////////////////////////////////////////////////////////////////////////////
+    // ARP Rx Interface                                                               ///
+    /////////////////////////////////////////////////////////////////////////////////////
+    .Sink_CLK                           (RX_CLK                     ),
+    .Sink_TVALID                        (wEthernet_II_Frame_TVALID  ),
+    .Sink_TERROR                        (wEthernet_II_Frame_TERROR  ),
+    .Sink_TLAST                         (wEthernet_II_Frame_TLAST   ),
+    .Sink_TDATA                         (wEthernet_II_Frame_TDATA   ),
 	
-.Ethernet_TypeCode                  (wEthernet_TypeCode         ),
-.MAC_LOCAL_ADDR_IN                  ( MAC_LOCAL_ADDR_IN         ),
-.MAC_REMOTE_ADDR_IN                 (wExternal_MAC_ADDR         ),
-.IP4_LOCAL_ADDR_IN                  ( IP4_LOCAL_ADDR_IN         ),
-/////////////////////////////////////////////////////////////////////////////////////
-// ARP Tx Interface                                                               ///
-/////////////////////////////////////////////////////////////////////////////////////
-.Source_CLK                         (TX_CLK),
-.Source_TRDY                        (wARP_Core_TRDY             ),
-.Source_TVALID                      (wARP_Core_TVALID           ),
-.Source_TLAST                       (wARP_Core_TLAST            ),
-.Source_TDATA                       (wARP_Core_TDATA            )
-);
+    .Ethernet_TypeCode                  (wMAC_Eth_II_TypeCode       ),
+    .MAC_LOCAL_ADDR_IN                  ( MAC_LOCAL_ADDR_IN         ),
+    .MAC_REMOTE_ADDR_IN                 (wMAC_REMOTE_ADDR           ),
+    .IP4_LOCAL_ADDR_IN                  ( IP4_LOCAL_ADDR_IN         ),
+    /////////////////////////////////////////////////////////////////////////////////////
+    // ARP Tx Interface                                                               ///
+    /////////////////////////////////////////////////////////////////////////////////////
+    .Source_CLK                         (TX_CLK),
+    .Source_TRDY                        (wARP_Core_TRDY             ),
+    .Source_TVALID                      (wARP_Core_TVALID           ),
+    .Source_TLAST                       (wARP_Core_TLAST            ),
+    .Source_TDATA                       (wARP_Core_TDATA            )
+    );
 end
 else 
 begin
-assign wARP_Core_TVALID =0;
-assign wARP_Core_TLAST  =0;
-assign wARP_Core_TDATA  =0;
+    assign wARP_Core_TVALID =0;
+    assign wARP_Core_TLAST  =0;
+    assign wARP_Core_TDATA  =0;
 end
 
 
@@ -211,34 +209,34 @@ end
 
 if (HasICMP_PING == "YES") 
 begin
-(* KEEP_HIERARCHY = "TRUE" *)
-ICMP_PING_Offloading_Engine_x8  ICMP_PING_Offloading_Engine_x8_inst
-(
-.ICMP_PING_Sink_CLK         (RX_CLK                             ),
-.ICMP_PING_Sink_TVALID      (Source_TVALID                      ),
-.ICMP_PING_Sink_TERROR      (Source_TERROR                      ),
-.ICMP_PING_Sink_TLAST       (Source_TLAST                       ),
-.ICMP_PING_Sink_TDATA       (Source_TDATA                       ),
+    (*KEEP_HIERARCHY = "TRUE"*)
+    ICMP_PING_Offloading_Engine_x8  ICMP_PING_Offloading_Engine_x8_inst
+    (
+    .ICMP_PING_Sink_CLK         (RX_CLK                             ),
+    .ICMP_PING_Sink_TVALID      (Source_TVALID                      ),
+    .ICMP_PING_Sink_TERROR      (Source_TERROR                      ),
+    .ICMP_PING_Sink_TLAST       (Source_TLAST                       ),
+    .ICMP_PING_Sink_TDATA       (Source_TDATA                       ),
 	
-.IP4_Used_Protocol_IN       (IP4_Used_Protocol_OUT              ),
+    .IP4_Used_Protocol_IN       (IP4_Used_Protocol_OUT              ),
 	
-.MAC_LOCAL_ADDR_IN          (MAC_LOCAL_ADDR_IN                  ),
-.MAC_REMOTE_ADDR_IN         (MAC_REMOTE_ADDR_OUT                ),
-.IP4_LOCAL_ADDR_IN          (IP4_LOCAL_ADDR_IN                  ),
-.IP4_REMOTE_ADDR_IN         (IP4_REMOTE_ADDR_OUT                ),
+    .MAC_LOCAL_ADDR_IN          (MAC_LOCAL_ADDR_IN                  ),
+    .MAC_REMOTE_ADDR_IN         (MAC_REMOTE_ADDR_OUT                ),
+    .IP4_LOCAL_ADDR_IN          (IP4_LOCAL_ADDR_IN                  ),
+    .IP4_REMOTE_ADDR_IN         (IP4_REMOTE_ADDR_OUT                ),
 
-.ICMP_PING_Source_CLK       (TX_CLK                             ),
-.ICMP_PING_Source_TRDY      (wICMP_PING_Core_TRDY               ),
-.ICMP_PING_Source_TVALID    (wICMP_PING_Core_TVALID             ),
-.ICMP_PING_Source_TLAST     (wICMP_PING_Core_TLAST              ),
-.ICMP_PING_Source_TDATA     (wICMP_PING_Core_TDATA              )
-);
+    .ICMP_PING_Source_CLK       (TX_CLK                             ),
+    .ICMP_PING_Source_TRDY      (wICMP_PING_Core_TRDY               ),
+    .ICMP_PING_Source_TVALID    (wICMP_PING_Core_TVALID             ),
+    .ICMP_PING_Source_TLAST     (wICMP_PING_Core_TLAST              ),
+    .ICMP_PING_Source_TDATA     (wICMP_PING_Core_TDATA              )
+    );
 end
 else 
 begin
-assign wICMP_PING_Core_TVALID =0;
-assign wICMP_PING_Core_TLAST  =0;
-assign wICMP_PING_Core_TDATA  =0;
+    assign wICMP_PING_Core_TVALID =0;
+    assign wICMP_PING_Core_TLAST  =0;
+    assign wICMP_PING_Core_TDATA  =0;
 end
 
 

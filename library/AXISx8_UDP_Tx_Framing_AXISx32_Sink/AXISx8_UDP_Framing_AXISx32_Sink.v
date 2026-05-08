@@ -438,15 +438,7 @@ if (ReadDonePulse)IPv4_Identification <= IPv4_Identification +1'b1;
             if ((Tx_MAC_FrameBody_ByteCounter ==33 )&&Tx_MAC_FrameBody_VALID) ReadDataState <= 1'b1; 
                 else if ((DATA_TotalLength == 0)&&RdPointerIncPulse) ReadDataState<=1'b0;
                 
-                        
-                
-          
-          
-          
-          
-          
-          
-          
+
 //////////////////////////////////////////////////////////////////////////////////////
           
             if ((Tx_MAC_FrameBody_ByteCounter ==33 )&&Tx_MAC_FrameBody_VALID) 
@@ -566,14 +558,10 @@ if (ReadDonePulse)IPv4_Identification <= IPv4_Identification +1'b1;
 end	                    
 
 
-
-
 assign TX_FrameBody_Source_TVALID    =   Tx_MAC_FrameBody_VALID;
 assign TX_FrameBody_Source_TLAST     =   Tx_MAC_FrameBody_TLAST;
 assign TX_FrameBody_Source_TDATA     =   Tx_MAC_FrameBody_TDATA;
     
-//        input   wire [1-1:0]	       TX_FrameBody_TRDY,
 
-    
 endmodule
 
