@@ -30,6 +30,7 @@
 module RGMII_IDDR
 #(
 parameter ARCH = "DEFAULT_LOGIC",
+parameter Clk_Buff_Connection_Type=1		,
 parameter OVER_SAMPLING = "NO"
 )
 (
@@ -47,15 +48,13 @@ output wire          RGMII_RX_CTL_Q2,
 output wire [8-1:0]  RGMII_RX_DATA_Q
 );
 
-assign RGMII_RX_CLK = RGMII_RXC;
-
+//assign RGMII_RX_CLK = RGMII_RXC;
 wire [5:0] wRGMII_In;
 wire [5:0] wRGMII_Q1;
 wire [5:0] wRGMII_Q2;
 
-wire wRGMII_RXC;
-
-assign wRGMII_RXC = (OVER_SAMPLING == "YES") ?  CLK625MHZ : RGMII_RXC;
+//assign wRGMII_RXC = (OVER_SAMPLING == "YES") ?  CLK625MHZ : RGMII_RX_CLK;
+//assign wRGMII_RXC = (OVER_SAMPLING == "YES") ?  CLK625MHZ : wRGMII_RXC_BUF;
 
 assign wRGMII_In  = (OVER_SAMPLING == "YES") ?  {RGMII_RXC,RGMII_RX_CTL,RGMII_RXD} : {1'b0,RGMII_RX_CTL,RGMII_RXD};
 
@@ -67,50 +66,94 @@ assign RGMII_RX_CLK_Q1      = wRGMII_Q1[5];
 assign RGMII_RX_CLK_Q2      = wRGMII_Q2[5];
 
 genvar i;
-generate for (i = 0; i < 6; i = i + 1) begin: pins
-    if (ARCH == "XLX_SERIES7")
-    begin
-        IDDR
-        #(.DDR_CLK_EDGE   ("SAME_EDGE_PIPELINED"), //"OPPOSITE_EDGE",  "SAME_EDGE, "SAME_EDGE_PIPELINED"
-        .INIT_Q1        (1'b0),
-        .INIT_Q2        (1'b0),
-        .SRTYPE         ("ASYNC"))
-        iddr_inst
-        (
-        .Q1             (wRGMII_Q1[i]),        // 1-bit output: Registered parallel output 1
-        .Q2             (wRGMII_Q2[i]),        // 1-bit output: Registered parallel output 2
-        .C              (wRGMII_RXC),          // 1-bit input: High-speed clock
-        .CE             (1'b1),
-        .D              (wRGMII_In[i]),         // 1-bit input: Serial Data Input
-        .R              (1'b0),                 // 1-bit input: Active-High Async Reset
-        .S              (1'b0)
-        );
-    end else if (ARCH == "XLX_ULTRASCALE")
-        begin
-        IDDRE1 #(
-        .DDR_CLK_EDGE("SAME_EDGE_PIPELINED"),   // IDDRE1 mode (OPPOSITE_EDGE, SAME_EDGE, SAME_EDGE_PIPELINED)
-        .IS_CB_INVERTED(1'b1),                  // Optional inversion for CB
-        .IS_C_INVERTED(1'b0)                    // Optional inversion for C
-        )
-        IDDRE1_inst (
-        .Q1              (wRGMII_Q1[i]),        // 1-bit output: Registered parallel output 1
-        .Q2              (wRGMII_Q2[i]),        // 1-bit output: Registered parallel output 2
-        .C               (wRGMII_RXC),          // 1-bit input: High-speed clock
-        .CB              (wRGMII_RXC),          // 1-bit input: Inversion of High-speed clock C
-        .D               (wRGMII_In[i]),        // 1-bit input: Serial Data Input
-        .R               (1'b0)                 // 1-bit input: Active-High Async Reset
-        );
-    end else  // if (ARCH == "DEFAULT_LOGIC")
-    begin
-        (* KEEP_HIERARCHY = "TRUE" *)
-        IDDR_LOGIC          IDDR_LOGIC_inst
-        (
-        .C              (wRGMII_RXC),
-        .D              (wRGMII_In[i]),
-        .Q1             (wRGMII_Q1[i]),
-        .Q2             (wRGMII_Q2[i])
-        );
-    end 
+generate 
+if (ARCH == "XLX_SERIES7")
+begin
+	wire wRGMII_RXC;
+	wire wRGMII_RXC_BUF;
+	(* KEEP_HIERARCHY = "TRUE" *)
+	ClockBufferSchematicType
+	#(
+	.Clk_Buff_Connection_Type(Clk_Buff_Connection_Type)		
+	) ClockBufferSchematicTypeInst
+	(
+	.RGMII_RXC    (RGMII_RXC		),
+	.CLK_IDDR     (wRGMII_RXC_BUF	),
+	.CLK_FABRIC   (RGMII_RX_CLK		)
+	);
+	assign wRGMII_RXC = (OVER_SAMPLING == "YES") ?  CLK625MHZ : wRGMII_RXC_BUF;
+    for (i = 0; i < 6; i = i + 1) begin: pins
+    IDDR
+    #(.DDR_CLK_EDGE   ("SAME_EDGE_PIPELINED"), //"OPPOSITE_EDGE",  "SAME_EDGE, "SAME_EDGE_PIPELINED"
+    .INIT_Q1        (1'b0),
+    .INIT_Q2        (1'b0),
+    .SRTYPE         ("ASYNC"))
+    iddr_inst
+    (
+    .Q1             (wRGMII_Q1[i]),        // 1-bit output: Registered parallel output 1
+    .Q2             (wRGMII_Q2[i]),        // 1-bit output: Registered parallel output 2
+    .C              (wRGMII_RXC),          // 1-bit input: High-speed clock
+    .CE             (1'b1),
+    .D              (wRGMII_In[i]),         // 1-bit input: Serial Data Input
+    .R              (1'b0),                 // 1-bit input: Active-High Async Reset
+    .S              (1'b0)
+    );
+    end
+end else if (ARCH == "XLX_ULTRASCALE")
+begin
+	wire wRGMII_RXC;
+	wire wRGMII_RXC_BUF;
+	(* KEEP_HIERARCHY = "TRUE" *)
+	ClockBufferSchematicType
+	#(
+	.Clk_Buff_Connection_Type(Clk_Buff_Connection_Type)		
+	) ClockBufferSchematicTypeInst
+	(
+	.RGMII_RXC    (RGMII_RXC		),
+	.CLK_IDDR     (wRGMII_RXC_BUF	),
+	.CLK_FABRIC   (RGMII_RX_CLK		)
+	);
+	assign wRGMII_RXC = (OVER_SAMPLING == "YES") ?  CLK625MHZ : wRGMII_RXC_BUF;
+    for (i = 0; i < 6; i = i + 1) begin: pins
+    IDDRE1 #(
+    .DDR_CLK_EDGE("SAME_EDGE_PIPELINED"),   // IDDRE1 mode (OPPOSITE_EDGE, SAME_EDGE, SAME_EDGE_PIPELINED)
+    .IS_CB_INVERTED(1'b1),                  // Optional inversion for CB
+    .IS_C_INVERTED(1'b0)                    // Optional inversion for C
+    )
+    IDDRE1_inst (
+    .Q1              (wRGMII_Q1[i]),        // 1-bit output: Registered parallel output 1
+    .Q2              (wRGMII_Q2[i]),        // 1-bit output: Registered parallel output 2
+    .C               (wRGMII_RXC),          // 1-bit input: High-speed clock
+    .CB              (wRGMII_RXC),          // 1-bit input: Inversion of High-speed clock C
+    .D               (wRGMII_In[i]),        // 1-bit input: Serial Data Input
+    .R               (1'b0)                 // 1-bit input: Active-High Async Reset
+    );
+end
+end else  // if (ARCH == "DEFAULT_LOGIC")
+begin
+	wire wRGMII_RXC;
+	wire wRGMII_RXC_BUF;
+	(* KEEP_HIERARCHY = "TRUE" *)
+	ClockBufferSchematicType
+	#(
+	.Clk_Buff_Connection_Type(0)		
+	) ClockBufferSchematicTypeInst
+	(
+	.RGMII_RXC    (RGMII_RXC		),
+	.CLK_IDDR     (wRGMII_RXC_BUF	),
+	.CLK_FABRIC   (RGMII_RX_CLK		)
+	);
+	assign wRGMII_RXC = (OVER_SAMPLING == "YES") ?  CLK625MHZ : wRGMII_RXC_BUF;
+    for (i = 0; i < 6; i = i + 1) begin: pins
+    (* KEEP_HIERARCHY = "TRUE" *)
+    IDDR_LOGIC          IDDR_LOGIC_inst
+    (
+    .C              (wRGMII_RXC),
+    .D              (wRGMII_In[i]),
+    .Q1             (wRGMII_Q1[i]),
+    .Q2             (wRGMII_Q2[i])
+    );
+end 
 end
 endgenerate
 
