@@ -51,7 +51,6 @@ reg   SpeedCounterZeroPulse_REF=1'b0;
 reg   SpeedCounterZeroPulse_REF_D0=1'b0;  
 reg   SpeedCounterZeroPulse_REF_D1=1'b0;  
 
- 
 reg [2-1:0] RGMII_SPEED_STATE_REF=0;
 
 reg [9:0] ClkTimingD1=0;

@@ -51,8 +51,6 @@ wire        wRGMII_RX_CTL_Q1;
 wire        wRGMII_RX_CTL_Q2;
 wire [7:0]  wRGMII_RX_DATA_Q;
 
-
-
 (* KEEP_HIERARCHY = "TRUE" *)
 RGMII_IDDR #(.ARCH(ARCH),.OVER_SAMPLING(OVER_SAMPLING))  RGMII_IDDR_INST
 (
@@ -76,7 +74,6 @@ if (OPPOSITE_EDGE_LATCH_MODE == "YES")
     reg        rRGMII_RX_CTL_Q2;
     reg [3:0]  rRGMII_RX_DATA_Q;
 
-
     always @(posedge wRGMII_RX_CLK)
     begin 
     rRGMII_RX_CLK_Q2        <= wRGMII_RX_CLK_Q2;
@@ -91,7 +88,6 @@ if (OPPOSITE_EDGE_LATCH_MODE == "YES")
     assign RGMII_RX_CTL_Q1     = rRGMII_RX_CTL_Q2;
     assign RGMII_RX_CTL_Q2     = wRGMII_RX_CTL_Q1;
     assign RGMII_RX_DATA_Q     = {wRGMII_RX_DATA_Q[3:0],rRGMII_RX_DATA_Q};
-
     end    
 else      
     begin

@@ -43,8 +43,6 @@ output  wire  [8-1:0]  RGMII_RX_DATA_Q
 
 );
 
-
-
 wire wRGMII_RX_CLK;
 
 assign RGMII_RX_CLK = wRGMII_RX_CLK;

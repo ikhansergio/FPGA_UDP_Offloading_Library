@@ -87,6 +87,7 @@ RGMII_RX_PHY_inst
 
 reg RGMII_START_Condition=0;
 reg RGMII_Rx_ValFlag=0;
+
 always @(posedge Source_CLK)
 begin
 RGMII_START_Condition <= wRGMII_ResetPulse;

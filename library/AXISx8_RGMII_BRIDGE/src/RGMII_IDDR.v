@@ -111,7 +111,6 @@ generate for (i = 0; i < 6; i = i + 1) begin: pins
         .Q2             (wRGMII_Q2[i])
         );
     end 
-
 end
 endgenerate
 

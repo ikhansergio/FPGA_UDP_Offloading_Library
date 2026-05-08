@@ -47,7 +47,6 @@ wire [3:0] wClkTimingDividerThresold;
 assign wClkTimingDividerThresold = (RGMII_SPEED_STATE_REF[1:0]==2'b0) ? 4'd4 : 4'd0;
 reg  ClkTimingDividerTickPulse=0;
 
-
 assign ClkTimingD1_OUT = ClkTimingD1[0];
 assign ClkTimingD2_OUT = ClkTimingD2[0];
 

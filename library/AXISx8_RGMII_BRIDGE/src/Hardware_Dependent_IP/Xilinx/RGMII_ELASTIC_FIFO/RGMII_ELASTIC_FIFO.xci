@@ -4,7 +4,7 @@
     "xci_name": "RGMII_ELASTIC_FIFO",
     "component_reference": "xilinx.com:ip:fifo_generator:13.2",
     "ip_revision": "8",
-    "gen_directory": "../../../../../../../FPGA_UDP_Offloading_Library.gen/sources_1/ip/RGMII_ELASTIC_FIFO",
+    "gen_directory": "../../../../../../../../FPGA_UDP_Offloading_Library.gen/sources_1/ip/RGMII_ELASTIC_FIFO",
     "parameters": {
       "component_parameters": {
         "Component_Name": [ { "value": "RGMII_ELASTIC_FIFO", "resolve_type": "user", "usage": "all" } ],
@@ -397,7 +397,7 @@
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
         "IPREVISION": [ { "value": "8" } ],
         "MANAGED": [ { "value": "TRUE" } ],
-        "OUTPUTDIR": [ { "value": "../../../../../../../FPGA_UDP_Offloading_Library.gen/sources_1/ip/RGMII_ELASTIC_FIFO" } ],
+        "OUTPUTDIR": [ { "value": "../../../../../../../../FPGA_UDP_Offloading_Library.gen/sources_1/ip/RGMII_ELASTIC_FIFO" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
         "SWVERSION": [ { "value": "2023.1" } ],

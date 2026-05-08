@@ -91,10 +91,6 @@ else
         RGMII_Error RGMII_Error_inst ( );
     end
 
-
-
-
-
 reg         RGMII_LINK_VAL =0;
 reg [2-1:0] RGMII_SPEED_STATE=0;
 

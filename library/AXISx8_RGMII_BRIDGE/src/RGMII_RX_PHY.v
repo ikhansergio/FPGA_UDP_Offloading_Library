@@ -52,9 +52,7 @@ wire          wRGMII_RX_CTL_Q1;
 wire          wRGMII_RX_CTL_Q2;
 wire [8-1:0]  wRGMII_RX_DATA_Q;
 
-
 assign RGMII_RX_dCLK = wRGMII_RX_dCLK;
-
 
 if (OVER_SAMPLING == "YES") 
 begin
