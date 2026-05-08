@@ -213,9 +213,9 @@ reg [8-1:0]     TX_ARP_Reply_FrameCounter                 =   0;
 reg [4-1:0]     TX_SwitchREG_Decoder                      =   0;
 reg             TX_SwitchREG_LAST_FLAG                    =   0;
 
-
-reg [8-1:0]     TX_SwitchREG_Ethernet_II_External_MAC     =   0;
-reg [8-1:0]     TX_SwitchREG_Ethernet_II_Internal_MAC     =   0;
+wire[8-1:0]     wTX_SwitchREG_Ethernet_II_MAC;
+reg [8-1:0]     TX_SwitchREG_Ethernet_II_External_MAC     =   0;    //// TODO DellMe 
+reg [8-1:0]     TX_SwitchREG_Ethernet_II_Internal_MAC     =   0;    //// TODO DellMe 
 reg [8-1:0]     TX_SwitchREG_Ethernet_II_ARP_Header       =   0;
 reg [8-1:0]     TX_SwitchREG_ARP_REPLAY_Internal_MAC      =   0;
 reg [8-1:0]     TX_SwitchREG_ARP_REPLAY_Internal_IP4      =   0;
@@ -314,9 +314,12 @@ ARP_StartReplyPulse<=ARP_ReplyWidePulse_ResyncD1 && ! ARP_ReplyWidePulse_ResyncD
                                 else if ((TX_ARP_Reply_FrameCounter>=7'd32)&& (TX_ARP_Reply_FrameCounter<=7'd37)) TX_SwitchREG_Decoder <= 5;
                                     else if ((TX_ARP_Reply_FrameCounter>=7'd38)&& (TX_ARP_Reply_FrameCounter<=7'd41)) TX_SwitchREG_Decoder <= 6;
                                         else TX_SwitchREG_Decoder <= 7;
-                                        
-            if (TX_SwitchREG_Decoder==0) TX_ARP_Reply_TDATA <= TX_SwitchREG_Ethernet_II_External_MAC;
-                else if (TX_SwitchREG_Decoder==1)  TX_ARP_Reply_TDATA <= TX_SwitchREG_Ethernet_II_Internal_MAC;
+// TODO DellMe                                        
+//            if (TX_SwitchREG_Decoder==0) TX_ARP_Reply_TDATA <= TX_SwitchREG_Ethernet_II_External_MAC;
+//                else if (TX_SwitchREG_Decoder==1)  TX_ARP_Reply_TDATA <= TX_SwitchREG_Ethernet_II_Internal_MAC;
+                
+            if (TX_SwitchREG_Decoder==0) TX_ARP_Reply_TDATA <= wTX_SwitchREG_Ethernet_II_MAC;
+                else if (TX_SwitchREG_Decoder==1)  TX_ARP_Reply_TDATA <= wTX_SwitchREG_Ethernet_II_MAC;
                     else if (TX_SwitchREG_Decoder==2)  TX_ARP_Reply_TDATA <= TX_SwitchREG_Ethernet_II_ARP_Header;
                         else if (TX_SwitchREG_Decoder==3)  TX_ARP_Reply_TDATA <= TX_SwitchREG_ARP_REPLAY_Internal_MAC;
                             else if (TX_SwitchREG_Decoder==4)  TX_ARP_Reply_TDATA <= TX_SwitchREG_ARP_REPLAY_Internal_IP4;
@@ -331,6 +334,19 @@ ARP_StartReplyPulse<=ARP_ReplyWidePulse_ResyncD1 && ! ARP_ReplyWidePulse_ResyncD
             end
 end
 
+
+(* KEEP_HIERARCHY = "TRUE" *)
+Ethernet_II_MAC_Header_Generator    Ethernet_II_MAC_Header_Generator_inst
+(
+.CLK                                (Source_CLK),
+.MAC_TRY                            (Source_TRDY),
+.MAC_Header_PreSet                  (ARP_StartReplyPulse),
+.MAC_Header_Position                (TX_ARP_Reply_FrameCounter),
+.MAC_LOCAL_ADDR                     (MAC_LOCAL_ADDR_IN),
+.MAC_REMOTE_ADDR                    (MAC_REMOTE_ADDR_IN),
+
+.MAC_Header                         (wTX_SwitchREG_Ethernet_II_MAC)
+);
 
 
 	assign Source_TVALID     =   TX_ARP_Reply_TVALID;
