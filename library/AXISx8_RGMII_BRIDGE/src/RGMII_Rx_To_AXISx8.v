@@ -25,7 +25,8 @@
 
 module RGMII_Rx_To_AXISx8 
 #(
-parameter ARCH = "DEFAULT_LOGIC",
+parameter ARCH = "DEFAULT_LOGIC"        ,
+parameter RX_CLK_BUFF_SCH_TYPE=1		,
 parameter OVER_SAMPLING = "NO"
 )
 (
@@ -64,7 +65,11 @@ reg [8-1:0]  RGMII_DATA=1'b0;
 
 (* KEEP_HIERARCHY = "TRUE" *)
 RGMII_RX_PHY
-#(.ARCH(ARCH),.OVER_SAMPLING(OVER_SAMPLING)) 
+#(
+.ARCH(ARCH),
+.OVER_SAMPLING(OVER_SAMPLING),
+.RX_CLK_BUFF_SCH_TYPE(RX_CLK_BUFF_SCH_TYPE)
+) 
 RGMII_RX_PHY_inst
 (
 .CLK625MHZ              (CLK625MHZ              ),

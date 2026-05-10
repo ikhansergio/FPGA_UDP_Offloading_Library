@@ -25,8 +25,9 @@
 
 module RGMII_OverSampler
 #(
-parameter ARCH = "DEFAULT_LOGIC",
-parameter OVER_SAMPLING = "NO",
+parameter ARCH = "DEFAULT_LOGIC"        ,
+parameter SERIES7_Clk_Buff_Type=0		,
+parameter OVER_SAMPLING = "NO"          ,
 parameter OPPOSITE_EDGE_LATCH_MODE = "NO"
 )
 (

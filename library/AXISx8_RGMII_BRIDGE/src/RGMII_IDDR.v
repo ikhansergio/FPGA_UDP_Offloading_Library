@@ -29,8 +29,8 @@
 
 module RGMII_IDDR
 #(
-parameter ARCH = "DEFAULT_LOGIC",
-parameter Clk_Buff_Connection_Type=1		,
+parameter ARCH = "DEFAULT_LOGIC"        ,
+parameter RX_CLK_BUFF_SCH_TYPE=1		,
 parameter OVER_SAMPLING = "NO"
 )
 (
@@ -71,17 +71,25 @@ if (ARCH == "XLX_SERIES7")
 begin
 	wire wRGMII_RXC;
 	wire wRGMII_RXC_BUF;
-	(* KEEP_HIERARCHY = "TRUE" *)
-	ClockBufferSchematicType
-	#(
-	.Clk_Buff_Connection_Type(Clk_Buff_Connection_Type)		
-	) ClockBufferSchematicTypeInst
-	(
-	.RGMII_RXC    (RGMII_RXC		),
-	.CLK_IDDR     (wRGMII_RXC_BUF	),
-	.CLK_FABRIC   (RGMII_RX_CLK		)
-	);
-	assign wRGMII_RXC = (OVER_SAMPLING == "YES") ?  CLK625MHZ : wRGMII_RXC_BUF;
+	wire wRGMII_RXC_FABRIC;
+	
+	if (OVER_SAMPLING != "YES")
+	   begin
+	   (* KEEP_HIERARCHY = "TRUE" *)
+	   XLX_SERIES7_Clk_Buff_Schematic_Type
+	   #(
+	   .RX_CLK_BUFF_SCH_TYPE(RX_CLK_BUFF_SCH_TYPE)		
+	   ) XLX_SERIES7_Clk_Buff_Schematic_Type_inst
+	   (
+	   .RGMII_RXC    (RGMII_RXC		),
+	   .CLK_IDDR     (wRGMII_RXC_BUF	),
+	   .CLK_FABRIC   (wRGMII_RXC_FABRIC)
+	   );
+	   end
+	
+	assign RGMII_RX_CLK = (OVER_SAMPLING == "YES") ?  CLK625MHZ : wRGMII_RXC_FABRIC;
+	assign wRGMII_RXC   = (OVER_SAMPLING == "YES") ?  CLK625MHZ : wRGMII_RXC_BUF;
+	
     for (i = 0; i < 6; i = i + 1) begin: pins
     IDDR
     #(.DDR_CLK_EDGE   ("SAME_EDGE_PIPELINED"), //"OPPOSITE_EDGE",  "SAME_EDGE, "SAME_EDGE_PIPELINED"
@@ -103,17 +111,14 @@ end else if (ARCH == "XLX_ULTRASCALE")
 begin
 	wire wRGMII_RXC;
 	wire wRGMII_RXC_BUF;
-	(* KEEP_HIERARCHY = "TRUE" *)
-	ClockBufferSchematicType
-	#(
-	.Clk_Buff_Connection_Type(Clk_Buff_Connection_Type)		
-	) ClockBufferSchematicTypeInst
-	(
-	.RGMII_RXC    (RGMII_RXC		),
-	.CLK_IDDR     (wRGMII_RXC_BUF	),
-	.CLK_FABRIC   (RGMII_RX_CLK		)
-	);
-	assign wRGMII_RXC = (OVER_SAMPLING == "YES") ?  CLK625MHZ : wRGMII_RXC_BUF;
+	wire wRGMII_RXC_FABRIC;
+	
+	assign wRGMII_RXC_BUF          = RGMII_RXC;
+	assign wRGMII_RXC_FABRIC       = RGMII_RXC;
+	
+	assign RGMII_RX_CLK    = (OVER_SAMPLING == "YES") ?  CLK625MHZ : wRGMII_RXC_FABRIC;
+	assign wRGMII_RXC      = (OVER_SAMPLING == "YES") ?  CLK625MHZ : wRGMII_RXC_BUF;
+	
     for (i = 0; i < 6; i = i + 1) begin: pins
     IDDRE1 #(
     .DDR_CLK_EDGE("SAME_EDGE_PIPELINED"),   // IDDRE1 mode (OPPOSITE_EDGE, SAME_EDGE, SAME_EDGE_PIPELINED)
@@ -133,17 +138,14 @@ end else  // if (ARCH == "DEFAULT_LOGIC")
 begin
 	wire wRGMII_RXC;
 	wire wRGMII_RXC_BUF;
-	(* KEEP_HIERARCHY = "TRUE" *)
-	ClockBufferSchematicType
-	#(
-	.Clk_Buff_Connection_Type(0)		
-	) ClockBufferSchematicTypeInst
-	(
-	.RGMII_RXC    (RGMII_RXC		),
-	.CLK_IDDR     (wRGMII_RXC_BUF	),
-	.CLK_FABRIC   (RGMII_RX_CLK		)
-	);
-	assign wRGMII_RXC = (OVER_SAMPLING == "YES") ?  CLK625MHZ : wRGMII_RXC_BUF;
+	wire wRGMII_RXC_FABRIC;
+	
+	assign wRGMII_RXC_BUF          = RGMII_RXC;
+	assign wRGMII_RXC_FABRIC       = RGMII_RXC;
+	
+	assign RGMII_RX_CLK    = (OVER_SAMPLING == "YES") ?  CLK625MHZ : wRGMII_RXC_FABRIC;
+	assign wRGMII_RXC      = (OVER_SAMPLING == "YES") ?  CLK625MHZ : wRGMII_RXC_BUF;
+	
     for (i = 0; i < 6; i = i + 1) begin: pins
     (* KEEP_HIERARCHY = "TRUE" *)
     IDDR_LOGIC          IDDR_LOGIC_inst
