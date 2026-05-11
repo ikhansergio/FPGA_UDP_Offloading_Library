@@ -37,7 +37,7 @@ input  wire [31:0]                              WrData      ,
 
 input  wire                                     RdClk       ,
 input  wire                                     RdEna       ,
-input  wire [BitWidth(BUFFER_COUNT_1K*256)-1:0]  RdAddress   ,
+input  wire [BitWidth(BUFFER_COUNT_1K*256)-1:0] RdAddress   ,
 output wire [31:0]                              RdData   
 );
 

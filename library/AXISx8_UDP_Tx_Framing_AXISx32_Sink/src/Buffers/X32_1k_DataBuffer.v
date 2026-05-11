@@ -42,13 +42,24 @@ output wire [31:0]   RdData
 
     if (ARCH == "XLX_SERIES7")
     begin
+        (* KEEP_HIERARCHY = "TRUE" *)
+        XLX_ULTRASCALE_x32_1k_BLK XLX_ULTRASCALE_x32_1k_BLK_inst  
+        (
+        .clka              (WrClk           ),
+        .ena               (WrEna           ),
+        .wea               (WrWea           ),
+        .addra             (WrAddress       ),
+        .dina              (WrData          ),
 
-
-
+        .clkb              (RdClk           ),
+        .enb               (RdEna           ),
+        .addrb             (RdAddress       ),
+        .doutb             (RdData          )
+        );
     end else if (ARCH == "XLX_ULTRASCALE")
         begin
         (* KEEP_HIERARCHY = "TRUE" *)
-        XLX_ULTRASCALE_x32_1k_BLK XLX_ULTRASCALE_x32_1k_BLK_inst  
+        XLX_ULTRASCALE_x32_1k_BLK XLX_ULTRASCALE_x32_1k_BLK_inst   
         (
         .clka              (WrClk           ),
         .ena               (WrEna           ),
