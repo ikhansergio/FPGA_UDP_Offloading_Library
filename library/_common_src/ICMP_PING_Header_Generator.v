@@ -27,8 +27,6 @@ module ICMP_PING_IPv4_Header_Generator_x8
 (
 input  wire              CLK,
 
-input  wire              ICMP_PING_TRY,
-
 input  wire [ 6-1:0]     ICMP_PING_Position,
 
 input  wire [32-1:0]     ICMP_PING_CheckSUM_Reply,

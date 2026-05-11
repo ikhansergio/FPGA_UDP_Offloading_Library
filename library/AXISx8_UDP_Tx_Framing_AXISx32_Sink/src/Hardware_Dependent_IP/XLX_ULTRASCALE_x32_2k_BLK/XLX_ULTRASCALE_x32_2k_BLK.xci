@@ -4,7 +4,7 @@
     "xci_name": "XLX_ULTRASCALE_x32_2k_BLK",
     "component_reference": "xilinx.com:ip:blk_mem_gen:8.4",
     "ip_revision": "6",
-    "gen_directory": "../../../../../../FPGA_UDP_Offloading_Library.gen/sources_1/ip/XLX_ULTRASCALE_x32_2k_BLK",
+    "gen_directory": "../../../../../../../FPGA_UDP_Offloading_Library.gen/sources_1/ip/XLX_ULTRASCALE_x32_2k_BLK",
     "parameters": {
       "component_parameters": {
         "Component_Name": [ { "value": "XLX_ULTRASCALE_x32_2k_BLK", "resolve_type": "user", "usage": "all" } ],
@@ -174,7 +174,7 @@
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
         "IPREVISION": [ { "value": "6" } ],
         "MANAGED": [ { "value": "TRUE" } ],
-        "OUTPUTDIR": [ { "value": "../../../../../../FPGA_UDP_Offloading_Library.gen/sources_1/ip/XLX_ULTRASCALE_x32_2k_BLK" } ],
+        "OUTPUTDIR": [ { "value": "../../../../../../../FPGA_UDP_Offloading_Library.gen/sources_1/ip/XLX_ULTRASCALE_x32_2k_BLK" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
         "SWVERSION": [ { "value": "2023.1" } ],

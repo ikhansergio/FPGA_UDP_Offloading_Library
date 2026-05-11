@@ -421,7 +421,7 @@ IPv4_Header_Generator_inst
 ICMP_PING_IPv4_Header_Generator_x8  ICMP_PING_IPv4_Header_Generator_x8_inst
 (
 .CLK                                (ICMP_PING_Source_CLK                   ),
-.ICMP_PING_TRY                      (ICMP_PING_Source_TRDY                  ),
+//.ICMP_PING_TRY                      (ICMP_PING_Source_TRDY                  ),
 .ICMP_PING_Position                 (Tx_MAC_FrameBody_ByteCounter           ),
 .ICMP_PING_CheckSUM_Reply           (ICMP_PING_CheckSUM_Reply               ),
 .ICMP_PING_Identifier               (ICMP_PING_Req_Header_Identifier        ),

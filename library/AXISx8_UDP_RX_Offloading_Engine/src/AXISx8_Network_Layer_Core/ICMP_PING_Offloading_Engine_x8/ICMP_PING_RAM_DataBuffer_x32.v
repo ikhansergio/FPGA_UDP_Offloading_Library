@@ -32,7 +32,7 @@ module ICMP_PING_RAM_DataBuffer_x32
 input  wire                                     WrClk       ,
 input  wire                                     WrEna       ,
 input  wire [ 3:0]                              WrWea       ,
-input  wire [BitWidth(BUFFER_COUNT_1K*256)-1:0]  WrAddress   ,
+input  wire [BitWidth(BUFFER_COUNT_1K*256)-1:0] WrAddress   ,
 input  wire [31:0]                              WrData      ,
 
 input  wire                                     RdClk       ,
