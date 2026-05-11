@@ -340,10 +340,13 @@ reg [6-1:0]     Tx_MAC_FrameBody_ByteCounter              =   63;
 
 reg [3-1:0]     TX_SwitchREG_Decoder                      =   0;
 
-reg [8-1:0]     TX_SwitchREG_Ethernet_II_External_MAC     =   0;
-reg [8-1:0]     TX_SwitchREG_Ethernet_II_Internal_MAC     =   0;
-reg [8-1:0]     TX_SwitchREG_Ethernet_II_IP4_HeaderHi     =   0;
-reg [8-1:0]     TX_SwitchREG_Ethernet_II_IP4_HeaderLo     =   0;
+wire[8-1:0]    wTX_SwitchREG_Ethernet_II_MAC;
+wire[8-1:0]    wTX_SwitchREG_Ethernet_II_IP4;
+
+//reg [8-1:0]     TX_SwitchREG_Ethernet_II_External_MAC     =   0;
+//reg [8-1:0]     TX_SwitchREG_Ethernet_II_Internal_MAC     =   0;
+//reg [8-1:0]     TX_SwitchREG_Ethernet_II_IP4_HeaderHi     =   0;
+//reg [8-1:0]     TX_SwitchREG_Ethernet_II_IP4_HeaderLo     =   0;
 reg [8-1:0]     TX_SwitchREG_Ethernet_II_UDP_Header       =   0;
 
 reg [2-1:0]     RdPointerDivider  = 0;
@@ -414,7 +417,7 @@ if (ReadDonePulse)IPv4_Identification <= IPv4_Identification +1'b1;
         begin
         Tx_MAC_FrameBody_ByteCounter                <=2;
         TX_SwitchREG_Decoder                        <=0;
-        TX_SwitchREG_Ethernet_II_External_MAC       <= MAC_REMOTE_ADDR [39:32] ;
+//        TX_SwitchREG_Ethernet_II_External_MAC       <= MAC_REMOTE_ADDR [39:32] ;
         
         Tx_MAC_FrameBody_TDATA                      <= MAC_REMOTE_ADDR [47:40] ;
         Tx_MAC_FrameBody_VALID                      <=1'b1;
@@ -489,47 +492,47 @@ if (ReadDonePulse)IPv4_Identification <= IPv4_Identification +1'b1;
 
             if (Tx_MAC_FrameBody_ByteCounter!=63) Tx_MAC_FrameBody_ByteCounter   <= Tx_MAC_FrameBody_ByteCounter +1'b1;
 
-            if (Tx_MAC_FrameBody_ByteCounter==7'd00) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR [47:40] ;                         // never used condition
-                else if (Tx_MAC_FrameBody_ByteCounter==7'd01) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR [39:32] ;                // never used condition
-	               else if (Tx_MAC_FrameBody_ByteCounter==7'd02) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR [31:24] ;
-	                   else if (Tx_MAC_FrameBody_ByteCounter==7'd03) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR [23:16] ;
-	                       else if (Tx_MAC_FrameBody_ByteCounter==7'd04) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR [15: 8] ;
-	                           else if (Tx_MAC_FrameBody_ByteCounter==7'd05) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR [ 7: 0] ;
-	                               else TX_SwitchREG_Ethernet_II_External_MAC<=0;
+//            if (Tx_MAC_FrameBody_ByteCounter==7'd00) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR [47:40] ;                         // never used condition
+//                else if (Tx_MAC_FrameBody_ByteCounter==7'd01) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR [39:32] ;                // never used condition
+//	               else if (Tx_MAC_FrameBody_ByteCounter==7'd02) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR [31:24] ;
+//	                   else if (Tx_MAC_FrameBody_ByteCounter==7'd03) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR [23:16] ;
+//	                       else if (Tx_MAC_FrameBody_ByteCounter==7'd04) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR [15: 8] ;
+//	                           else if (Tx_MAC_FrameBody_ByteCounter==7'd05) TX_SwitchREG_Ethernet_II_External_MAC<= MAC_REMOTE_ADDR [ 7: 0] ;
+//	                               else TX_SwitchREG_Ethernet_II_External_MAC<=0;
 	        
-	         if (Tx_MAC_FrameBody_ByteCounter==7'd06) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR  [47:40] ;
-                else if (Tx_MAC_FrameBody_ByteCounter==7'd07) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR  [39:32] ;
-	               else if (Tx_MAC_FrameBody_ByteCounter==7'd08) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR  [31:24] ;
-	                   else if (Tx_MAC_FrameBody_ByteCounter==7'd09) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR  [23:16] ;
-	                       else if (Tx_MAC_FrameBody_ByteCounter==7'd10) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR  [15: 8] ;
-	                           else if (Tx_MAC_FrameBody_ByteCounter==7'd11) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR  [ 7: 0] ;
-	                               else if (Tx_MAC_FrameBody_ByteCounter==7'd12) TX_SwitchREG_Ethernet_II_Internal_MAC<=8'h08;
-	                                   else if (Tx_MAC_FrameBody_ByteCounter==7'd13) TX_SwitchREG_Ethernet_II_Internal_MAC<=8'h00;
-	                                       else TX_SwitchREG_Ethernet_II_Internal_MAC<=0;
+//	         if (Tx_MAC_FrameBody_ByteCounter==7'd06) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR  [47:40] ;
+//                else if (Tx_MAC_FrameBody_ByteCounter==7'd07) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR  [39:32] ;
+//	               else if (Tx_MAC_FrameBody_ByteCounter==7'd08) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR  [31:24] ;
+//	                   else if (Tx_MAC_FrameBody_ByteCounter==7'd09) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR  [23:16] ;
+//	                       else if (Tx_MAC_FrameBody_ByteCounter==7'd10) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR  [15: 8] ;
+//	                           else if (Tx_MAC_FrameBody_ByteCounter==7'd11) TX_SwitchREG_Ethernet_II_Internal_MAC<= MAC_LOCAL_ADDR  [ 7: 0] ;
+//	                               else if (Tx_MAC_FrameBody_ByteCounter==7'd12) TX_SwitchREG_Ethernet_II_Internal_MAC<=8'h08;
+//	                                   else if (Tx_MAC_FrameBody_ByteCounter==7'd13) TX_SwitchREG_Ethernet_II_Internal_MAC<=8'h00;
+//	                                       else TX_SwitchREG_Ethernet_II_Internal_MAC<=0;
                       
-	         if (Tx_MAC_FrameBody_ByteCounter==7'd14) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=8'h45;                                                                        // Version and IHL
-                else if (Tx_MAC_FrameBody_ByteCounter==7'd15) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=8'h00;                                                                // DSCP	and ECN
-	               else if (Tx_MAC_FrameBody_ByteCounter==7'd16) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=IPv4_TotalLength[15:8];                                            // Total Length High
-	                   else if (Tx_MAC_FrameBody_ByteCounter==7'd17) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=IPv4_TotalLength[ 7:0];                                        // Total Length Low
-	                       else if (Tx_MAC_FrameBody_ByteCounter==7'd18) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=IPv4_Identification[15:8];                                 // Identification High
-	                           else if (Tx_MAC_FrameBody_ByteCounter==7'd19) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=IPv4_Identification[ 7:0];                             // Identification Low
-	                               else if (Tx_MAC_FrameBody_ByteCounter==7'd20) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=8'h00;                                             // Flags	and Fragment Offset High
-	                                   else if (Tx_MAC_FrameBody_ByteCounter==7'd21) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=8'h00;                                         // Flags	and Fragment Offset Low
-	                                       else if (Tx_MAC_FrameBody_ByteCounter==7'd22) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=8'h80;                                     // Time to Live
-	                                           else if (Tx_MAC_FrameBody_ByteCounter==7'd23) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=8'h11;                                 // Protocol
-	                                               else TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=0;  
+//	         if (Tx_MAC_FrameBody_ByteCounter==7'd14) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=8'h45;                                                                        // Version and IHL
+//                else if (Tx_MAC_FrameBody_ByteCounter==7'd15) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=8'h00;                                                                // DSCP	and ECN
+//	               else if (Tx_MAC_FrameBody_ByteCounter==7'd16) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=IPv4_TotalLength[15:8];                                            // Total Length High
+//	                   else if (Tx_MAC_FrameBody_ByteCounter==7'd17) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=IPv4_TotalLength[ 7:0];                                        // Total Length Low
+//	                       else if (Tx_MAC_FrameBody_ByteCounter==7'd18) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=IPv4_Identification[15:8];                                 // Identification High
+//	                           else if (Tx_MAC_FrameBody_ByteCounter==7'd19) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=IPv4_Identification[ 7:0];                             // Identification Low
+//	                               else if (Tx_MAC_FrameBody_ByteCounter==7'd20) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=8'h00;                                             // Flags	and Fragment Offset High
+//	                                   else if (Tx_MAC_FrameBody_ByteCounter==7'd21) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=8'h00;                                         // Flags	and Fragment Offset Low
+//	                                       else if (Tx_MAC_FrameBody_ByteCounter==7'd22) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=8'h80;                                     // Time to Live
+//	                                           else if (Tx_MAC_FrameBody_ByteCounter==7'd23) TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=8'h11;                                 // Protocol
+//	                                               else TX_SwitchREG_Ethernet_II_IP4_HeaderHi<=0;  
 	                                               
-	         if (Tx_MAC_FrameBody_ByteCounter==7'd24) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_HeaderChecksum[15:8];                                                    // Header Checksum High
-                else if (Tx_MAC_FrameBody_ByteCounter==7'd25) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_HeaderChecksum[ 7:0];                                            // Header Checksum Low
-	               else if (Tx_MAC_FrameBody_ByteCounter==7'd26) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_LOCAL_ADDR[31:24];                                          // Source address
-	                   else if (Tx_MAC_FrameBody_ByteCounter==7'd27) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_LOCAL_ADDR[23:16];                                      // Source address
-	                       else if (Tx_MAC_FrameBody_ByteCounter==7'd28) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_LOCAL_ADDR[15: 8];                                  // Source address
-	                           else if (Tx_MAC_FrameBody_ByteCounter==7'd29) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_LOCAL_ADDR[ 7: 0];                              // Source address
-	                               else if (Tx_MAC_FrameBody_ByteCounter==7'd30) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_REMOTE_ADDR[31:24];                          // Destination address
-	                                   else if (Tx_MAC_FrameBody_ByteCounter==7'd31) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_REMOTE_ADDR[23:16];                      // Destination address
-	                                       else if (Tx_MAC_FrameBody_ByteCounter==7'd32) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_REMOTE_ADDR[15: 8];                  // Destination address
-	                                           else if (Tx_MAC_FrameBody_ByteCounter==7'd33) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_REMOTE_ADDR[ 7: 0];              // Destination address
-	                                               else TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=0; 
+//	         if (Tx_MAC_FrameBody_ByteCounter==7'd24) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_HeaderChecksum[15:8];                                                    // Header Checksum High
+//                else if (Tx_MAC_FrameBody_ByteCounter==7'd25) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_HeaderChecksum[ 7:0];                                            // Header Checksum Low
+//	               else if (Tx_MAC_FrameBody_ByteCounter==7'd26) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_LOCAL_ADDR[31:24];                                          // Source address
+//	                   else if (Tx_MAC_FrameBody_ByteCounter==7'd27) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_LOCAL_ADDR[23:16];                                      // Source address
+//	                       else if (Tx_MAC_FrameBody_ByteCounter==7'd28) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_LOCAL_ADDR[15: 8];                                  // Source address
+//	                           else if (Tx_MAC_FrameBody_ByteCounter==7'd29) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_LOCAL_ADDR[ 7: 0];                              // Source address
+//	                               else if (Tx_MAC_FrameBody_ByteCounter==7'd30) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_REMOTE_ADDR[31:24];                          // Destination address
+//	                                   else if (Tx_MAC_FrameBody_ByteCounter==7'd31) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_REMOTE_ADDR[23:16];                      // Destination address
+//	                                       else if (Tx_MAC_FrameBody_ByteCounter==7'd32) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_REMOTE_ADDR[15: 8];                  // Destination address
+//	                                           else if (Tx_MAC_FrameBody_ByteCounter==7'd33) TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=IPv4_REMOTE_ADDR[ 7: 0];              // Destination address
+//	                                               else TX_SwitchREG_Ethernet_II_IP4_HeaderLo<=0; 
 
 	         if (Tx_MAC_FrameBody_ByteCounter==7'd34) TX_SwitchREG_Ethernet_II_UDP_Header<=UDP_LOCAL_PORT[15:8];                                                        // Source Port High
                 else if (Tx_MAC_FrameBody_ByteCounter==7'd35) TX_SwitchREG_Ethernet_II_UDP_Header<=UDP_LOCAL_PORT[ 7:0];                                                // Source Port Low
@@ -548,15 +551,53 @@ if (ReadDonePulse)IPv4_Identification <= IPv4_Identification +1'b1;
                             else if ((Tx_MAC_FrameBody_ByteCounter>=7'd34)&& (Tx_MAC_FrameBody_ByteCounter<=7'd41)) TX_SwitchREG_Decoder <= 4;
                                 else TX_SwitchREG_Decoder <= 5;
                                 
-            if (TX_SwitchREG_Decoder==0) Tx_MAC_FrameBody_TDATA <= TX_SwitchREG_Ethernet_II_External_MAC;
-                else if (TX_SwitchREG_Decoder==1)  Tx_MAC_FrameBody_TDATA <= TX_SwitchREG_Ethernet_II_Internal_MAC;
-                    else if (TX_SwitchREG_Decoder==2)  Tx_MAC_FrameBody_TDATA <= TX_SwitchREG_Ethernet_II_IP4_HeaderHi;
-                        else if (TX_SwitchREG_Decoder==3)  Tx_MAC_FrameBody_TDATA <= TX_SwitchREG_Ethernet_II_IP4_HeaderLo;
+//            if (TX_SwitchREG_Decoder==0) Tx_MAC_FrameBody_TDATA <= TX_SwitchREG_Ethernet_II_External_MAC;
+//                else if (TX_SwitchREG_Decoder==1)  Tx_MAC_FrameBody_TDATA <= TX_SwitchREG_Ethernet_II_Internal_MAC;
+                
+            if (TX_SwitchREG_Decoder==0) Tx_MAC_FrameBody_TDATA <= wTX_SwitchREG_Ethernet_II_MAC;
+                else if (TX_SwitchREG_Decoder==1)  Tx_MAC_FrameBody_TDATA <= wTX_SwitchREG_Ethernet_II_MAC;
+                
+//                    else if (TX_SwitchREG_Decoder==2)  Tx_MAC_FrameBody_TDATA <= TX_SwitchREG_Ethernet_II_IP4_HeaderHi;
+//                        else if (TX_SwitchREG_Decoder==3)  Tx_MAC_FrameBody_TDATA <= TX_SwitchREG_Ethernet_II_IP4_HeaderLo;                
+                
+                    else if (TX_SwitchREG_Decoder==2)  Tx_MAC_FrameBody_TDATA <= wTX_SwitchREG_Ethernet_II_IP4;
+                        else if (TX_SwitchREG_Decoder==3)  Tx_MAC_FrameBody_TDATA <= wTX_SwitchREG_Ethernet_II_IP4;
+                        
                             else if (TX_SwitchREG_Decoder==4)  Tx_MAC_FrameBody_TDATA <= TX_SwitchREG_Ethernet_II_UDP_Header;
                                 else if (TX_SwitchREG_Decoder==5)  Tx_MAC_FrameBody_TDATA <= ShiftRegD0;//0;
 	               end                
 end	                    
 
+(* KEEP_HIERARCHY = "TRUE" *)
+Ethernet_II_MAC_Header_Generator  
+#(
+.EtherTypeValue(16'h0800)
+)Ethernet_II_MAC_Header_Generator_inst
+(
+.CLK                                (TX_CLK),
+.MAC_TRY                            (TX_FrameBody_Source_TRDY),
+.MAC_Header_PreSet                  (Tx_MAC_FrameBody_StartReadPulse),
+.MAC_Header_Position                (Tx_MAC_FrameBody_ByteCounter),
+.MAC_LOCAL_ADDR                     (MAC_LOCAL_ADDR),
+.MAC_REMOTE_ADDR                    (IPv4_REMOTE_ADDR),
+
+.MAC_Header                         (wTX_SwitchREG_Ethernet_II_MAC)
+);
+
+(* KEEP_HIERARCHY = "TRUE" *)
+IPv4_Header_Generator    
+#(.IPv4_Protocol_Number(8'd17)) 
+IPv4_Header_Generator_inst
+(
+.CLK                                (TX_CLK),
+.IPv4_TRY                           (TX_FrameBody_Source_TRDY),
+.IPv4_TotalLength                   (IPv4_TotalLength),
+.IPv4_Header_Position               (Tx_MAC_FrameBody_ByteCounter),
+.IPv4_LOCAL_ADDR                    (IPv4_LOCAL_ADDR),
+.IPv4_REMOTE_ADDR                   (IPv4_REMOTE_ADDR),
+
+.IPv4_Header                        (wTX_SwitchREG_Ethernet_II_IP4)
+);
 
 assign TX_FrameBody_Source_TVALID    =   Tx_MAC_FrameBody_VALID;
 assign TX_FrameBody_Source_TLAST     =   Tx_MAC_FrameBody_TLAST;

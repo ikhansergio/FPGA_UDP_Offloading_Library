@@ -46,7 +46,6 @@ module ARP_Offloading_Engine_x8
 
 localparam EtherType = 16'h0806;
 
-
 (* KEEP_HIERARCHY = "TRUE" *)
 PacketTypeValidation                
 #(
