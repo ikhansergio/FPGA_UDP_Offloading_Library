@@ -137,11 +137,13 @@ AXIS_Width_Up_Converter
  );  
                        
                                         
-(* KEEP = "TRUE" *)reg [32-1:0] ICMP_CheckSUM_Packet_L=0;
-(* KEEP = "TRUE" *)reg [32-1:0] ICMP_CheckSUM_Packet_H=0;
+//(* KEEP = "TRUE" *)reg [32-1:0] ICMP_CheckSUM_Packet_L=0;
+//(* KEEP = "TRUE" *)reg [32-1:0] ICMP_CheckSUM_Packet_H=0;
 //(* KEEP = "TRUE" *)reg [16-1:0] ICMP_CheckSUM_CalkRes=0;
 
-(* KEEP = "TRUE" *)reg [32-1:0] ICMP_PING_CheckSUM_FullPacket=0;
+//(* KEEP = "TRUE" *) reg [32-1:0] ICMP_PING_CheckSUM_FullPacket=0;
+(* KEEP = "TRUE" *)wire [32-1:0]wICMP_PING_CheckSUM_FullPacket;
+
 (* KEEP = "TRUE" *)reg [17-1:0] ICMP_PING_CheckSUM_Sub =0;
 (* KEEP = "TRUE" *)reg [32-1:0] ICMP_PING_CheckSUM_Reply=0;
 
@@ -165,6 +167,16 @@ AXIS_Width_Up_Converter
 
 
 
+ (* KEEP_HIERARCHY = "TRUE" *)
+ AXIS32_PayloadCheckSum AXIS32_PayloadCheckSum_inst
+(
+.CLK                    (Sink_CLK   ),
+.TFIRST                 (wICMP_Core_TFIRST_x32),
+.TVALID                 (wICMP_Core_TVALID_x32),
+.TDATA                  (wICMP_Core_TDATA_x32),
+.CheckSUM               (wICMP_PING_CheckSUM_FullPacket)
+);
+
 always @(posedge Sink_CLK)
 begin
 	if (wICMP_Core_TVALID_x32 && wICMP_Core_TFIRST_x32) ICMP_PING_RxData_Length_Counter <= wICMP_Core_Byte_COUNT_x32;  
@@ -174,16 +186,17 @@ begin
 
     if (wICMP_Core_TVALID_x32 && wICMP_Core_TFIRST_x32) ICMP_PING_CheckSUM_Sub <= wICMP_Core_TDATA_x32[32-1:16] + wICMP_Core_TDATA_x32[16-1:0 ];
 
-	if (wICMP_Core_TVALID_x32 && wICMP_Core_TFIRST_x32) ICMP_CheckSUM_Packet_L <= {16'h00,wICMP_Core_TDATA_x32[16-1:0 ]}; 
-		else if (wICMP_Core_TVALID_x32) ICMP_CheckSUM_Packet_L <=ICMP_CheckSUM_Packet_L + {16'h00,wICMP_Core_TDATA_x32[16-1:0 ]};   
+//	if (wICMP_Core_TVALID_x32 && wICMP_Core_TFIRST_x32) ICMP_CheckSUM_Packet_L <= {16'h00,wICMP_Core_TDATA_x32[16-1:0 ]}; 
+//		else if (wICMP_Core_TVALID_x32) ICMP_CheckSUM_Packet_L <=ICMP_CheckSUM_Packet_L + {16'h00,wICMP_Core_TDATA_x32[16-1:0 ]};   
 		
-	if (wICMP_Core_TVALID_x32 && wICMP_Core_TFIRST_x32) ICMP_CheckSUM_Packet_H <= {16'h00,wICMP_Core_TDATA_x32[32-1:16]}; 
-		else if (wICMP_Core_TVALID_x32) ICMP_CheckSUM_Packet_H <=ICMP_CheckSUM_Packet_H + {16'h00,wICMP_Core_TDATA_x32[32-1:16]};
+//	if (wICMP_Core_TVALID_x32 && wICMP_Core_TFIRST_x32) ICMP_CheckSUM_Packet_H <= {16'h00,wICMP_Core_TDATA_x32[32-1:16]}; 
+//		else if (wICMP_Core_TVALID_x32) ICMP_CheckSUM_Packet_H <=ICMP_CheckSUM_Packet_H + {16'h00,wICMP_Core_TDATA_x32[32-1:16]};
 			
-	ICMP_PING_CheckSUM_FullPacket    <=  ICMP_CheckSUM_Packet_L        + ICMP_CheckSUM_Packet_H;
-	//ICMP_CheckSUM_CalkRes            <=  ICMP_PING_CheckSUM_FullPacket[15: 0] + ICMP_PING_CheckSUM_FullPacket[31:16];
-	
-	ICMP_PING_CheckSUM_Reply         <=  ICMP_PING_CheckSUM_FullPacket - ICMP_PING_CheckSUM_Sub;
+	//ICMP_PING_CheckSUM_FullPacket    <=  ICMP_CheckSUM_Packet_L        + ICMP_CheckSUM_Packet_H;
+
+//	ICMP_PING_CheckSUM_Reply         <=  ICMP_PING_CheckSUM_FullPacket - ICMP_PING_CheckSUM_Sub;
+    ICMP_PING_CheckSUM_Reply         <= wICMP_PING_CheckSUM_FullPacket - ICMP_PING_CheckSUM_Sub;
+
 
 if (wICMP_Core_TFIRST_x32&&wICMP_Core_TVALID_x32) ICMP_PING_TypeFlag <= (wICMP_Core_TDATA_x32[31:24] == 8'h8);
 if (wICMP_Core_TFIRST_x32&&wICMP_Core_TVALID_x32) ICMP_PING_CodeFlag <= (wICMP_Core_TDATA_x32[23:16] == 8'h0);
@@ -301,8 +314,6 @@ end
 (* KEEP = "TRUE" *) reg [2-1:0]     RdPointerDivider  = 0;
 (* KEEP = "TRUE" *) reg             RdPointerIncPulse = 0;
 
-
-
 (* KEEP = "TRUE" *) reg [16-1:0]    wDataLength_Rd=0;
 (* KEEP = "TRUE" *) reg [16-1:0]    IPv4_TotalLength                          =   0;
 always @(posedge ICMP_PING_Source_CLK)
@@ -342,7 +353,6 @@ wDataLength_Rd <=  ICMP_PING_RxData_Length_Counter;
                 //else if ((DATA_TotalLength == 0)&&RdPointerIncPulse) ReadDataState<=1'b0;
                 else if (DATA_TotalLength_Full==0) ReadDataState<=1'b0;
 
-          
 //////////////////////////////////////////////////////////////////////////////////////
           
             if ((Tx_MAC_FrameBody_ByteCounter ==33 )&&Tx_MAC_FrameBody_VALID) 
@@ -364,8 +374,6 @@ wDataLength_Rd <=  ICMP_PING_RxData_Length_Counter;
             Tx_MAC_FrameBody_TLAST <= ReadDataState_Full && (DATA_TotalLength_Full ==0) && Tx_MAC_FrameBody_VALID;
             if (Tx_MAC_FrameBody_TLAST) Tx_MAC_FrameBody_VALID <=1'b0;
 
-
-            
             if (ReadDataState ) RdPointerDivider <= RdPointerDivider +1 ;  else RdPointerDivider <= 0;
                 
             RdPointerIncPulse <= ( RdPointerDivider == 3 ) && ReadDataState;
@@ -377,15 +385,10 @@ wDataLength_Rd <=  ICMP_PING_RxData_Length_Counter;
                 end
 
             if (Tx_MAC_FrameBody_ByteCounter!=63) Tx_MAC_FrameBody_ByteCounter   <= Tx_MAC_FrameBody_ByteCounter +1'b1;
-      
 	    end
-
-
 end 
 
-
 (* KEEP = "TRUE" *) wire [8-1:0]     wTx_MAC_FrameBody_TDATA;
-
 
 (* KEEP_HIERARCHY = "TRUE" *)
 Ethernet_II_MAC_Header_Generator
@@ -431,7 +434,7 @@ ICMP_PING_IPv4_Header_Generator_x8  ICMP_PING_IPv4_Header_Generator_x8_inst
 );
 
 (* KEEP_HIERARCHY = "TRUE" *)
-ICMP_Frame_Header_Multiplexer ICMP_Frame_Header_Multiplexer_inst
+ICMP_UDP_Frame_Header_Multiplexer   ICMP_Frame_Header_Multiplexer_inst
 (
 .CLK                                (ICMP_PING_Source_CLK                   ),
 
@@ -448,7 +451,6 @@ ICMP_Frame_Header_Multiplexer ICMP_Frame_Header_Multiplexer_inst
 .Tx_MAC_FrameBody_TDATA             (wTx_MAC_FrameBody_TDATA                )
 );
 
-
 (* KEEP_HIERARCHY = "TRUE" *)
 ICMP_PING_RAM_DataBuffer_x32 
 #(
@@ -456,23 +458,20 @@ ICMP_PING_RAM_DataBuffer_x32
 .BUFFER_COUNT_1K(1)
 ) ICMP_PING_RAM_DataBuffer_x32_inst
 (
-. WrClk       (Sink_CLK                             ),
-. WrEna       (wICMP_Core_TVALID_x32                ),
-. WrWea       ({4{ICMP_PING_WrWea}}                 ),
-. WrAddress   (ICMP_PING_Payload_WrRAM_Pointer      ),
-. WrData      (wICMP_Core_TDATA_x32                 ),
+. WrClk                             ( Sink_CLK                            ),
+. WrEna                             (wICMP_Core_TVALID_x32                ),
+. WrWea                             ( {4{ICMP_PING_WrWea}}                ),
+. WrAddress                         ( ICMP_PING_Payload_WrRAM_Pointer     ),
+. WrData                            (wICMP_Core_TDATA_x32                 ),
 
-. RdClk       (ICMP_PING_Source_CLK                 ),
-. RdEna       (1'b1                                 ),
-. RdAddress   (ICMP_PING_Payload_RdRAM_Pointer      ),
-. RdData      (wICMP_PING_Payload_WrRAM_Data        )
+. RdClk                             ( ICMP_PING_Source_CLK                ),
+. RdEna                             ( 1'b1                                ),
+. RdAddress                         ( ICMP_PING_Payload_RdRAM_Pointer     ),
+. RdData                            (wICMP_PING_Payload_WrRAM_Data        )
 );
-
-
 
 assign ICMP_PING_Source_TVALID  =   Tx_MAC_FrameBody_VALID;
 assign ICMP_PING_Source_TLAST   =   Tx_MAC_FrameBody_TLAST;
 assign ICMP_PING_Source_TDATA   =  wTx_MAC_FrameBody_TDATA;
-
 
 endmodule

@@ -85,64 +85,66 @@ wire DATA_TFIRST;
 always @(posedge Sink_CLK) begin if (Sink_TVALID&&Sink_TLAST) TLAST_DONE_FLAG<=1; else if (Sink_TVALID) TLAST_DONE_FLAG<=0; end
 assign DATA_TFIRST =  TLAST_DONE_FLAG && Sink_TVALID ;
 //////////////////////////////////////////////////////////////////////////////////////
+
 wire [ 4-1:0]           wSink_TKEEP;
 wire [ 4-1:0]           wDATA_COUNT;
-
 wire [32-1:0]           wSink_TDATA;
 
-assign wSink_TKEEP  [ 4-1:0]  = { Sink_TKEEP[3]&& wSink_TKEEP[2],Sink_TKEEP[2]&&wSink_TKEEP[1], Sink_TKEEP[1]&&wSink_TKEEP[0],Sink_TKEEP[0]};
+(* KEEP_HIERARCHY = "TRUE" *)
+AXISx32_InputChecker    AXISx32_InputChecker_inst
+(
+.TLAST_IN    (Sink_TLAST),
+.TKEEP_IN    (Sink_TKEEP),
+.TDATA_IN    (Sink_TDATA),
 
-assign wDATA_COUNT  [ 4-1:0]  = ((wSink_TKEEP==4'b0001)&&Sink_TLAST) ? 4'h1 :
-                                ((wSink_TKEEP==4'b0011)&&Sink_TLAST) ? 4'h2 :
-                                ((wSink_TKEEP==4'b0111)&&Sink_TLAST) ? 4'h3 :
-                                ((wSink_TKEEP==4'b1111)&&Sink_TLAST) ? 4'h4 :
-                                4'h4;
-                                
-assign wSink_TDATA  [32-1:0]  =    ((wSink_TKEEP==4'b0001)&&Sink_TLAST) ? {24'h00,Sink_TDATA[ 7:0]} :
-                                                ((wSink_TKEEP==4'b0011)&&Sink_TLAST) ? {16'h00,Sink_TDATA[15:0]} :
-                                                ((wSink_TKEEP==4'b0111)&&Sink_TLAST) ? { 8'h00,Sink_TDATA[23:0]} :
-                                                ((wSink_TKEEP==4'b1111)&&Sink_TLAST) ? Sink_TDATA[31:0] : Sink_TDATA[31:0];  
+.TKEEP_OUT   (wSink_TKEEP),
+.COUNT_OUT   (wDATA_COUNT),
+.TDATA_OUT   (wSink_TDATA)
+);
+
+
 
 wire wCommandFIFO_Full;
  
- 
 reg          TVALID_Reg0=0;
 reg          TVALID_Reg1=0;
-reg          TVALID_Reg2=0; 
+//reg          TVALID_Reg2=0; 
 
 reg          TFIRST_Reg0=0;
 reg          TFIRST_Reg1=0;
-reg          TFIRST_Reg2=0; 
+//reg          TFIRST_Reg2=0; 
 
 reg          TLAST_Reg0=0;
 reg          TLAST_Reg1=0;
-reg          TLAST_Reg2=0; 
+//reg          TLAST_Reg2=0; 
                                                             
 reg [ 4-1:0] TKEEP_Reg0=0;  
 reg [ 4-1:0] TKEEP_Reg1=0;       
-reg [ 4-1:0] TKEEP_Reg2=0;
+//reg [ 4-1:0] TKEEP_Reg2=0;
 
 reg [32-1:0] TDATA_Reg0=0;  
 reg [32-1:0] TDATA_Reg1=0;       
-reg [32-1:0] TDATA_Reg2=0;
+//reg [32-1:0] TDATA_Reg2=0;
     
 reg [16-1:0] RxDataLengthCounter=0;
 reg [16-1:0] RxDataLengthCounter_D1=0;
 reg [16-1:0] RxDataLengthCounter_D2=0;
 
-reg [32-1:0] UDP_CheckSUM_Data_L=0;
-reg [32-1:0] UDP_CheckSUM_Data_H=0;
-reg [32-1:0] UDP_CheckSUM_Data=0;
+//reg [32-1:0] UDP_CheckSUM_Data_L=0;
+//reg [32-1:0] UDP_CheckSUM_Data_H=0;
+//reg [32-1:0] UDP_CheckSUM_Data=0;
+
+(* keep = "true" *) wire [32-1:0] wUDP_CheckSUM_Data;
 
 //reg [17-1:0] UDP_CheckSUM_IP4_Internal          =0;
 //reg [17-1:0] UDP_CheckSUM_IP4_External          =0;
-reg [18-1:0] UDP_CheckSUM_IP4_SUM               =0;
-reg [20-1:0] UDP_CheckSUM_IP4_PseudoHeader      =0;
+(* keep = "true" *) reg [18-1:0] UDP_CheckSUM_IP4_SUM               =0;
+(* keep = "true" *) reg [20-1:0] UDP_CheckSUM_IP4_PseudoHeader      =0;
 
-reg [32-1:0] UDP_CheckSUM_FULL                  =0;
+(* keep = "true" *) reg [32-1:0] UDP_CheckSUM_FULL                  =0;
 
 //reg [16-1:0] CheckSUM_UDP                   =0;
-wire[16-1:0]wCheckSUM_UDP;
+(* keep = "true" *) wire[16-1:0]wCheckSUM_UDP;
 
 
 reg   PacketDropFlag=0; 
@@ -181,6 +183,17 @@ Gray2BinRegisteredInOut #( .WIDTH(BitWidth(BufferSize)) ) Gray2BinRegisteredInOu
 .GrayIn             (wRdPointerGray),
 .BinOut             (wRdPointer)
  ); 
+ 
+ (* KEEP_HIERARCHY = "TRUE" *)
+ AXIS32_PayloadCheckSum AXIS32_PayloadCheckSum_inst
+(
+.CLK                    (Sink_CLK   ),
+.TFIRST                 (DATA_TFIRST),
+.TVALID                 (Sink_TVALID),
+.TDATA                  (wSink_TDATA),
+.CheckSUM               (wUDP_CheckSUM_Data)
+);
+ 
 
 always @(posedge Sink_CLK) WrOverflow_n  <= !(( WrBufferElements > (BufferSize- 8))||wCommandFIFO_Full);  
 
@@ -197,23 +210,23 @@ if (wWrDataRDY)
 
     TVALID_Reg0 <= Sink_TVALID;
     TVALID_Reg1 <= TVALID_Reg0;
-    TVALID_Reg2 <= TVALID_Reg1;
+//    TVALID_Reg2 <= TVALID_Reg1;
     
     TFIRST_Reg0 <= DATA_TFIRST;
     TFIRST_Reg1 <= TFIRST_Reg0;
-    TFIRST_Reg2 <= TFIRST_Reg1;
+//    TFIRST_Reg2 <= TFIRST_Reg1;
 
     TLAST_Reg0  <= Sink_TLAST ;
     TLAST_Reg1  <= TLAST_Reg0 ;
-    TLAST_Reg2  <= TLAST_Reg1 ;
+//    TLAST_Reg2  <= TLAST_Reg1 ;
     
     TKEEP_Reg0  <= wSink_TKEEP ;
     TKEEP_Reg1  <= TKEEP_Reg0 ;
-    TKEEP_Reg2  <= TKEEP_Reg1 ;
+//    TKEEP_Reg2  <= TKEEP_Reg1 ;
     
     TDATA_Reg0  <= wSink_TDATA;
     TDATA_Reg1  <= TDATA_Reg0 ;
-    TDATA_Reg2  <= TDATA_Reg1 ;
+//    TDATA_Reg2  <= TDATA_Reg1 ;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -221,24 +234,22 @@ if (wWrDataRDY)
 		else if (Sink_TVALID&&(RxDataLengthCounter>MAX_UDP_PayloadSize)) RxDataLengthCounter <= RxDataLengthCounter;  
 			else if (Sink_TVALID) RxDataLengthCounter <= RxDataLengthCounter + wDATA_COUNT;  
 
-	if (Sink_TVALID&&DATA_TFIRST) UDP_CheckSUM_Data_L <= {16'h00,wSink_TDATA[16-1:0 ]}; 
-		else if (Sink_TVALID) UDP_CheckSUM_Data_L <=UDP_CheckSUM_Data_L + {16'h00,wSink_TDATA[16-1:0 ]};   
+//	if (Sink_TVALID&&DATA_TFIRST) UDP_CheckSUM_Data_L <= {16'h00,wSink_TDATA[16-1:0 ]}; 
+//		else if (Sink_TVALID) UDP_CheckSUM_Data_L <=UDP_CheckSUM_Data_L + {16'h00,wSink_TDATA[16-1:0 ]};   
 		
-	if (Sink_TVALID&&DATA_TFIRST) UDP_CheckSUM_Data_H <= {16'h00,wSink_TDATA[32-1:16]}; 
-		else if (Sink_TVALID) UDP_CheckSUM_Data_H <=UDP_CheckSUM_Data_H + {16'h00,wSink_TDATA[32-1:16]};
+//	if (Sink_TVALID&&DATA_TFIRST) UDP_CheckSUM_Data_H <= {16'h00,wSink_TDATA[32-1:16]}; 
+//		else if (Sink_TVALID) UDP_CheckSUM_Data_H <=UDP_CheckSUM_Data_H + {16'h00,wSink_TDATA[32-1:16]};
 			
-	UDP_CheckSUM_Data               <=  UDP_CheckSUM_Data_L + UDP_CheckSUM_Data_H;
+	//UDP_CheckSUM_Data               <=  UDP_CheckSUM_Data_L + UDP_CheckSUM_Data_H;
 	
-	//UDP_CheckSUM_IP4_Internal       <=  {1'b0,IP4_LOCAL_ADDR[16-1: 0]   }   +   {1'b0,IP4_LOCAL_ADDR[32-1:16]};
-	//UDP_CheckSUM_IP4_External       <=  {1'b0,IP4_REMOTE_ADDR[16-1: 0]  }   +   {1'b0,IP4_REMOTE_ADDR[32-1:16]};
-	//UDP_CheckSUM_IP4_SUM            <=  {1'b0,UDP_CheckSUM_IP4_Internal }   +   {1'b0,UDP_CheckSUM_IP4_External};
 	
     UDP_CheckSUM_IP4_SUM            <=  {2'b00,IP4_LOCAL_ADDR_IN  [16-1: 0]   }   +   {2'b00,IP4_LOCAL_ADDR_IN  [32-1:16]} 
                                             + {2'b00,IP4_REMOTE_ADDR_IN  [16-1: 0]  }   +   {2'b00,IP4_REMOTE_ADDR_IN  [32-1:16]};
 	
-	UDP_CheckSUM_IP4_PseudoHeader   <=  {2'b0,UDP_CheckSUM_IP4_SUM      }   +   {4'b0,  RxDataLengthCounter}  + 20'd17;
-	UDP_CheckSUM_FULL               <=  UDP_CheckSUM_Data                   +   {12'b0, UDP_CheckSUM_IP4_PseudoHeader }; 
-	//CheckSUM_UDP                <= ~(CheckSUM_FULL[16-1: 0]             +   CheckSUM_FULL[32-1:16]) ;
+	UDP_CheckSUM_IP4_PseudoHeader   <=  {2'b0,UDP_CheckSUM_IP4_SUM      }   +   { 4'b0, RxDataLengthCounter}  + 20'd17;
+	//UDP_CheckSUM_FULL               <=  UDP_CheckSUM_Data                   +   {12'b0, UDP_CheckSUM_IP4_PseudoHeader }; 
+    UDP_CheckSUM_FULL               <=  wUDP_CheckSUM_Data                   +   {12'b0, UDP_CheckSUM_IP4_PseudoHeader }; 
+	
 	
 	RxDataLengthCounter_D1 <= RxDataLengthCounter;
 	RxDataLengthCounter_D2 <= RxDataLengthCounter_D1;
@@ -322,20 +333,22 @@ reg [16-1:0]    UDP_TotalLength                           =   0;
 reg [16-1:0]    UDP_Checksum                              =   0;
 
 reg [16-1:0]    IPv4_TotalLength                          =   0;
-reg [16-1:0]    IPv4_Identification                       =   0;
+//reg [16-1:0]    IPv4_Identification                       =   0;
 
-reg [16-1:0]    IPv4_HeaderChecksum                       =   0;
-reg  [23:0]     IPv4_HeaderChecksum_Step0                 =   0;
-reg  [23:0]     IPv4_HeaderChecksum_Step1                 =   0;
-reg  [23:0]     IPv4_HeaderChecksum_Step2                 =   0;
-reg  [23:0]     IPv4_HeaderChecksum_Step3                 =   0;
-reg  [16:0]     IPv4_HeaderChecksum_Step4                 =   0;
+//reg [16-1:0]    IPv4_HeaderChecksum                       =   0;
+//reg  [23:0]     IPv4_HeaderChecksum_Step0                 =   0;
+//reg  [23:0]     IPv4_HeaderChecksum_Step1                 =   0;
+//reg  [23:0]     IPv4_HeaderChecksum_Step2                 =   0;
+//reg  [23:0]     IPv4_HeaderChecksum_Step3                 =   0;
+//reg  [16:0]     IPv4_HeaderChecksum_Step4                 =   0;
 
 reg             Tx_MAC_FrameBody_StartReadPulse           =   0;
 
 reg             Tx_MAC_FrameBody_VALID                    =   0;
 reg             Tx_MAC_FrameBody_TLAST                    =   0;
-reg [8-1:0]     Tx_MAC_FrameBody_TDATA                    =   0;
+//reg [8-1:0]     Tx_MAC_FrameBody_TDATA                    =   0;
+wire[8-1:0]    wTx_MAC_FrameBody_TDATA;
+
 reg [6-1:0]     Tx_MAC_FrameBody_ByteCounter              =   63;
 
 reg [3-1:0]     TX_SwitchREG_Decoder                      =   0;
@@ -395,19 +408,19 @@ assign wDATA_LastPosition = (wDataLength_Rd[1:0] == 2'd1 ) ? 4'b0001 :
 
 always @(posedge Source_CLK)
 begin
-IPv4_HeaderChecksum_Step0   <=  IP4_REMOTE_ADDR_IN  [31:16]+IP4_REMOTE_ADDR_IN  [15: 0];
-IPv4_HeaderChecksum_Step1   <=  IPv4_Identification + IPv4_TotalLength ;
-IPv4_HeaderChecksum_Step2   <=  IPv4_HeaderChecksum_Step0 + IPv4_HeaderChecksum_Step1 + 16'h4500 + 16'h8011  ;
-IPv4_HeaderChecksum_Step3   <=  IP4_LOCAL_ADDR_IN  [31:16] +IP4_LOCAL_ADDR_IN  [15: 0] + IPv4_HeaderChecksum_Step2;
-IPv4_HeaderChecksum_Step4   <=  (IPv4_HeaderChecksum_Step3[15:0]+{8'h00,IPv4_HeaderChecksum_Step3[23:16]});
+//IPv4_HeaderChecksum_Step0   <=  IP4_REMOTE_ADDR_IN  [31:16]+IP4_REMOTE_ADDR_IN  [15: 0];
+//IPv4_HeaderChecksum_Step1   <=  IPv4_Identification + IPv4_TotalLength ;
+//IPv4_HeaderChecksum_Step2   <=  IPv4_HeaderChecksum_Step0 + IPv4_HeaderChecksum_Step1 + 16'h4500 + 16'h8011  ;
+//IPv4_HeaderChecksum_Step3   <=  IP4_LOCAL_ADDR_IN  [31:16] +IP4_LOCAL_ADDR_IN  [15: 0] + IPv4_HeaderChecksum_Step2;
+//IPv4_HeaderChecksum_Step4   <=  (IPv4_HeaderChecksum_Step3[15:0]+{8'h00,IPv4_HeaderChecksum_Step3[23:16]});
 
-IPv4_HeaderChecksum         <= ~(IPv4_HeaderChecksum_Step4[15:0]+{15'h00,IPv4_HeaderChecksum_Step4[16]});
+//IPv4_HeaderChecksum         <= ~(IPv4_HeaderChecksum_Step4[15:0]+{15'h00,IPv4_HeaderChecksum_Step4[16]});
 
 ReadDonePulse <= Source_TRDY && Tx_MAC_FrameBody_TLAST && Tx_MAC_FrameBody_VALID;
 IPv4_TotalLength<= wDataLength_Rd+8+20;
 UDP_TotalLength <= wDataLength_Rd+8;
 UDP_Checksum    <= wUDP_Checksum_Rd;
-if (ReadDonePulse)IPv4_Identification <= IPv4_Identification +1'b1;
+//if (ReadDonePulse)IPv4_Identification <= IPv4_Identification +1'b1;
 
     if (Tx_MAC_FrameBody_StartReadPulse)
         begin
@@ -415,7 +428,7 @@ if (ReadDonePulse)IPv4_Identification <= IPv4_Identification +1'b1;
         TX_SwitchREG_Decoder                        <=0;
 //        TX_SwitchREG_Ethernet_II_External_MAC       <= MAC_REMOTE_ADDR [39:32] ;
         
-        Tx_MAC_FrameBody_TDATA                      <= MAC_REMOTE_ADDR_IN   [47:40] ;
+        //Tx_MAC_FrameBody_TDATA                      <= MAC_REMOTE_ADDR_IN   [47:40] ;
         Tx_MAC_FrameBody_VALID                      <=1'b1;
         Tx_MAC_FrameBody_TLAST                      <=1'b0;
 
@@ -474,21 +487,7 @@ if (ReadDonePulse)IPv4_Identification <= IPv4_Identification +1'b1;
 
             if (Tx_MAC_FrameBody_ByteCounter!=63) Tx_MAC_FrameBody_ByteCounter   <= Tx_MAC_FrameBody_ByteCounter +1'b1;
 
-            if ((Tx_MAC_FrameBody_ByteCounter>=7'd00)&& (Tx_MAC_FrameBody_ByteCounter<=7'd05)) TX_SwitchREG_Decoder <= 0;
-                else if ((Tx_MAC_FrameBody_ByteCounter>=7'd06)&& (Tx_MAC_FrameBody_ByteCounter<=7'd13)) TX_SwitchREG_Decoder <= 1;
-                    else if ((Tx_MAC_FrameBody_ByteCounter>=7'd14)&& (Tx_MAC_FrameBody_ByteCounter<=7'd23)) TX_SwitchREG_Decoder <= 2;
-                        else if ((Tx_MAC_FrameBody_ByteCounter>=7'd24)&& (Tx_MAC_FrameBody_ByteCounter<=7'd33)) TX_SwitchREG_Decoder <= 3;
-                            else if ((Tx_MAC_FrameBody_ByteCounter>=7'd34)&& (Tx_MAC_FrameBody_ByteCounter<=7'd41)) TX_SwitchREG_Decoder <= 4;
-                                else TX_SwitchREG_Decoder <= 5;
-                                
-     
-            if (TX_SwitchREG_Decoder==0) Tx_MAC_FrameBody_TDATA <= wTX_SwitchREG_Ethernet_II_MAC;
-                else if (TX_SwitchREG_Decoder==1)  Tx_MAC_FrameBody_TDATA <= wTX_SwitchREG_Ethernet_II_MAC;
-                    else if (TX_SwitchREG_Decoder==2)  Tx_MAC_FrameBody_TDATA <= wTX_SwitchREG_Ethernet_II_IP4;
-                        else if (TX_SwitchREG_Decoder==3)  Tx_MAC_FrameBody_TDATA <= wTX_SwitchREG_Ethernet_II_IP4;
-                            else if (TX_SwitchREG_Decoder==4)  Tx_MAC_FrameBody_TDATA <= wTX_SwitchREG_Ethernet_II_UDP;
-                                else if (TX_SwitchREG_Decoder==5)  Tx_MAC_FrameBody_TDATA <= ShiftRegD0;//0;
-	               end                
+	        end                
 end	                    
 
 (* KEEP_HIERARCHY = "TRUE" *)
@@ -523,23 +522,41 @@ IPv4_Header_Generator_inst
 );
 
 (* KEEP_HIERARCHY = "TRUE" *)
-UDP_Header_Generator    UDP_Header_Generator_inst
+UDP_Header_Generator                UDP_Header_Generator_inst
 (
-.CLK                           (Source_CLK),
+.CLK                                (Source_CLK),
 
-.UDP_LOCAL_PORT_IN             (UDP_LOCAL_PORT_IN),
-.UDP_REMOTE_PORT_IN            (UDP_REMOTE_PORT_IN),
-.UDP_TotalLength               (UDP_TotalLength),
-.UDP_Checksum                  (UDP_Checksum),
-.UDP_Position                  (Tx_MAC_FrameBody_ByteCounter),
+.UDP_LOCAL_PORT_IN                  (UDP_LOCAL_PORT_IN),
+.UDP_REMOTE_PORT_IN                 (UDP_REMOTE_PORT_IN),
+.UDP_TotalLength                    (UDP_TotalLength),
+.UDP_Checksum                       (UDP_Checksum),
+.UDP_Position                       (Tx_MAC_FrameBody_ByteCounter),
 
-.UDP_Header                    (wTX_SwitchREG_Ethernet_II_UDP) 
+.UDP_Header                         (wTX_SwitchREG_Ethernet_II_UDP) 
+);
+
+(* KEEP_HIERARCHY = "TRUE" *)
+ICMP_UDP_Frame_Header_Multiplexer   UDP_Frame_Header_Multiplexer_inst
+(
+.CLK                                (Source_CLK                                     ),
+
+.Frame_TRY                          (Source_TRDY                                    ),
+.Frame_PreSet                       (Tx_MAC_FrameBody_StartReadPulse                ),
+.Frame_PreSetValue                  (MAC_REMOTE_ADDR_IN [47:40]                     ),
+.Frame_Position                     (Tx_MAC_FrameBody_ByteCounter                   ),
+
+.Header_Ethernet_II_MAC_Part        (wTX_SwitchREG_Ethernet_II_MAC          ),
+.Header_IPv4_Part                   (wTX_SwitchREG_Ethernet_II_IP4          ),
+.Header_ICMP_PING_Part              (wTX_SwitchREG_Ethernet_II_UDP          ),
+.Data_Payload_Part                  (ShiftRegD0),
+
+.Tx_MAC_FrameBody_TDATA             (wTx_MAC_FrameBody_TDATA                )
 );
 
 assign Source_TVALID    =   Tx_MAC_FrameBody_VALID;
 assign Source_TLAST     =   Tx_MAC_FrameBody_TLAST;
-assign Source_TDATA     =   Tx_MAC_FrameBody_TDATA;
-    
+//assign Source_TDATA     =   Tx_MAC_FrameBody_TDATA;
+assign Source_TDATA     =  wTx_MAC_FrameBody_TDATA;    
 
 endmodule
 

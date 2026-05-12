@@ -23,7 +23,7 @@
 //SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-module ICMP_Frame_Header_Multiplexer
+module ICMP_UDP_Frame_Header_Multiplexer
 (
 input  wire              CLK,
 
