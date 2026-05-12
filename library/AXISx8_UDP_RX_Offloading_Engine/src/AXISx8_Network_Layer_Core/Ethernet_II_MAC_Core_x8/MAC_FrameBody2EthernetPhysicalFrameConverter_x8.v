@@ -29,17 +29,20 @@ input  wire           clk,
 
 output wire           MAC_FrameBody_TRDY,
 input  wire           MAC_FrameBody_TVALID,
+input  wire           MAC_FrameBody_TERROR,
 input  wire           MAC_FrameBody_TLAST,
 input  wire  [8-1:0]  MAC_FrameBody_TDATA,
 
 input  wire           EthernetPhysicalFrame_TRDY,
 output wire           EthernetPhysicalFrame_TVALID,
+output wire           EthernetPhysicalFrame_TERROR,
 output wire           EthernetPhysicalFrame_TLAST,
 output wire  [8-1:0]  EthernetPhysicalFrame_TDATA
 );
 
 wire           wEthernetTxFrameFCS_RDY;
 wire           wEthernetTxFrameFCS_Val;
+wire           wEthernetTxFrameFCS_Err;
 wire           wEthernetTxFrameFCS_EoF;
 wire  [8-1:0]  wEthernetTxFrameFCS_Dat;
 
@@ -50,29 +53,33 @@ EthernetTxFrameFCSinsertion_x8      EthernetTxFrameFCSinsertion_x8_inst
 
 .FCSinsertion_Sink_Rdy           (MAC_FrameBody_TRDY            ),
 .FCSinsertion_Sink_Val           (MAC_FrameBody_TVALID          ), 
+.FCSinsertion_Sink_Err           (MAC_FrameBody_TERROR          ), 
 .FCSinsertion_Sink_EoF           (MAC_FrameBody_TLAST           ),
 .FCSinsertion_Sink_Dat           (MAC_FrameBody_TDATA           ),
 
 .FCSinsertion_Source_Rdy         (wEthernetTxFrameFCS_RDY       ),
-.FCSinsertion_Source_Val         (wEthernetTxFrameFCS_Val),
-.FCSinsertion_Source_EoF         (wEthernetTxFrameFCS_EoF),
+.FCSinsertion_Source_Val         (wEthernetTxFrameFCS_Val       ),
+.FCSinsertion_Source_Err         (wEthernetTxFrameFCS_Err       ),
+.FCSinsertion_Source_EoF         (wEthernetTxFrameFCS_EoF       ),
 .FCSinsertion_Source_Dat         (wEthernetTxFrameFCS_Dat)
 );
 
 (* KEEP_HIERARCHY = "TRUE" *)
 EthernetTxFramePreambleInsertion_x8  EthernetTxFramePreambleInsertion_x8_Inst
 (
-.clk                              (clk                          ),
+.clk                                (clk                          ),
 
-.PreambleInsertion_Sink_RDY       (wEthernetTxFrameFCS_RDY      ), 
-.PreambleInsertion_Sink_Val       (wEthernetTxFrameFCS_Val      ), 
-.PreambleInsertion_Sink_EoF       (wEthernetTxFrameFCS_EoF      ), 
-.PreambleInsertion_Sink_Dat       (wEthernetTxFrameFCS_Dat      ),
+.Sink_RDY                           (wEthernetTxFrameFCS_RDY      ), 
+.Sink_Val                           (wEthernetTxFrameFCS_Val      ), 
+.Sink_Err                           (wEthernetTxFrameFCS_Err      ),
+.Sink_EoF                           (wEthernetTxFrameFCS_EoF      ), 
+.Sink_Dat                           (wEthernetTxFrameFCS_Dat      ),
 	
-.PreambleInsertion_Source_RDY     (EthernetPhysicalFrame_TRDY   ),
-.PreambleInsertion_Source_EoF     (EthernetPhysicalFrame_TLAST  ),
-.PreambleInsertion_Source_Val     (EthernetPhysicalFrame_TVALID ),
-.PreambleInsertion_Source_Dat     (EthernetPhysicalFrame_TDATA  )
+.Source_RDY                         (EthernetPhysicalFrame_TRDY   ),
+.Source_Val                         (EthernetPhysicalFrame_TVALID ),
+.Source_EoF                         (EthernetPhysicalFrame_TLAST  ),
+.Source_Err                         (EthernetPhysicalFrame_TERROR ),
+.Source_Dat                         (EthernetPhysicalFrame_TDATA  )
 );
 
 endmodule

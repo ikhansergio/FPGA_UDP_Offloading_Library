@@ -45,6 +45,7 @@ module ICMP_PING_Offloading_Engine_x8
     input  wire 	               ICMP_PING_Source_CLK,
 	input  wire	                   ICMP_PING_Source_TRDY,
 	output wire	                   ICMP_PING_Source_TVALID,
+	output wire	                   ICMP_PING_Source_TERROR,
 	output wire	                   ICMP_PING_Source_TLAST,
 	output wire	[ 8-1:0]           ICMP_PING_Source_TDATA
 );
@@ -470,5 +471,6 @@ ICMP_PING_RAM_DataBuffer_x32
 assign ICMP_PING_Source_TVALID  =   Tx_MAC_FrameBody_VALID;
 assign ICMP_PING_Source_TLAST   =   Tx_MAC_FrameBody_TLAST;
 assign ICMP_PING_Source_TDATA   =  wTx_MAC_FrameBody_TDATA;
+assign ICMP_PING_Source_TERROR  = 0;
 
 endmodule

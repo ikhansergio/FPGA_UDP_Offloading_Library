@@ -40,6 +40,7 @@ module ARP_Offloading_Engine_x8
     input  wire 	               Source_CLK,
 	input  wire	                   Source_TRDY,
 	output wire	                   Source_TVALID,
+	output wire	                   Source_TERROR,
 	output wire	                   Source_TLAST,
 	output wire	[ 8-1:0]           Source_TDATA
 );
@@ -352,6 +353,7 @@ Ethernet_II_MAC_Header_Generator
 
 
 	assign Source_TVALID     =   TX_ARP_Reply_TVALID;
+	assign Source_TERROR     =   0;
 	assign Source_TLAST      =   TX_ARP_Reply_TLAST;
 	assign Source_TDATA      =   TX_ARP_Reply_TDATA;
 

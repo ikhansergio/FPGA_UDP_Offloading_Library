@@ -27,47 +27,53 @@ module EthernetTxFramePreambleInsertion_x8
 (
 	input   wire        clk,
 
-    output  wire        PreambleInsertion_Sink_RDY, 
-	input   wire        PreambleInsertion_Sink_Val, 
-	input   wire        PreambleInsertion_Sink_EoF, 
-	input   wire [7:0]  PreambleInsertion_Sink_Dat,
+    output  wire        Sink_RDY, 
+	input   wire        Sink_Val,
+	input   wire        Sink_Err, 
+	input   wire        Sink_EoF, 
+	input   wire [7:0]  Sink_Dat,
 	
-	input   wire        PreambleInsertion_Source_RDY,
-	output 	wire        PreambleInsertion_Source_EoF,
-    output 	wire        PreambleInsertion_Source_Val,
-    output  wire [7:0]  PreambleInsertion_Source_Dat
+	input   wire        Source_RDY,
+	output 	wire        Source_Val,
+	output 	wire        Source_EoF,
+    output 	wire        Source_Err,
+    output  wire [7:0]  Source_Dat
 );
 
 //////////////////////////////////////////////////////////////////////////////////////
 // find the beginning of a package 
 reg  TLAST_DONE_FLAG=1;
 wire PreambleInsertion_Sink_SoF;
-always @(posedge clk) begin if (PreambleInsertion_Sink_Val&&PreambleInsertion_Sink_EoF&&PreambleInsertion_Source_RDY) TLAST_DONE_FLAG<=1; else if (PreambleInsertion_Sink_Val&&PreambleInsertion_Source_RDY) TLAST_DONE_FLAG<=0; end
-assign PreambleInsertion_Sink_SoF=TLAST_DONE_FLAG&&PreambleInsertion_Sink_Val;
+always @(posedge clk) begin if (Sink_Val&&Sink_EoF&&Source_RDY) TLAST_DONE_FLAG<=1; else if (Sink_Val&&Source_RDY) TLAST_DONE_FLAG<=0; end
+assign Sink_SoF=TLAST_DONE_FLAG&&Sink_Val;
 //////////////////////////////////////////////////////////////////////////////////////
 
-assign PreambleInsertion_Sink_RDY = PreambleInsertion_Source_RDY;
+assign Sink_RDY = Source_RDY;
 
 reg [8*9-1:0] DatShiftReg = 0;
 
 reg [  9-1:0] ValShiftReg = 0;
+reg [  9-1:0] ErrShiftReg = 0;
 reg [  9-1:0] EoFShiftReg = 0;
 
 always @(posedge clk) 
 begin
-if (PreambleInsertion_Sink_SoF&&PreambleInsertion_Source_RDY) DatShiftReg <= {PreambleInsertion_Sink_Dat,8'hD5,8'h55,8'h55,8'h55,8'h55,8'h55,8'h55,8'h55};
-    else if (PreambleInsertion_Source_RDY)  DatShiftReg <= {PreambleInsertion_Sink_Dat,DatShiftReg[8*9-1:8]};
+if (Sink_SoF&&Source_RDY) DatShiftReg <= {Sink_Dat,8'hD5,8'h55,8'h55,8'h55,8'h55,8'h55,8'h55,8'h55};
+    else if (Source_RDY)  DatShiftReg <= {Sink_Dat,DatShiftReg[8*9-1:8]};
     
-if (PreambleInsertion_Sink_SoF&&PreambleInsertion_Source_RDY) ValShiftReg <= 9'h1FF;
-    else if (PreambleInsertion_Source_RDY)  ValShiftReg <= {PreambleInsertion_Sink_Val,ValShiftReg[9-1:1]};
+if (Sink_SoF&&Source_RDY) ValShiftReg <= 9'h1FF;
+    else if (Source_RDY)  ValShiftReg <= {Sink_Val,ValShiftReg[9-1:1]};
     
-if (PreambleInsertion_Sink_SoF&&PreambleInsertion_Source_RDY) EoFShiftReg <= 9'h000;
-    else if (PreambleInsertion_Source_RDY)  EoFShiftReg <= {PreambleInsertion_Sink_EoF,EoFShiftReg[9-1:1]};
+if (Sink_SoF&&Source_RDY) ErrShiftReg <= 9'h000;
+    else if (Source_RDY)  ErrShiftReg <= {Sink_Err,ErrShiftReg[9-1:1]};
+    
+if (Sink_SoF&&Source_RDY) EoFShiftReg <= 9'h000;
+    else if (Source_RDY)  EoFShiftReg <= {Sink_EoF,EoFShiftReg[9-1:1]};
 end
 
-assign PreambleInsertion_Source_Dat = DatShiftReg[7:0];
-assign PreambleInsertion_Source_EoF = EoFShiftReg[0];
-assign PreambleInsertion_Source_Val = ValShiftReg[0];
-    
+assign Source_Dat = DatShiftReg[7:0];
+assign Source_EoF = EoFShiftReg[0];
+assign Source_Val = ValShiftReg[0];
+assign Source_Err = ErrShiftReg[0];    
 
 endmodule

@@ -58,12 +58,14 @@ output wire [ NumberOf_RX_UDP_Ports*8-1:0 ] Source_TDATA ,
 /////////////////////////////////////////////////////////////////////////////////////
 output wire [1*TxPortCount-1:0]	            Sink_TRDY,
 input  wire [1*TxPortCount-1:0]	            Sink_TVALID,
+input  wire [1*TxPortCount-1:0]	            Sink_TERROR,
 input  wire [1*TxPortCount-1:0]	            Sink_TLAST,
 input  wire [8*TxPortCount-1:0]             Sink_TDATA,
 
 input  wire 	                            Source_PHY_TX_CLK,	
 input  wire                                 Source_PHY_TX_TRDY,
 output wire                                 Source_PHY_TX_TVALID,
+output wire                                 Source_PHY_TX_TERROR,
 output wire                                 Source_PHY_TX_TLAST,
 output wire [8-1:0]                         Source_PHY_TX_TDATA
 );
@@ -116,12 +118,14 @@ AXISx8_Network_Layer_Core
 /////////////////////////////////////////////////////////////////////////////////////
     .Sink_TRDY                             (Sink_TRDY                               ),
     .Sink_TVALID                           (Sink_TVALID                             ),
+    .Sink_TERROR                           (Sink_TERROR                             ),
     .Sink_TLAST                            (Sink_TLAST                              ),
     .Sink_TDATA                            (Sink_TDATA                              ),
     
     .Source_PHY_TX_CLK                     (Source_PHY_TX_CLK                       ),
     .Source_PHY_TX_TRDY                    (Source_PHY_TX_TRDY                      ),
     .Source_PHY_TX_TVALID                  (Source_PHY_TX_TVALID                    ),
+    .Source_PHY_TX_TERROR                  (Source_PHY_TX_TERROR                    ),
     .Source_PHY_TX_TLAST                   (Source_PHY_TX_TLAST                     ),
     .Source_PHY_TX_TDATA                   (Source_PHY_TX_TDATA                     )
  );

@@ -30,13 +30,15 @@ module EthTxScheduler
 (
     input	Clk,
 
-    output	reg   [1*TxPortCount-1:0]     Sink_RDY=0,
-    input	wire  [1*TxPortCount-1:0]     Sink_Val,
-    input	wire  [1*TxPortCount-1:0]     Sink_EoF,
-    input	wire  [8*TxPortCount-1:0]     Sink_DAT,
+    output	reg   [1*TxPortCount-1:0]     Sink_TRDY=0,
+    input	wire  [1*TxPortCount-1:0]     Sink_TVALID,
+    input	wire  [1*TxPortCount-1:0]     Sink_TERROR,
+    input	wire  [1*TxPortCount-1:0]     Sink_TLAST,
+    input	wire  [8*TxPortCount-1:0]     Sink_TDATA,
     
     input	wire                          Source_RDY,
     output	reg                           Source_Val = 0,
+    output	reg                           Source_Err = 0,
     output	reg                           Source_EoF = 0,
     output	reg   [8-1:0]                 Source_DAT = 0
  );
@@ -92,7 +94,7 @@ always @(*)
 begin
 for (k = 0; k < MAX_TxPortCount; k = k + 1) 
     begin
-    if (k<TxPortCount) wSink_Val[k]<=Sink_Val[k];
+    if (k<TxPortCount) wSink_Val[k]<=Sink_TVALID[k];
         else wSink_Val[k]<=0;
     end
 end
@@ -110,6 +112,7 @@ EthTxSchedulerRequestEncoder #(.INDEX_WIDTH(INDEX_WIDTH))EthTxSchedulerRequestEn
 );
 
 reg   [1-1:0]                 wSource_Val;
+reg   [1-1:0]                 wSource_Err;
 reg   [1-1:0]                 wSource_EoF;
 reg   [8-1:0]                 wSource_DAT;
 
@@ -118,12 +121,13 @@ always @(*)
 begin
 for (i = 0; i <= TxPortCount-1; i = i + 1) 
     begin
-    Sink_RDY[i]<=Sink_RDY_REG[i]&Source_RDY;
+    Sink_TRDY[i]<=Sink_RDY_REG[i]&Source_RDY;
     if (ConfirmedIndex==i)
         begin
-        wSource_Val <=  Sink_Val[i]; 
-        wSource_EoF <=  Sink_EoF[i];
-        wSource_DAT <=  Sink_DAT[i*8+:8];
+        wSource_Val <=  Sink_TVALID[i]; 
+        wSource_Err <=  Sink_TERROR[i];
+        wSource_EoF <=  Sink_TLAST[i];
+        wSource_DAT <=  Sink_TDATA[i*8+:8];
         end    
     end
 end
@@ -161,12 +165,14 @@ if (Source_RDY)
     if (CurrentSearchState==WAIT_FINISH)
         begin
             if (Sink_RDY_Flag) Source_Val <=  wSource_Val; 
+            if (Sink_RDY_Flag) Source_Err <=  wSource_Err;
             if (Sink_RDY_Flag) Source_EoF <=  wSource_EoF;
             if (Sink_RDY_Flag) Source_DAT <=  wSource_DAT;
         end 
         else if (CurrentSearchState!=WAIT_FINISH)
         begin
-            Source_Val <=  0; 
+            Source_Val <=  0;
+            Source_Err <=  0;  
             Source_EoF <=  0;
             Source_DAT <=  0;
         end 

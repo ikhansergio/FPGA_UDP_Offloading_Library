@@ -50,17 +50,20 @@ module AXISx8_Ethernet_II_MAC_Core
 	input  wire 	                        TX_CLK,
 	output wire [1*TxPortCount-1:0]	        Sink_TRDY,
 	input  wire [1*TxPortCount-1:0]	        Sink_TVALID,
+	input  wire [1*TxPortCount-1:0]	        Sink_TERROR,
 	input  wire [1*TxPortCount-1:0]	        Sink_TLAST,
 	input  wire [8*TxPortCount-1:0]         Sink_TDATA,
 	
     input  wire                             TX_TRDY,
     output wire                             TX_TVALID,
+    output wire                             TX_TERROR,
     output wire                             TX_TLAST,
     output wire [8-1:0]                     TX_TDATA
 );
 
 	wire 	       wMAC_FrameBody_TRDY;
 	wire 	       wMAC_FrameBody_TVALID;
+	wire 	       wMAC_FrameBody_TERROR;
 	wire 	       wMAC_FrameBody_TLAST;
 	wire [ 8-1:0]  wMAC_FrameBody_TDATA;
 
@@ -69,13 +72,15 @@ module AXISx8_Ethernet_II_MAC_Core
     (
     .Clk                           (TX_CLK),
 
-    .Sink_RDY                      (Sink_TRDY),
-    .Sink_Val                      (Sink_TVALID),
-    .Sink_EoF                      (Sink_TLAST),
-    .Sink_DAT                      (Sink_TDATA),
+    .Sink_TRDY                     (Sink_TRDY),
+    .Sink_TERROR                   (Sink_TERROR),
+    .Sink_TVALID                   (Sink_TVALID),
+    .Sink_TLAST                    (Sink_TLAST),
+    .Sink_TDATA                    (Sink_TDATA),
     
     .Source_RDY                    (wMAC_FrameBody_TRDY),
     .Source_Val                    (wMAC_FrameBody_TVALID),
+    .Source_Err                    (wMAC_FrameBody_TERROR),
     .Source_EoF                    (wMAC_FrameBody_TLAST),
     .Source_DAT                    (wMAC_FrameBody_TDATA)
     );
@@ -101,11 +106,13 @@ module AXISx8_Ethernet_II_MAC_Core
     .TX_CLK                            (TX_CLK),
 	.MAC_FrameBody_TRDY                (wMAC_FrameBody_TRDY),
 	.MAC_FrameBody_TVALID              (wMAC_FrameBody_TVALID),
+	.MAC_FrameBody_TERROR              (wMAC_FrameBody_TERROR),                                   
 	.MAC_FrameBody_TLAST               (wMAC_FrameBody_TLAST),
 	.MAC_FrameBody_TDATA               (wMAC_FrameBody_TDATA),
 	
     .TX_TRDY                           (TX_TRDY),
     .TX_TVALID                         (TX_TVALID),
+    .TX_TERROR                         (TX_TERROR),
     .TX_TLAST                          (TX_TLAST),
     .TX_TDATA                          (TX_TDATA)
     );

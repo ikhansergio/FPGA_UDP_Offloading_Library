@@ -47,18 +47,20 @@ module Ethernet_II_FrameProcessing_x8
 	input  wire 	      TX_CLK,
 	output wire 	      MAC_FrameBody_TRDY,
 	input  wire 	      MAC_FrameBody_TVALID,
+	input  wire 	      MAC_FrameBody_TERROR,
 	input  wire 	      MAC_FrameBody_TLAST,
 	input  wire [ 8-1:0]  MAC_FrameBody_TDATA,
 	
     input  wire           TX_TRDY,
     output wire           TX_TVALID,
+    output wire           TX_TERROR,
     output wire           TX_TLAST,
     output wire  [8-1:0]  TX_TDATA
 
 );
 
 (* KEEP_HIERARCHY = "TRUE" *)
- Ethernet_II_FrameDecoder_x8    Ethernet_II_FrameDecoder_x8_inst(
+ Ethernet_II_FrameDecoder_x8                            Ethernet_II_FrameDecoder_x8_inst(
 .CLK                                                   (RX_CLK),
 .TLAST                                                 (RX_TLAST),
 .TVALID                                                (RX_TVALID),
@@ -81,11 +83,13 @@ MAC_FrameBody2EthernetPhysicalFrameConverter_x8 MAC_FrameBody2EthernetPhysicalFr
 .clk                            (TX_CLK),
 .MAC_FrameBody_TRDY             (MAC_FrameBody_TRDY),
 .MAC_FrameBody_TVALID           (MAC_FrameBody_TVALID),
+.MAC_FrameBody_TERROR           (MAC_FrameBody_TERROR),
 .MAC_FrameBody_TLAST            (MAC_FrameBody_TLAST),
 .MAC_FrameBody_TDATA            (MAC_FrameBody_TDATA),
 
 .EthernetPhysicalFrame_TRDY     (TX_TRDY),
 .EthernetPhysicalFrame_TVALID   (TX_TVALID),
+.EthernetPhysicalFrame_TERROR   (TX_TERROR),
 .EthernetPhysicalFrame_TLAST    (TX_TLAST),
 .EthernetPhysicalFrame_TDATA    (TX_TDATA)
 );

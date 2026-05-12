@@ -33,34 +33,36 @@ module AXISx8_Network_Layer_Core
 /////////////////////////////////////////////////////////////////////////////////////
 // Rx Interface                                                                   ///
 /////////////////////////////////////////////////////////////////////////////////////
-input wire 	           Sink_PHY_RX_CLK              ,
-input wire 	           Sink_PHY_RX_TVALID           ,
-input wire 	           Sink_PHY_RX_TERROR           ,
-input wire 	           Sink_PHY_RX_TLAST            ,
-input wire [ 8-1:0]    Sink_PHY_RX_TDATA            ,
+input wire 	                          Sink_PHY_RX_CLK              ,
+input wire 	                          Sink_PHY_RX_TVALID           ,
+input wire 	                          Sink_PHY_RX_TERROR           ,
+input wire 	                          Sink_PHY_RX_TLAST            ,
+input wire [ 8-1:0]                   Sink_PHY_RX_TDATA            ,
 
-output wire			   Source_TVALID                ,
-output wire			   Source_TERROR                ,
-output wire			   Source_TLAST                 ,
-output wire [ 8-1:0]   Source_TDATA                 ,
+output wire			                  Source_TVALID                ,
+output wire			                  Source_TERROR                ,
+output wire			                  Source_TLAST                 ,
+output wire [ 8-1:0]                  Source_TDATA                 ,
 	
 /////////////////////////////////////////////////////////////////////////////////////
 //  Tx Interface                                                                  ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-input  wire 	                        Source_PHY_TX_CLK      ,	
-input  wire                             Source_PHY_TX_TRDY     ,
-output wire                             Source_PHY_TX_TVALID   ,
-output wire                             Source_PHY_TX_TLAST    ,
-output wire [8-1:0]                     Source_PHY_TX_TDATA    ,
+input  wire 	                      Source_PHY_TX_CLK      ,	
+input  wire                           Source_PHY_TX_TRDY     ,
+output wire                           Source_PHY_TX_TVALID   ,
+output wire                           Source_PHY_TX_TERROR   ,
+output wire                           Source_PHY_TX_TLAST    ,
+output wire [8-1:0]                   Source_PHY_TX_TDATA    ,
 
-output wire [1*TxPortCount-1:0]	        Sink_TRDY   ,
-input  wire [1*TxPortCount-1:0]	        Sink_TVALID ,
-input  wire [1*TxPortCount-1:0]	        Sink_TLAST  ,
-input  wire [8*TxPortCount-1:0]         Sink_TDATA  ,
+output wire [1*TxPortCount-1:0]	      Sink_TRDY   ,
+input  wire [1*TxPortCount-1:0]	      Sink_TVALID ,
+input  wire [1*TxPortCount-1:0]	      Sink_TERROR ,
+input  wire [1*TxPortCount-1:0]	      Sink_TLAST  ,
+input  wire [8*TxPortCount-1:0]       Sink_TDATA  ,
 
 /////////////////////////////////////////////////////////////////////////////////////
-//  MACs,IPv4s,Ports                                                                  ///
+//  MACs,IPv4s,Ports                                                              ///
 /////////////////////////////////////////////////////////////////////////////////////
 
 input  wire [48-1:0]   MAC_LOCAL_ADDR_IN        ,
@@ -73,11 +75,13 @@ output wire [ 8-1:0]   IP4_Used_Protocol_OUT
 
 wire            wARP_Core_TRDY ;
 wire            wARP_Core_TVALID;
+wire            wARP_Core_TERROR;
 wire            wARP_Core_TLAST;
 wire [8-1:0]    wARP_Core_TDATA;
 
 wire            wICMP_PING_Core_TRDY ;
 wire            wICMP_PING_Core_TVALID;
+wire            wICMP_PING_Core_TERROR;
 wire            wICMP_PING_Core_TLAST;
 wire [8-1:0]    wICMP_PING_Core_TDATA;
 
@@ -119,11 +123,13 @@ AXISx8_Ethernet_II_MAC_Core
 .TX_CLK                   (Source_PHY_TX_CLK        ),
 .Sink_TRDY                ({Sink_TRDY   ,wARP_Core_TRDY  ,wICMP_PING_Core_TRDY  } ),
 .Sink_TVALID              ({Sink_TVALID ,wARP_Core_TVALID,wICMP_PING_Core_TVALID} ),
+.Sink_TERROR              ({Sink_TERROR ,wARP_Core_TERROR,wICMP_PING_Core_TERROR} ),
 .Sink_TLAST               ({Sink_TLAST  ,wARP_Core_TLAST ,wICMP_PING_Core_TLAST } ),
 .Sink_TDATA               ({Sink_TDATA  ,wARP_Core_TDATA ,wICMP_PING_Core_TDATA } ),
 
 .TX_TRDY                  (Source_PHY_TX_TRDY       ),
 .TX_TVALID                (Source_PHY_TX_TVALID     ),
+.TX_TERROR                (Source_PHY_TX_TERROR     ),
 .TX_TLAST                 (Source_PHY_TX_TLAST      ),
 .TX_TDATA                 (Source_PHY_TX_TDATA      )
 );
@@ -179,8 +185,9 @@ begin
     /////////////////////////////////////////////////////////////////////////////////////
     // ARP Tx Interface                                                               ///
     /////////////////////////////////////////////////////////////////////////////////////
-    .Source_CLK                         (Source_PHY_TX_CLK),
+    .Source_CLK                         (Source_PHY_TX_CLK          ),
     .Source_TRDY                        (wARP_Core_TRDY             ),
+    .Source_TERROR                      (wARP_Core_TERROR           ),
     .Source_TVALID                      (wARP_Core_TVALID           ),
     .Source_TLAST                       (wARP_Core_TLAST            ),
     .Source_TDATA                       (wARP_Core_TDATA            )
@@ -189,15 +196,10 @@ end
 else 
 begin
     assign wARP_Core_TVALID =0;
+    assign wARP_Core_TERROR =0;
     assign wARP_Core_TLAST  =0;
     assign wARP_Core_TDATA  =0;
 end
-
-
-
-
-
-
 
 /////////////////////////////////////////////////////////////////////////////////////
 //---------------------------------------------------------------------------------//
@@ -228,6 +230,7 @@ begin
     .ICMP_PING_Source_CLK       (Source_PHY_TX_CLK                  ),
     .ICMP_PING_Source_TRDY      (wICMP_PING_Core_TRDY               ),
     .ICMP_PING_Source_TVALID    (wICMP_PING_Core_TVALID             ),
+    .ICMP_PING_Source_TERROR    (wICMP_PING_Core_TERROR             ),
     .ICMP_PING_Source_TLAST     (wICMP_PING_Core_TLAST              ),
     .ICMP_PING_Source_TDATA     (wICMP_PING_Core_TDATA              )
     );
@@ -235,6 +238,7 @@ end
 else 
 begin
     assign wICMP_PING_Core_TVALID =0;
+    assign wICMP_PING_Core_TERROR =0;
     assign wICMP_PING_Core_TLAST  =0;
     assign wICMP_PING_Core_TDATA  =0;
 end

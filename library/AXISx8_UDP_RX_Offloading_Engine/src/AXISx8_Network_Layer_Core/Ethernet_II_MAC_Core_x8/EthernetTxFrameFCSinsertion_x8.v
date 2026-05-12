@@ -30,11 +30,13 @@ parameter INPUT_INVERCE = 0
 
 	output  wire       FCSinsertion_Sink_Rdy, 
 	input   wire       FCSinsertion_Sink_Val, 
+	input   wire       FCSinsertion_Sink_Err, 
 	input   wire       FCSinsertion_Sink_EoF, 
 	input   wire [7:0] FCSinsertion_Sink_Dat,
 	
 	input   wire       FCSinsertion_Source_Rdy,
 	output 	reg        FCSinsertion_Source_Val=0,
+	output 	reg        FCSinsertion_Source_Err=0,
 	output 	reg        FCSinsertion_Source_EoF=0,
     output  reg [7:0]  FCSinsertion_Source_Dat=0
  );
@@ -81,6 +83,8 @@ if (FCSinsertion_Sink_Val&FCSinsertion_Sink_EoF&FCSinsertion_Source_Rdy) FCS_Val
 
 if (FCSinsertion_Source_Rdy) FCSinsertion_Source_Val<=FCSinsertion_Sink_Val||(FCS_ValCounter!=0);                 
 if (FCSinsertion_Source_Rdy&&FCSinsertion_Sink_Val) FCSinsertion_Source_Dat<=FCSinsertion_Sink_Dat; else if (FCSinsertion_Source_Rdy) FCSinsertion_Source_Dat<=wCRC_out[7:0];    
+if (FCSinsertion_Source_Rdy&&FCSinsertion_Sink_Val) FCSinsertion_Source_Err<=FCSinsertion_Sink_Err; else if (FCSinsertion_Source_Rdy) FCSinsertion_Source_Err<=1'b0; 
+
 if (FCSinsertion_Source_Rdy) FCSinsertion_Source_EoF <= (FCS_ValCounter==1);
 end 
 
