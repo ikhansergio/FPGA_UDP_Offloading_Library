@@ -142,10 +142,11 @@ AXIS_Width_Up_Converter
 //(* KEEP = "TRUE" *)reg [16-1:0] ICMP_CheckSUM_CalkRes=0;
 
 //(* KEEP = "TRUE" *) reg [32-1:0] ICMP_PING_CheckSUM_FullPacket=0;
-(* KEEP = "TRUE" *)wire [32-1:0]wICMP_PING_CheckSUM_FullPacket;
+//(* KEEP = "TRUE" *)wire [32-1:0]wICMP_PING_CheckSUM_FullPacket;
 
-(* KEEP = "TRUE" *)reg [17-1:0] ICMP_PING_CheckSUM_Sub =0;
-(* KEEP = "TRUE" *)reg [32-1:0] ICMP_PING_CheckSUM_Reply=0;
+//(* KEEP = "TRUE" *)reg [17-1:0] ICMP_PING_CheckSUM_Sub =0;
+//(* KEEP = "TRUE" *)reg [32-1:0] ICMP_PING_CheckSUM_Reply=0;
+(* KEEP = "TRUE" *)wire [32-1:0] wICMP_PING_CheckSUM_Reply;
 
 (* KEEP = "TRUE" *)reg [ 1-1:0] ICMP_PING_TypeFlag=0;
 (* KEEP = "TRUE" *)reg [ 1-1:0] ICMP_PING_CodeFlag=0;
@@ -168,13 +169,13 @@ AXIS_Width_Up_Converter
 
 
  (* KEEP_HIERARCHY = "TRUE" *)
- AXIS32_PayloadCheckSum AXIS32_PayloadCheckSum_inst
+ ICMP_PING_CheckSum      ICMP_PING_CheckSum_inst
 (
 .CLK                    (Sink_CLK   ),
 .TFIRST                 (wICMP_Core_TFIRST_x32),
 .TVALID                 (wICMP_Core_TVALID_x32),
 .TDATA                  (wICMP_Core_TDATA_x32),
-.CheckSUM               (wICMP_PING_CheckSUM_FullPacket)
+.CheckSUM               (wICMP_PING_CheckSUM_Reply)
 );
 
 always @(posedge Sink_CLK)
@@ -184,7 +185,7 @@ begin
 	       else if (wICMP_Core_TVALID_x32&&(ICMP_PING_RxData_Length_Counter>BufferSize)) ICMP_PING_RxData_Length_Counter <= ICMP_PING_RxData_Length_Counter;    
 	           else if (wICMP_Core_TVALID_x32) ICMP_PING_RxData_Length_Counter <= ICMP_PING_RxData_Length_Counter + wICMP_Core_Byte_COUNT_x32;  
 
-    if (wICMP_Core_TVALID_x32 && wICMP_Core_TFIRST_x32) ICMP_PING_CheckSUM_Sub <= wICMP_Core_TDATA_x32[32-1:16] + wICMP_Core_TDATA_x32[16-1:0 ];
+ //   if (wICMP_Core_TVALID_x32 && wICMP_Core_TFIRST_x32) ICMP_PING_CheckSUM_Sub <= wICMP_Core_TDATA_x32[32-1:16] + wICMP_Core_TDATA_x32[16-1:0 ];
 
 //	if (wICMP_Core_TVALID_x32 && wICMP_Core_TFIRST_x32) ICMP_CheckSUM_Packet_L <= {16'h00,wICMP_Core_TDATA_x32[16-1:0 ]}; 
 //		else if (wICMP_Core_TVALID_x32) ICMP_CheckSUM_Packet_L <=ICMP_CheckSUM_Packet_L + {16'h00,wICMP_Core_TDATA_x32[16-1:0 ]};   
@@ -195,7 +196,7 @@ begin
 	//ICMP_PING_CheckSUM_FullPacket    <=  ICMP_CheckSUM_Packet_L        + ICMP_CheckSUM_Packet_H;
 
 //	ICMP_PING_CheckSUM_Reply         <=  ICMP_PING_CheckSUM_FullPacket - ICMP_PING_CheckSUM_Sub;
-    ICMP_PING_CheckSUM_Reply         <= wICMP_PING_CheckSUM_FullPacket - ICMP_PING_CheckSUM_Sub;
+//    ICMP_PING_CheckSUM_Reply         <= wICMP_PING_CheckSUM_FullPacket - ICMP_PING_CheckSUM_Sub;
 
 
 if (wICMP_Core_TFIRST_x32&&wICMP_Core_TVALID_x32) ICMP_PING_TypeFlag <= (wICMP_Core_TDATA_x32[31:24] == 8'h8);
@@ -326,10 +327,7 @@ wDataLength_Rd <=  ICMP_PING_RxData_Length_Counter;
         ICMP_PING_Payload_RdRAM_Pointer <=16'hFFFF;
         
         Tx_MAC_FrameBody_ByteCounter                <=2;
-        //TX_SwitchREG_Decoder                        <=0;
-//        TX_SwitchREG_Ethernet_II_External_MAC       <= MAC_REMOTE_ADDR [39:32] ;
-        
-        //Tx_MAC_FrameBody_TDATA                      <= MAC_REMOTE_ADDR_IN [47:40] ;
+
         Tx_MAC_FrameBody_VALID                      <=1'b1;
         Tx_MAC_FrameBody_TLAST                      <=1'b0;
 
@@ -423,12 +421,11 @@ IPv4_Header_Generator_inst
 (* KEEP_HIERARCHY = "TRUE" *)
 ICMP_PING_IPv4_Header_Generator_x8  ICMP_PING_IPv4_Header_Generator_x8_inst
 (
-.CLK                                (ICMP_PING_Source_CLK                   ),
-//.ICMP_PING_TRY                      (ICMP_PING_Source_TRDY                  ),
-.ICMP_PING_Position                 (Tx_MAC_FrameBody_ByteCounter           ),
-.ICMP_PING_CheckSUM_Reply           (ICMP_PING_CheckSUM_Reply               ),
-.ICMP_PING_Identifier               (ICMP_PING_Req_Header_Identifier        ),
-.ICMP_PING_Sequence_Number          (ICMP_PING_Req_Header_SequenceNumber    ),
+.CLK                                ( ICMP_PING_Source_CLK                  ),
+.ICMP_PING_Position                 ( Tx_MAC_FrameBody_ByteCounter          ),
+.ICMP_PING_CheckSUM_Reply           (wICMP_PING_CheckSUM_Reply              ),
+.ICMP_PING_Identifier               ( ICMP_PING_Req_Header_Identifier       ),
+.ICMP_PING_Sequence_Number          ( ICMP_PING_Req_Header_SequenceNumber   ),
 
 .ICMP_PING_Header                   (wTX_SwitchREG_Ethernet_II_ICMP_PING    )
 );
