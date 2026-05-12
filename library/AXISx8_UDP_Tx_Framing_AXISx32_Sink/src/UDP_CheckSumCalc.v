@@ -23,17 +23,24 @@
 //SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-module ICMP_PING_CheckSum
+module UDP_CheckSumCalc
 (
-input wire            CLK,
-input wire   [ 1-1:0] TFIRST,
-input wire   [ 1-1:0] TVALID,
-input wire   [32-1:0] TDATA,
-output reg   [32-1:0] CheckSUM=0
+input  wire          CLK,
+input  wire [ 1-1:0] TFIRST,
+input  wire [ 1-1:0] TVALID,
+input  wire [32-1:0] TDATA,
+input  wire [16-1:0] IP4_DataLength_IN,
+input  wire [32-1:0] IP4_LOCAL_ADDR_IN,
+input  wire [32-1:0] IP4_REMOTE_ADDR_IN,
+output wire [16-1:0] CheckSUM_UDP
 );
 
-(* KEEP = "TRUE" *)reg  [17-1:0] ICMP_PING_CheckSUM_Sub =0;
-(* KEEP = "TRUE" *)wire [32-1:0]wICMP_PING_CheckSUM_FullPacket;
+(* keep = "true" *) reg [18-1:0] UDP_CheckSUM_IP4_SUM               =0;
+(* keep = "true" *) reg [20-1:0] UDP_CheckSUM_IP4_PseudoHeader      =0;
+(* keep = "true" *) reg [32-1:0] UDP_CheckSUM_FULL                  =0;
+
+
+(* KEEP = "TRUE" *)wire [32-1:0]wUDP_CheckSUM_Data;
  (* KEEP_HIERARCHY = "TRUE" *)
  AXIS32_PayloadCheckSum AXIS32_PayloadCheckSum_inst
 (
@@ -41,13 +48,21 @@ output reg   [32-1:0] CheckSUM=0
 .TFIRST                 (TFIRST),
 .TVALID                 (TVALID),
 .TDATA                  (TDATA),
-.CheckSUM               (wICMP_PING_CheckSUM_FullPacket)
+.CheckSUM               (wUDP_CheckSUM_Data)
 );
 
 always @(posedge CLK) 
 begin
-if (TVALID && TFIRST) ICMP_PING_CheckSUM_Sub <= TDATA[32-1:16] + TDATA[16-1:0 ];
-CheckSUM<= wICMP_PING_CheckSUM_FullPacket - ICMP_PING_CheckSUM_Sub;
+    UDP_CheckSUM_IP4_SUM            <=  {2'b00,IP4_LOCAL_ADDR_IN  [16-1: 0]   }   +   {2'b00,IP4_LOCAL_ADDR_IN  [32-1:16]} 
+                                            + {2'b00,IP4_REMOTE_ADDR_IN  [16-1: 0]  }   +   {2'b00,IP4_REMOTE_ADDR_IN  [32-1:16]};
+	UDP_CheckSUM_IP4_PseudoHeader   <=  {2'b0,UDP_CheckSUM_IP4_SUM      }   +   { 4'b0, IP4_DataLength_IN}  + 20'd17;
+
+    UDP_CheckSUM_FULL               <=  wUDP_CheckSUM_Data                   +   {12'b0, UDP_CheckSUM_IP4_PseudoHeader }; 	
+    
+    //CheckSUM                        <=  wUDP_CheckSUM_Data                   +   {12'b0, UDP_CheckSUM_IP4_PseudoHeader }; 
 end
 
+assign CheckSUM_UDP = ~(UDP_CheckSUM_FULL[16-1: 0] + UDP_CheckSUM_FULL[32-1:16]) ;
+
 endmodule
+
