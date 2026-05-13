@@ -29,8 +29,8 @@ module AXISx8_UDP_Framing_AXISx32_Sink
     parameter PADDING_INSERTION = "YES" ,  // "YES" or "NO"
     parameter DROP_IF_OVERFLOW  = "YES" ,  // "YES" or "NO"
     parameter UDP_CHECKSUM_CALK = "YES" ,  // "YES" or "NO"
-    parameter ETHERNET_MTU = 1*1024     ,
-    parameter BUFFER_COUNT_1K = 3   
+    parameter BUFFER_COUNT_1K = 3       ,
+    parameter ETHERNET_MTU = 1*1024      
 ) 
 (     
     input  wire                     Sink_CLK,
