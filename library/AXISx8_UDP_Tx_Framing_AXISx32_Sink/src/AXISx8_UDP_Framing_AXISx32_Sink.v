@@ -28,6 +28,7 @@ module AXISx8_UDP_Framing_AXISx32_Sink
     parameter ARCH = "XLX_ULTRASCALE"   ,
     parameter PADDING_INSERTION = "YES" ,  // "YES" or "NO"
     parameter DROP_IF_OVERFLOW  = "YES" ,  // "YES" or "NO"
+    parameter UDP_CHECKSUM_CALK = "YES" ,  // "YES" or "NO"
     parameter ETHERNET_MTU = 1*1024     ,
     parameter BUFFER_COUNT_1K = 3   
 ) 
@@ -123,7 +124,7 @@ reg [16-1:0] RxDataLengthCounter=0;
 reg [16-1:0] RxDataLengthCounter_D1=0;
 reg [16-1:0] RxDataLengthCounter_D2=0;
 
-(* keep = "true" *) wire [32-1:0] wUDP_CheckSUM_Data;
+//(* keep = "true" *) wire [32-1:0] wUDP_CheckSUM_Data;
 
 
 
@@ -164,6 +165,9 @@ Gray2BinRegisteredInOut #( .WIDTH(BitWidth(BufferSize)) ) Gray2BinRegisteredInOu
  ); 
  
  (* keep = "true" *) wire[16-1:0]wCheckSUM_UDP;
+ if (UDP_CHECKSUM_CALK=="YES")
+ begin
+ (* KEEP_HIERARCHY = "TRUE" *)
  UDP_CheckSumCalc            UDP_CheckSumCalc_inst
 (
 .CLK                         ( Sink_CLK             ),
@@ -171,21 +175,16 @@ Gray2BinRegisteredInOut #( .WIDTH(BitWidth(BufferSize)) ) Gray2BinRegisteredInOu
 .TVALID                      ( Sink_TVALID          ),
 .TDATA                       (wSink_TDATA           ),
 .IP4_DataLength_IN           ( RxDataLengthCounter  ),
+.UDP_LOCAL_PORT_IN           ( UDP_LOCAL_PORT_IN    ),
+.UDP_REMOTE_PORT_IN          ( UDP_REMOTE_PORT_IN   ),
 .IP4_LOCAL_ADDR_IN           ( IP4_LOCAL_ADDR_IN    ),
 .IP4_REMOTE_ADDR_IN          ( IP4_REMOTE_ADDR_IN   ),
 .CheckSUM_UDP                (wCheckSUM_UDP         )
 );
- 
- 
-// (* KEEP_HIERARCHY = "TRUE" *)
-// AXIS32_PayloadCheckSum AXIS32_PayloadCheckSum_inst
-//(
-//.CLK                    (Sink_CLK   ),
-//.TFIRST                 (DATA_TFIRST),
-//.TVALID                 (Sink_TVALID),
-//.TDATA                  (wSink_TDATA),
-//.CheckSUM               (wUDP_CheckSUM_Data)
-//);
+end else
+begin
+assign wCheckSUM_UDP = 16'h0;
+end
  
 always @(posedge Sink_CLK) WrOverflow_n  <= !(( WrBufferElements > (BufferSize- 8))||wCommandFIFO_Full);  
 
@@ -221,14 +220,7 @@ if (wWrDataRDY)
 		else if (Sink_TVALID&&(RxDataLengthCounter>MAX_UDP_PayloadSize)) RxDataLengthCounter <= RxDataLengthCounter;  
 			else if (Sink_TVALID) RxDataLengthCounter <= RxDataLengthCounter + wDATA_COUNT;  
 
-//    UDP_CheckSUM_IP4_SUM            <=  {2'b00,IP4_LOCAL_ADDR_IN  [16-1: 0]   }   +   {2'b00,IP4_LOCAL_ADDR_IN  [32-1:16]} 
-//                                            + {2'b00,IP4_REMOTE_ADDR_IN  [16-1: 0]  }   +   {2'b00,IP4_REMOTE_ADDR_IN  [32-1:16]};
-	
 
-
-    
-	
-	
 	RxDataLengthCounter_D1 <= RxDataLengthCounter;
 	RxDataLengthCounter_D2 <= RxDataLengthCounter_D1;
 	
@@ -253,6 +245,7 @@ end
 wire [16-1:0]    wDataLength_Rd   ;
 wire [16-1:0]    wUDP_Checksum_Rd ;
 
+
 wire             wCommandFOFO_Empty;
 
 wire [32-1:0]    wRdData;
@@ -271,11 +264,10 @@ UDP_CommandFIFOx36          UDP_CommandFIFOx36_inst
 .RdEna      (ReadDonePulse),
 .RdEpt      (wCommandFOFO_Empty),
 .RdPgF      (wCommandFIFO_Full),
-//.RdDat      ({ wUDP_Checksum_Rd, wDataLength_Rd })
-.RdDat      ( wDataLength_Rd )
+.RdDat      ({ wUDP_Checksum_Rd, wDataLength_Rd })
 );
 
-assign wUDP_Checksum_Rd =0;
+
 
 (* KEEP_HIERARCHY = "TRUE" *)
 UDP_RAM_DataBuffer_x32 

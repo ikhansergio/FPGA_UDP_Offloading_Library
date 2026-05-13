@@ -30,11 +30,14 @@ input  wire [ 1-1:0] TFIRST,
 input  wire [ 1-1:0] TVALID,
 input  wire [32-1:0] TDATA,
 input  wire [16-1:0] IP4_DataLength_IN,
+input  wire [16-1:0] UDP_LOCAL_PORT_IN,
+input  wire [16-1:0] UDP_REMOTE_PORT_IN,
 input  wire [32-1:0] IP4_LOCAL_ADDR_IN,
 input  wire [32-1:0] IP4_REMOTE_ADDR_IN,
 output wire [16-1:0] CheckSUM_UDP
 );
 
+(* keep = "true" *) reg [20-1:0] UDP_CheckSUM_UDP_HEADER            =0;
 (* keep = "true" *) reg [18-1:0] UDP_CheckSUM_IP4_SUM               =0;
 (* keep = "true" *) reg [20-1:0] UDP_CheckSUM_IP4_PseudoHeader      =0;
 (* keep = "true" *) reg [32-1:0] UDP_CheckSUM_FULL                  =0;
@@ -47,17 +50,19 @@ output wire [16-1:0] CheckSUM_UDP
 .CLK                    (CLK   ),
 .TFIRST                 (TFIRST),
 .TVALID                 (TVALID),
-.TDATA                  (TDATA),
+.TDATA                  ({TDATA[7:0],TDATA[15:8],TDATA[23:16],TDATA[31:24]}),
 .CheckSUM               (wUDP_CheckSUM_Data)
 );
 
 always @(posedge CLK) 
 begin
+    UDP_CheckSUM_UDP_HEADER         <=  {4'b0,UDP_LOCAL_PORT_IN} + {4'b0,UDP_REMOTE_PORT_IN} 
+                                            +{ 4'b0, IP4_DataLength_IN}  + 20'd8; 
     UDP_CheckSUM_IP4_SUM            <=  {2'b00,IP4_LOCAL_ADDR_IN  [16-1: 0]   }   +   {2'b00,IP4_LOCAL_ADDR_IN  [32-1:16]} 
                                             + {2'b00,IP4_REMOTE_ADDR_IN  [16-1: 0]  }   +   {2'b00,IP4_REMOTE_ADDR_IN  [32-1:16]};
-	UDP_CheckSUM_IP4_PseudoHeader   <=  {2'b0,UDP_CheckSUM_IP4_SUM      }   +   { 4'b0, IP4_DataLength_IN}  + 20'd17;
+	UDP_CheckSUM_IP4_PseudoHeader   <=  {2'b0,UDP_CheckSUM_IP4_SUM      }   +   { 4'b0, IP4_DataLength_IN}  + 20'd8  + 20'd17;
 
-    UDP_CheckSUM_FULL               <=  wUDP_CheckSUM_Data                   +   {12'b0, UDP_CheckSUM_IP4_PseudoHeader }; 	
+    UDP_CheckSUM_FULL               <=  wUDP_CheckSUM_Data +  {12'b0, UDP_CheckSUM_IP4_PseudoHeader } +  {12'b0, UDP_CheckSUM_UDP_HEADER } ; 	
     
     //CheckSUM                        <=  wUDP_CheckSUM_Data                   +   {12'b0, UDP_CheckSUM_IP4_PseudoHeader }; 
 end
