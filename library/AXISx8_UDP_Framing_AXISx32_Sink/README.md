@@ -20,7 +20,7 @@ UDP_CHECKSUM_CALK -  Supports calculation of UDP datagram header checksum.
 Valid values:
 *      "YES" or "NO"
   
-BUFFER_COUNT_1K -  UDP buffer size. This parameter specifies how many 1024-byte RAM blocks are required to build the entire buffer. For example, if you need an 8192-byte buffer, you would specify 8.
+BUFFER_COUNT_1K -  UDP buffer size. This parameter specifies how many 1024-byte RAM blocks are required to build the entire buffer. For example, if you need an 8192-byte buffer, specify 8.
 
 Valid values:
 *      1, 2, 3, .., 14, 15, 16.
