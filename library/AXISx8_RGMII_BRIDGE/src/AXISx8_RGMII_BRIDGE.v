@@ -56,17 +56,17 @@ output  wire          RGMII_TXC,
 output  wire          RGMII_TX_CTL,
 output  wire [4-1:0]  RGMII_TXD,
 
-output wire           Source_CLK    ,
-output wire           Source_TVALID ,
-output wire           Source_TERROR ,
-output wire           Source_TFIRST ,
-output wire           Source_TLAST  ,
-output wire  [8-1:0]  Source_TDATA  ,
+output wire           Source_PHY_CLK    ,
+output wire           Source_PHY_TVALID ,
+output wire           Source_PHY_TERROR ,
+output wire           Source_PHY_TFIRST ,
+output wire           Source_PHY_TLAST  ,
+output wire  [8-1:0]  Source_PHY_TDATA  ,
 
-input   wire          Sink_TVALID,
-input   wire          Sink_TERROR,
-output  wire          Sink_TREADY,
-input   wire [8-1:0]  Sink_TDATA
+input   wire          Sink_PHY_TVALID,
+input   wire          Sink_PHY_TERROR,
+output  wire          Sink_PHY_TREADY,
+input   wire [8-1:0]  Sink_PHY_TDATA
 );
 
 (* KEEP_HIERARCHY = "TRUE" *)
@@ -87,12 +87,12 @@ RGMII_Rx_To_AXISx8
 .RGMII_RX_CTL               (RGMII_RX_CTL   ),
 .RGMII_RXD                  (RGMII_RXD      ),
 
-.Source_CLK                 (Source_CLK     ),
-.Source_TVALID              (Source_TVALID  ),
-.Source_TERROR              (Source_TERROR  ),
-.Source_TFIRST              (Source_TFIRST  ),
-.Source_TLAST               (Source_TLAST   ),
-.Source_TDATA               (Source_TDATA   )
+.Source_CLK                 (Source_PHY_CLK     ),
+.Source_TVALID              (Source_PHY_TVALID  ),
+.Source_TERROR              (Source_PHY_TERROR  ),
+.Source_TFIRST              (Source_PHY_TFIRST  ),
+.Source_TLAST               (Source_PHY_TLAST   ),
+.Source_TDATA               (Source_PHY_TDATA   )
 );
 
 (* KEEP_HIERARCHY = "TRUE" *)
@@ -112,10 +112,10 @@ RGMII_TX_PHY_INST
 
 .RGMII_TXC_REFERENCE        (RGMII_TXC_REFERENCE        ),
 .RGMII_TXD_REFERENCE        (RGMII_TXD_REFERENCE        ),
-.RGMII_TX_VAL               (Sink_TVALID                ),
-.RGMII_TX_Err               (Sink_TERROR                ),
-.RGMII_TX_DAT               (Sink_TDATA                 ),
-.RGMII_TX_RDY               (Sink_TREADY                ),
+.RGMII_TX_VAL               (Sink_PHY_TVALID            ),
+.RGMII_TX_Err               (Sink_PHY_TERROR            ),
+.RGMII_TX_DAT               (Sink_PHY_TDATA             ),
+.RGMII_TX_RDY               (Sink_PHY_TREADY            ),
 
 .RGMII_TXC                  (RGMII_TXC                  ),
 .RGMII_TX_CTL               (RGMII_TX_CTL               ),
