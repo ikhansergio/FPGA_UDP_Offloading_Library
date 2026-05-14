@@ -270,15 +270,15 @@ UDP_CommandFIFOx36          UDP_CommandFIFOx36_inst
 
 
 (* KEEP_HIERARCHY = "TRUE" *)
-UDP_RAM_DataBuffer_x32 
+UDP_RAM_DataBuffer_x36 
 #(
 .ARCH ("XLX_ULTRASCALE" ),
 .BUFFER_COUNT_1K(BUFFER_COUNT_1K)
-) UDP_RAM_DataBuffer_x32_inst
+) UDP_RAM_DataBuffer_x36_inst
 (
 . WrClk       (Sink_CLK     ),
 . WrEna       (wWrDataRDY   ),
-. WrWea       ({4{WrWea}}   ),
+. WrWea       (WrWea        ),
 . WrAddress   (WrPointer    ),
 . WrData      (WrData       ),
 

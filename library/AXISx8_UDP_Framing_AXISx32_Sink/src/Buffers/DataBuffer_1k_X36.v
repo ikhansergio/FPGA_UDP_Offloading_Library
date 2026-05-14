@@ -23,12 +23,12 @@
 //SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-module X32_1k_DataBuffer
+module DataBuffer_1k_X36
 #(parameter ARCH = "XLX_ULTRASCALE")
 (
 input  wire          WrClk       ,
 input  wire          WrEna       ,
-input  wire [ 3:0]   WrWea       ,
+input  wire [ 0:0]   WrWea       ,
 input  wire [ 7:0]   WrAddress   ,
 input  wire [31:0]   WrData      ,
 
@@ -42,7 +42,7 @@ output wire [31:0]   RdData
     if (ARCH == "XLX_SERIES7")
     begin
         (* KEEP_HIERARCHY = "TRUE" *)
-        XLX_ULTRASCALE_x32_1k_BLK XLX_ULTRASCALE_x32_1k_BLK_inst  
+        XLX_x36_1k_BLK      XLX_x36_1k_BLK_inst  
         (
         .clka              (WrClk           ),
         .ena               (WrEna           ),
@@ -58,7 +58,7 @@ output wire [31:0]   RdData
     end else if (ARCH == "XLX_ULTRASCALE")
         begin
         (* KEEP_HIERARCHY = "TRUE" *)
-        XLX_ULTRASCALE_x32_1k_BLK XLX_ULTRASCALE_x32_1k_BLK_inst   
+        XLX_x36_1k_BLK      XLX_x36_1k_BLK_inst   
         (
         .clka              (WrClk           ),
         .ena               (WrEna           ),
@@ -75,7 +75,6 @@ output wire [31:0]   RdData
     begin
 
     end
-
 
 
 endmodule
