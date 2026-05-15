@@ -4,7 +4,7 @@
     "xci_name": "XLX_x36_512_DIST",
     "component_reference": "xilinx.com:ip:dist_mem_gen:8.0",
     "ip_revision": "13",
-    "gen_directory": "../../../../../../../../../FPGA_UDP_Offloading_Library.gen/sources_1/ip/XLX_x36_512_DIST",
+    "gen_directory": "../../../../../../../../FPGA_UDP_Offloading_Library.gen/sources_1/ip/XLX_x36_512_DIST",
     "parameters": {
       "component_parameters": {
         "depth": [ { "value": "128", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
@@ -85,7 +85,7 @@
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
         "IPREVISION": [ { "value": "13" } ],
         "MANAGED": [ { "value": "TRUE" } ],
-        "OUTPUTDIR": [ { "value": "../../../../../../../../../FPGA_UDP_Offloading_Library.gen/sources_1/ip/XLX_x36_512_DIST" } ],
+        "OUTPUTDIR": [ { "value": "../../../../../../../../FPGA_UDP_Offloading_Library.gen/sources_1/ip/XLX_x36_512_DIST" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
         "SWVERSION": [ { "value": "2023.1" } ],
