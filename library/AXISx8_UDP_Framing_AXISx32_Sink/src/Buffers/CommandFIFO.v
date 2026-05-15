@@ -38,7 +38,6 @@ module UDP_CommandFIFOx36
 
 );
    
-    
     XLX_LUT_FIFO_36x64 XLX_LUT_FIFO_36x64_inst (
     .rst            (WrRst),
     .wr_clk         (WrClk),

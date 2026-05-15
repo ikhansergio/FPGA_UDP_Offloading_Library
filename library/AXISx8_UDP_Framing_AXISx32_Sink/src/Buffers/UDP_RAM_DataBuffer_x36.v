@@ -32,12 +32,12 @@ module UDP_RAM_DataBuffer_x36
 input  wire                                             WrClk       ,
 input  wire                                             WrEna       ,
 input  wire [ 1-1:0]                                    WrWea       ,
-input  wire [UDP_RAM_BitWidth(BUFFER_COUNT_1K*256)-1:0] WrAddress   ,
+input  wire [UDP_RAM_BitWidth(BUFFER_COUNT_1K)-1:0]     WrAddress   ,
 input  wire [36-1:0]                                    WrData      ,
 
 input  wire                                             RdClk       ,
 input  wire                                             RdEna       ,
-input  wire [UDP_RAM_BitWidth(BUFFER_COUNT_1K*256)-1:0] RdAddress   ,
+input  wire [UDP_RAM_BitWidth(BUFFER_COUNT_1K)-1:0]     RdAddress   ,
 output wire [36-1:0]                                    RdData   
 );
 

@@ -30,12 +30,12 @@ input  wire          WrClk       ,
 input  wire          WrEna       ,
 input  wire [ 0:0]   WrWea       ,
 input  wire [ 6:0]   WrAddress   ,
-input  wire [31:0]   WrData      ,
+input  wire [35:0]   WrData      ,
 
 input  wire          RdClk       ,
 input  wire          RdEna       ,
 input  wire [ 6:0]   RdAddress   ,
-output wire [31:0]   RdData     
+output wire [35:0]   RdData     
 
 );
 

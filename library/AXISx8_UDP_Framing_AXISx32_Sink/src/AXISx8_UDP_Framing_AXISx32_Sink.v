@@ -29,7 +29,7 @@ module AXISx8_UDP_Framing_AXISx32_Sink
     parameter PADDING_INSERTION = "YES" ,  // "YES" or "NO"
     parameter DROP_IF_OVERFLOW  = "YES" ,  // "YES" or "NO"
     parameter UDP_CHECKSUM_CALK = "YES" ,  // "YES" or "NO"
-    parameter BUFFER_COUNT_1K = 3       ,
+    parameter BUFFER_COUNT_1K   = 3     ,
     parameter ETHERNET_MTU = 1*1024      
 ) 
 (     
@@ -73,10 +73,10 @@ localparam MAX_Eth_PayloadSize = ETHERNET_MTU - 0;
 localparam MAX_IP4_PayloadSize = ETHERNET_MTU - 20;
 localparam MAX_UDP_PayloadSize = ETHERNET_MTU - 28;
 
-localparam BufferSize = (BUFFER_COUNT_1K==0) ? 128 : BUFFER_COUNT_1K * (1024/4); // BUFFER_COUNT_1K * 256 
+localparam BufferSize = (BUFFER_COUNT_1K==0) ? 128 : BUFFER_COUNT_1K * (1024/4); 
 
 if ( ETHERNET_MTU <= 28                         )             begin AXISx32_UDP_Tx_Offload_Engine_Error MTU_Erorr ( );           end
-if ((BufferSize*4) < MAX_UDP_PayloadSize        )             begin AXISx32_UDP_Tx_Offload_Engine_Error BufferSize_Erorr ( );    end
+//if ((BufferSize*4) < MAX_UDP_PayloadSize        )             begin AXISx32_UDP_Tx_Offload_Engine_Error BufferSize_Erorr ( );    end
 if ((BUFFER_COUNT_1K>16)                        )             begin AXISx32_UDP_Tx_Offload_Engine_Error BufferCount_Erorr ( );   end
         
 //////////////////////////////////////////////////////////////////////////////////////

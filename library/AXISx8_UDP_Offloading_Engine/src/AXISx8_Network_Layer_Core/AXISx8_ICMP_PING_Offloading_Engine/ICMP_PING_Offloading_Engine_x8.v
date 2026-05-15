@@ -449,11 +449,30 @@ ICMP_UDP_Frame_Header_Multiplexer   ICMP_Frame_Header_Multiplexer_inst
 .Tx_MAC_FrameBody_TDATA             (wTx_MAC_FrameBody_TDATA                )
 );
 
+
+
+
+
+//(* KEEP_HIERARCHY = "TRUE" *)
+//UDP_512_DataBuffer_x36  #(.ARCH("XLX_ULTRASCALE")) UDP_512_DataBuffer_x36_inst
+//(
+//.WrClk       ( Sink_CLK                         ),
+//.WrEna       (wICMP_Core_TVALID_x32             ),
+//.WrWea       ( ICMP_PING_WrWea                  ),
+//.WrAddress   ( ICMP_PING_Payload_WrRAM_Pointer  ),
+//.WrData      (wICMP_Core_TDATA_x32              ),
+
+//.RdClk       ( ICMP_PING_Source_CLK             ),
+//.RdEna       ( 1'b1                             ),
+//.RdAddress   ( ICMP_PING_Payload_RdRAM_Pointer  ),
+//.RdData      (wICMP_PING_Payload_WrRAM_Data     )
+//);  
+
 (* KEEP_HIERARCHY = "TRUE" *)
 ICMP_PING_RAM_DataBuffer_x32 
 #(
 .ARCH ("XLX_ULTRASCALE" ),
-.BUFFER_COUNT_1K(1)
+.BUFFER_COUNT_1K(0)
 ) ICMP_PING_RAM_DataBuffer_x32_inst
 (
 . WrClk                             ( Sink_CLK                            ),
