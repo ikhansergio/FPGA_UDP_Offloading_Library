@@ -27,14 +27,14 @@ module UDP_3k_DataBuffer_x36
 (
 input  wire                                 WrClk       ,
 input  wire                                 WrEna       ,
-input  wire [ 1-1:0]                        WrWea       ,
+input  wire [ 0:0]                          WrWea       ,
 input  wire [RAM_AddrBitWidth(4*256)-1:0]   WrAddress   ,
-input  wire [32-1:0]                        WrData      ,
+input  wire [35:0]                          WrData      ,
 
 input  wire                                 RdClk       ,
 input  wire                                 RdEna       ,
 input  wire [RAM_AddrBitWidth(4*256)-1:0]   RdAddress   ,
-output reg  [32-1:0]                        RdData    
+output reg  [35:0]                          RdData    
 );
 
 function integer RAM_AddrBitWidth (input integer Value);                  
@@ -49,19 +49,20 @@ function integer RAM_AddrBitWidth (input integer Value);
         end                                                          
 endfunction 
 
-wire [32-1:0] wRdData0;
-wire [32-1:0] wRdData1;
-wire [32-1:0] wRdData2;
+wire [35:0] wRdData0;
+wire [35:0] wRdData1;
 
-wire [ 1-1:0] wWrWeaBank0;
-wire [ 1-1:0] wWrWeaBank1;
-wire [ 1-1:0] wWrWeaBank2;
-assign wWrWeaBank0  [ 1-1:0]  = (WrAddress[9:8]==2'b00) ? WrWea : 1'b0; 
-assign wWrWeaBank1  [ 1-1:0]  = (WrAddress[9:8]==2'b01) ? WrWea : 1'b0; 
-assign wWrWeaBank2  [ 1-1:0]  = (WrAddress[9:8]==2'b10) ? WrWea : 1'b0; 
 
-reg  [ 2-1:0] ReadBankSel_D0=0;
-reg  [ 2-1:0] ReadBankSel_D1=0;
+wire [ 0:0] wWrWeaBank0;
+wire [ 0:0] wWrWeaBank1;
+
+assign wWrWeaBank0  [ 0:0]  = (WrAddress[9:9]==1'b0 ) ? WrWea : 1'b0; 
+assign wWrWeaBank1  [ 0:0]  = (WrAddress[9:8]==2'b10) ? WrWea : 1'b0; 
+
+
+
+reg  [ 1:0] ReadBankSel_D0=0;
+reg  [ 1:0] ReadBankSel_D1=0;
 
 always @(posedge RdClk)
 begin
@@ -70,25 +71,24 @@ if (RdEna)
     ReadBankSel_D0 <= RdAddress[9:8];
     ReadBankSel_D1 <= ReadBankSel_D0;
     
-    if (ReadBankSel_D1==2'b00) RdData <= wRdData0;
-        else if (ReadBankSel_D1==2'b01) RdData <= wRdData1;
-            else if (ReadBankSel_D1==2'b10) RdData <= wRdData2;
-                else if (ReadBankSel_D1==2'b11) RdData <= 0;
+    if (ReadBankSel_D1[1]==1'b0 ) RdData <= wRdData0;
+        else if (ReadBankSel_D1[1:0]==2'b10) RdData <= wRdData1;
+            else RdData <= 0;
     end
 end
 
 (* KEEP_HIERARCHY = "TRUE" *)
-DataBuffer_1k_X36 #(.ARCH(ARCH)) DataBuffer_1k_X36_inst0  
+DataBuffer_2k_X36 #(.ARCH(ARCH)) DataBuffer_2k_X36_inst0  
 (
 .WrClk             (WrClk           ),
 .WrEna             (WrEna           ),
 .WrWea             (wWrWeaBank0     ),
-.WrAddress         (WrAddress[8-1:0]),
+.WrAddress         (WrAddress[ 8:0] ),
 .WrData            (WrData          ),
 
 .RdClk             (RdClk           ),
 .RdEna             (RdEna           ),
-.RdAddress         (RdAddress[8-1:0]),
+.RdAddress         (RdAddress[ 8:0] ),
 .RdData            (wRdData0        )
 );
 
@@ -98,27 +98,14 @@ DataBuffer_1k_X36 #(.ARCH(ARCH)) DataBuffer_1k_X36_inst1
 .WrClk             (WrClk           ),
 .WrEna             (WrEna           ),
 .WrWea             (wWrWeaBank1     ),
-.WrAddress         (WrAddress[8-1:0]),
+.WrAddress         (WrAddress[ 7:0] ),
 .WrData            (WrData          ),
 
 .RdClk             (RdClk           ),
 .RdEna             (RdEna           ),
-.RdAddress         (RdAddress[8-1:0]),
+.RdAddress         (RdAddress[ 7:0] ),
 .RdData            (wRdData1        )
 );
 
-(* KEEP_HIERARCHY = "TRUE" *)
-DataBuffer_1k_X36 #(.ARCH(ARCH)) DataBuffer_1k_X36_inst2  
-(
-.WrClk             (WrClk           ),
-.WrEna             (WrEna           ),
-.WrWea             (wWrWeaBank2     ),
-.WrAddress         (WrAddress[8-1:0]),
-.WrData            (WrData          ),
 
-.RdClk             (RdClk           ),
-.RdEna             (RdEna           ),
-.RdAddress         (RdAddress[8-1:0]),
-.RdData            (wRdData2        )
-);
 endmodule

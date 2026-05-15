@@ -29,34 +29,48 @@ module UDP_RAM_DataBuffer_x36
     parameter BUFFER_COUNT_1K = 3  
  )  
 (
-input  wire                                     WrClk       ,
-input  wire                                     WrEna       ,
-input  wire [ 1-1:0]                            WrWea       ,
-input  wire [BitWidth(BUFFER_COUNT_1K*256)-1:0] WrAddress   ,
-input  wire [32-1:0]                            WrData      ,
+input  wire                                             WrClk       ,
+input  wire                                             WrEna       ,
+input  wire [ 1-1:0]                                    WrWea       ,
+input  wire [UDP_RAM_BitWidth(BUFFER_COUNT_1K*256)-1:0] WrAddress   ,
+input  wire [36-1:0]                                    WrData      ,
 
-input  wire                                     RdClk       ,
-input  wire                                     RdEna       ,
-input  wire [BitWidth(BUFFER_COUNT_1K*256)-1:0] RdAddress   ,
-output wire [32-1:0]                            RdData   
+input  wire                                             RdClk       ,
+input  wire                                             RdEna       ,
+input  wire [UDP_RAM_BitWidth(BUFFER_COUNT_1K*256)-1:0] RdAddress   ,
+output wire [36-1:0]                                    RdData   
 );
 
-function integer BitWidth (input integer Value);                  
-    if (Value<3)
+function integer UDP_RAM_BitWidth (input integer BUFF_COUNT);                  
+    if (BUFF_COUNT==0)
         begin
-            BitWidth = 1; 
+            UDP_RAM_BitWidth = 7; 
         end
     else 
         begin
-            Value=Value-1;                                                            
-            for(BitWidth=0; Value>0; BitWidth=BitWidth+1) Value = Value >> 1;                                                     
+            BUFF_COUNT=BUFF_COUNT*256-1;                                                            
+            for(UDP_RAM_BitWidth=0; BUFF_COUNT>0; UDP_RAM_BitWidth=UDP_RAM_BitWidth+1) BUFF_COUNT = BUFF_COUNT >> 1;                                                     
         end                                                          
 endfunction 
 
+if (BUFFER_COUNT_1K == 0 )        
+    begin
+    (* KEEP_HIERARCHY = "TRUE" *)
+    UDP_512_DataBuffer_x36  #(.ARCH(ARCH)) UDP_512_DataBuffer_x36_inst
+    (
+    .WrClk       (WrClk),
+    .WrEna       (WrEna),
+    .WrWea       (WrWea),
+    .WrAddress   (WrAddress),
+    .WrData      (WrData),
 
-localparam TestSize = BitWidth(16*1024+1);
-
-if (BUFFER_COUNT_1K == 1 )        
+    .RdClk       (RdClk),
+    .RdEna       (RdEna),
+    .RdAddress   (RdAddress),
+    .RdData      (RdData)
+    );       
+    end 
+else if (BUFFER_COUNT_1K == 1 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
     UDP_1k_DataBuffer_x36  #(.ARCH(ARCH)) UDP_1k_DataBuffer_x36_inst
@@ -192,6 +206,57 @@ else if (BUFFER_COUNT_1K == 8 )
     .RdData      (RdData)
     );       
     end
+else if (BUFFER_COUNT_1K == 9 )        
+    begin
+    (* KEEP_HIERARCHY = "TRUE" *)
+    UDP_9k_DataBuffer_x36  #(.ARCH(ARCH)) UDP_9k_DataBuffer_x36_inst
+    (
+    .WrClk       (WrClk),
+    .WrEna       (WrEna),
+    .WrWea       (WrWea),
+    .WrAddress   (WrAddress),
+    .WrData      (WrData),
+
+    .RdClk       (RdClk),
+    .RdEna       (RdEna),
+    .RdAddress   (RdAddress),
+    .RdData      (RdData)
+    );       
+    end
+else if (BUFFER_COUNT_1K == 10 )        
+    begin
+    (* KEEP_HIERARCHY = "TRUE" *)
+    UDP_10k_DataBuffer_x36  #(.ARCH(ARCH)) UDP_10k_DataBuffer_x36_inst
+    (
+    .WrClk       (WrClk),
+    .WrEna       (WrEna),
+    .WrWea       (WrWea),
+    .WrAddress   (WrAddress),
+    .WrData      (WrData),
+
+    .RdClk       (RdClk),
+    .RdEna       (RdEna),
+    .RdAddress   (RdAddress),
+    .RdData      (RdData)
+    );       
+    end
+else if (BUFFER_COUNT_1K == 11 )        
+    begin
+    (* KEEP_HIERARCHY = "TRUE" *)
+    UDP_11k_DataBuffer_x36  #(.ARCH(ARCH)) UDP_10k_DataBuffer_x36_inst
+    (
+    .WrClk       (WrClk),
+    .WrEna       (WrEna),
+    .WrWea       (WrWea),
+    .WrAddress   (WrAddress),
+    .WrData      (WrData),
+
+    .RdClk       (RdClk),
+    .RdEna       (RdEna),
+    .RdAddress   (RdAddress),
+    .RdData      (RdData)
+    );       
+    end
 else if (BUFFER_COUNT_1K == 12 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
@@ -208,7 +273,58 @@ else if (BUFFER_COUNT_1K == 12 )
     .RdAddress   (RdAddress),
     .RdData      (RdData)
     );       
-    end    
+    end
+else if (BUFFER_COUNT_1K == 13 )        
+    begin
+    (* KEEP_HIERARCHY = "TRUE" *)
+    UDP_13k_DataBuffer_x36  #(.ARCH(ARCH)) UDP_13k_DataBuffer_x36_inst
+    (
+    .WrClk       (WrClk),
+    .WrEna       (WrEna),
+    .WrWea       (WrWea),
+    .WrAddress   (WrAddress),
+    .WrData      (WrData),
+
+    .RdClk       (RdClk),
+    .RdEna       (RdEna),
+    .RdAddress   (RdAddress),
+    .RdData      (RdData)
+    );       
+    end  
+else if (BUFFER_COUNT_1K == 14 )        
+    begin
+    (* KEEP_HIERARCHY = "TRUE" *)
+    UDP_14k_DataBuffer_x36  #(.ARCH(ARCH)) UDP_14k_DataBuffer_x36_inst
+    (
+    .WrClk       (WrClk),
+    .WrEna       (WrEna),
+    .WrWea       (WrWea),
+    .WrAddress   (WrAddress),
+    .WrData      (WrData),
+
+    .RdClk       (RdClk),
+    .RdEna       (RdEna),
+    .RdAddress   (RdAddress),
+    .RdData      (RdData)
+    );       
+    end
+else if (BUFFER_COUNT_1K == 15 )        
+    begin
+    (* KEEP_HIERARCHY = "TRUE" *)
+    UDP_15k_DataBuffer_x36  #(.ARCH(ARCH)) UDP_15k_DataBuffer_x36_inst
+    (
+    .WrClk       (WrClk),
+    .WrEna       (WrEna),
+    .WrWea       (WrWea),
+    .WrAddress   (WrAddress),
+    .WrData      (WrData),
+
+    .RdClk       (RdClk),
+    .RdEna       (RdEna),
+    .RdAddress   (RdAddress),
+    .RdData      (RdData)
+    );       
+    end          
 else if (BUFFER_COUNT_1K == 16 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
@@ -228,7 +344,7 @@ else if (BUFFER_COUNT_1K == 16 )
     end    
 else  
     begin
-        RGMII_Error REFERENCE_PHY_RXC_ERROR ( );
+        UDP_Framing_Error UDP_Framing_BufferSizeError ( );
     end    
 
 endmodule

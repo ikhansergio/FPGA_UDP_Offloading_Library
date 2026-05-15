@@ -30,12 +30,12 @@ input  wire          WrClk       ,
 input  wire          WrEna       ,
 input  wire [ 0:0]   WrWea       ,
 input  wire [ 7:0]   WrAddress   ,
-input  wire [31:0]   WrData      ,
+input  wire [35:0]   WrData      ,
 
 input  wire          RdClk       ,
 input  wire          RdEna       ,
 input  wire [ 7:0]   RdAddress   ,
-output wire [31:0]   RdData     
+output wire [35:0]   RdData     
 
 );
 
@@ -73,7 +73,23 @@ output wire [31:0]   RdData
         );
     end else  // if (ARCH == "DEFAULT_LOGIC")
     begin
+    (* KEEP_HIERARCHY = "TRUE" *)
+    DataBuffer_Fabric_X36   
+    #(
+    . RAM_DEPTH ( 256 )
+    )DataBuffer_Fabric_X36_inst
+    (
+    .WrClk              (WrClk),
+    .WrEna              (WrEna),
+    .WrWea              (WrWea),
+    .WrAddress          (WrAddress),
+    .WrData             (WrData),
 
+    .RdClk              (RdClk),
+    .RdEna              (RdEna),
+    .RdAddress          (RdAddress),
+    .RdData             (RdData)   
+    );
     end
 
 

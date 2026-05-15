@@ -73,11 +73,11 @@ localparam MAX_Eth_PayloadSize = ETHERNET_MTU - 0;
 localparam MAX_IP4_PayloadSize = ETHERNET_MTU - 20;
 localparam MAX_UDP_PayloadSize = ETHERNET_MTU - 28;
 
-localparam BufferSize = BUFFER_COUNT_1K*(1024/4); // BUFFER_COUNT_1K * 256 
+localparam BufferSize = (BUFFER_COUNT_1K==0) ? 128 : BUFFER_COUNT_1K * (1024/4); // BUFFER_COUNT_1K * 256 
 
 if ( ETHERNET_MTU <= 28                         )             begin AXISx32_UDP_Tx_Offload_Engine_Error MTU_Erorr ( );           end
 if ((BufferSize*4) < MAX_UDP_PayloadSize        )             begin AXISx32_UDP_Tx_Offload_Engine_Error BufferSize_Erorr ( );    end
-if ((BUFFER_COUNT_1K==0)||(BUFFER_COUNT_1K>16)  )             begin AXISx32_UDP_Tx_Offload_Engine_Error BufferCount_Erorr ( );   end
+if ((BUFFER_COUNT_1K>16)                        )             begin AXISx32_UDP_Tx_Offload_Engine_Error BufferCount_Erorr ( );   end
         
 //////////////////////////////////////////////////////////////////////////////////////
 // find the beginning of a package 
@@ -125,9 +125,6 @@ reg [16-1:0] RxDataLengthCounter_D1=0;
 reg [16-1:0] RxDataLengthCounter_D2=0;
 
 //(* keep = "true" *) wire [32-1:0] wUDP_CheckSUM_Data;
-
-
-
 
 reg   PacketDropFlag=0; 
 wire  wPacketDropFlag; 

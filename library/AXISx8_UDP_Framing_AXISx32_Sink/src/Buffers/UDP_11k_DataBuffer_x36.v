@@ -23,18 +23,18 @@
 //SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-module UDP_5k_DataBuffer_x36
+module UDP_11k_DataBuffer_x36
 #(parameter ARCH = "XLX_ULTRASCALE")
 (
 input  wire                                 WrClk       ,
 input  wire                                 WrEna       ,
 input  wire [ 0:0]                          WrWea       ,
-input  wire [RAM_AddrBitWidth(8*256)-1:0]   WrAddress   ,
+input  wire [RAM_AddrBitWidth(16*256)-1:0]  WrAddress   ,
 input  wire [35:0]                          WrData      ,
 
 input  wire                                 RdClk       ,
 input  wire                                 RdEna       ,
-input  wire [RAM_AddrBitWidth(8*256)-1:0]   RdAddress   ,
+input  wire [RAM_AddrBitWidth(16*256)-1:0]  RdAddress   ,
 output reg  [35:0]                          RdData   
 );
 
@@ -52,62 +52,88 @@ endfunction
 
 wire [35:0] wRdData0;
 wire [35:0] wRdData1;
+wire [35:0] wRdData2;
 
 wire [ 0:0] wWrWeaBank0;
 wire [ 0:0] wWrWeaBank1;
+wire [ 0:0] wWrWeaBank2;
 
-assign wWrWeaBank0  [ 0:0]  = (WrAddress[10:10]==1'b0  ) ? WrWea : 1'b0; 
-assign wWrWeaBank1  [ 0:0]  = (WrAddress[10: 8]==3'b100) ? WrWea : 1'b0; 
+assign wWrWeaBank0  [ 0:0]  = (WrAddress[11:11]==1'b0   ) ? WrWea : 1'b0; 
+assign wWrWeaBank1  [ 0:0]  = (WrAddress[11: 9]==3'b100 ) ? WrWea : 1'b0; 
+assign wWrWeaBank2  [ 0:0]  = (WrAddress[11: 8]==4'b1010) ? WrWea : 1'b0; 
 
-reg  [ 2:0] ReadBankSel_D0=0;
-reg  [ 2:0] ReadBankSel_D1=0;
+reg  [ 3:0] ReadBankSel_D0=0;
+reg  [ 3:0] ReadBankSel_D1=0;
 
 always @(posedge RdClk)
 begin
 if (RdEna) 
     begin
-    ReadBankSel_D0 <= RdAddress[10:8];
+    ReadBankSel_D0 <= RdAddress[11:8];
     ReadBankSel_D1 <= ReadBankSel_D0;
     
-    if (ReadBankSel_D1[ 2:0]==3'b000) RdData <= wRdData0;
-        else if (ReadBankSel_D1[ 2:0]==3'b001) RdData <= wRdData0;
-            else if (ReadBankSel_D1[ 2:0]==3'b010) RdData <= wRdData0;
-                else if (ReadBankSel_D1[ 2:0]==3'b011) RdData <= wRdData0;
-                    else if (ReadBankSel_D1[ 2:0]==3'b100) RdData <= wRdData1;
-                        else if (ReadBankSel_D1[ 2:0]==3'b101) RdData <= 0;
-                            else if (ReadBankSel_D1[ 2:0]==3'b110) RdData <= 0;
-                                else if (ReadBankSel_D1[ 2:0]==3'b111) RdData <= 0;
+    if (ReadBankSel_D1[3:0]==4'b0000) RdData <= wRdData0;
+        else if (ReadBankSel_D1[3:0]==4'b0001) RdData <= wRdData0;
+            else if (ReadBankSel_D1[3:0]==4'b0010) RdData <= wRdData0;
+                else if (ReadBankSel_D1[3:0]==4'b0011) RdData <= wRdData0;
+                    else if (ReadBankSel_D1[3:0]==4'b0100) RdData <= wRdData0;
+                        else if (ReadBankSel_D1[3:0]==4'b0101) RdData <= wRdData0;
+                            else if (ReadBankSel_D1[3:0]==4'b0110) RdData <= wRdData0;
+                                else if (ReadBankSel_D1[3:0]==4'b0111) RdData <= wRdData0;
+                                    else if (ReadBankSel_D1[3:0]==4'b1000) RdData <= wRdData1;
+                                        else if (ReadBankSel_D1[3:0]==4'b1001) RdData <= wRdData1;
+                                            else if (ReadBankSel_D1[3:0]==4'b1010) RdData <= wRdData2;
+                                                else if (ReadBankSel_D1[3:0]==4'b1011) RdData <= 0;
+                                                    else if (ReadBankSel_D1[3:0]==4'b1100) RdData <= 0;
+                                                        else if (ReadBankSel_D1[3:0]==4'b1101) RdData <= 0;
+                                                            else if (ReadBankSel_D1[3:0]==4'b1110) RdData <= 0;
+                                                                else if (ReadBankSel_D1[3:0]==4'b1111) RdData <= 0;
     end
 end
 
 (* KEEP_HIERARCHY = "TRUE" *)
-DataBuffer_4k_X36 #(.ARCH(ARCH)) DataBuffer_4k_X36_inst0  
+DataBuffer_8k_X36 #(.ARCH(ARCH)) DataBuffer_8k_X36_inst0  
 (
 .clka              (WrClk               ),
 .ena               (WrEna               ),
 .wea               (wWrWeaBank0         ),
-.addra             (WrAddress[ 9:0]     ),
+.addra             (WrAddress[10:0]     ),
 .dina              (WrData              ),
 
 .clkb              (RdClk               ),
 .enb               (RdEna               ),
-.addrb             (RdAddress[ 9:0]     ),
+.addrb             (RdAddress[10:0]     ),
 .doutb             (wRdData0            )
 );
 
 (* KEEP_HIERARCHY = "TRUE" *)
-DataBuffer_1k_X36 #(.ARCH(ARCH)) DataBuffer_1k_X36_inst1  
+DataBuffer_2k_X36 #(.ARCH(ARCH)) DataBuffer_2k_X36_inst1  
 (
 .clka              (WrClk               ),
 .ena               (WrEna               ),
 .wea               (wWrWeaBank1         ),
+.addra             (WrAddress[ 8:0]     ),
+.dina              (WrData              ),
+
+.clkb              (RdClk               ),
+.enb               (RdEna               ),
+.addrb             (RdAddress[ 8:0]     ),
+.doutb             (wRdData1            )
+);
+
+(* KEEP_HIERARCHY = "TRUE" *)
+DataBuffer_1k_X36 #(.ARCH(ARCH)) DataBuffer_1k_X36_inst2  
+(
+.clka              (WrClk               ),
+.ena               (WrEna               ),
+.wea               (wWrWeaBank2         ),
 .addra             (WrAddress[ 7:0]     ),
 .dina              (WrData              ),
 
 .clkb              (RdClk               ),
 .enb               (RdEna               ),
 .addrb             (RdAddress[ 7:0]     ),
-.doutb             (wRdData1            )
+.doutb             (wRdData2            )
 );
 
 

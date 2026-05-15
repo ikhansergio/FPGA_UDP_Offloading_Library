@@ -23,19 +23,21 @@
 //SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-module UDP_1k_DataBuffer_x36
-#(parameter ARCH = "XLX_ULTRASCALE")
+module DataBuffer_Fabric_X36
+#(
+parameter RAM_DEPTH = 256
+)
 (
-input  wire                                 WrClk       ,
-input  wire                                 WrEna       ,
-input  wire [ 0:0]                          WrWea       ,
-input  wire [RAM_AddrBitWidth(1*256)-1:0]   WrAddress   ,
-input  wire [35:0]                          WrData      ,
+input  wire                                     WrClk       ,
+input  wire                                     WrEna       ,
+input  wire                                     WrWea       ,
+input  wire [RAM_AddrBitWidth(RAM_DEPTH)-1:0]   WrAddress   ,
+input  wire [35:0]                              WrData      ,
 
-input  wire                                 RdClk       ,
-input  wire                                 RdEna       ,
-input  wire [RAM_AddrBitWidth(1*256)-1:0]   RdAddress   ,
-output reg  [35:0]                          RdData        
+input  wire                                     RdClk       ,
+input  wire                                     RdEna       ,
+input  wire [RAM_AddrBitWidth(RAM_DEPTH)-1:0]   RdAddress   ,
+output reg  [35:0]                              RdData   
 );
 
 function integer RAM_AddrBitWidth (input integer Value);                  
@@ -50,22 +52,26 @@ function integer RAM_AddrBitWidth (input integer Value);
         end                                                          
 endfunction 
 
-wire [35:0]   wRdData;
-always @(posedge RdClk) if (RdEna) RdData <= wRdData;
+localparam ADDR_WIDTH = RAM_AddrBitWidth(RAM_DEPTH);
 
-(* KEEP_HIERARCHY = "TRUE" *)
-DataBuffer_1k_X36 #(.ARCH(ARCH)) DataBuffer_1k_X36_inst  
-(
-.WrClk             (WrClk           ),
-.WrEna             (WrEna           ),
-.WrWea             (WrWea           ),
-.WrAddress         (WrAddress[ 7:0] ),
-.WrData            (WrData          ),
+reg [36-1:0] RAM_MEMORY [0:(2**ADDR_WIDTH)-1];
 
-.RdClk             (RdClk           ),
-.RdEna             (RdEna           ),
-.RdAddress         (RdAddress[ 7:0] ),
-.RdData            (wRdData         )
-);
+
+always @(posedge WrClk) 
+begin
+if (WrEna)
+    begin
+    if (WrWea) RAM_MEMORY[WrAddress] <= WrData;
+    end
+end
+
+
+always @(posedge RdClk) 
+begin
+if (RdEna)
+    begin
+	RdData <=  RAM_MEMORY[RdAddress];
+    end
+end
 
 endmodule

@@ -28,14 +28,14 @@ module UDP_8k_DataBuffer_x36
 (
 input  wire                                 WrClk       ,
 input  wire                                 WrEna       ,
-input  wire [ 1-1:0]                        WrWea       ,
+input  wire [ 0:0]                          WrWea       ,
 input  wire [RAM_AddrBitWidth(8*256)-1:0]   WrAddress   ,
-input  wire [32-1:0]                        WrData      ,
+input  wire [35:0]                          WrData      ,
 
 input  wire                                 RdClk       ,
 input  wire                                 RdEna       ,
 input  wire [RAM_AddrBitWidth(8*256)-1:0]   RdAddress   ,
-output reg  [32-1:0]                        RdData   
+output reg  [35:0]                          RdData   
 );
 
 function integer RAM_AddrBitWidth (input integer Value);                  
@@ -50,94 +50,26 @@ function integer RAM_AddrBitWidth (input integer Value);
         end                                                          
 endfunction 
 
-wire [32-1:0] wRdData0;
-wire [32-1:0] wRdData1;
-wire [32-1:0] wRdData2;
-wire [32-1:0] wRdData3;
-
-wire [ 1-1:0] wWrWeaBank0;
-wire [ 1-1:0] wWrWeaBank1;
-wire [ 1-1:0] wWrWeaBank2;
-wire [ 1-1:0] wWrWeaBank3;
-assign wWrWeaBank0  [ 1-1:0]  = (WrAddress[10:9]==2'b00) ? WrWea : 1'b0; 
-assign wWrWeaBank1  [ 1-1:0]  = (WrAddress[10:9]==2'b01) ? WrWea : 1'b0; 
-assign wWrWeaBank2  [ 1-1:0]  = (WrAddress[10:9]==2'b10) ? WrWea : 1'b0; 
-assign wWrWeaBank3  [ 1-1:0]  = (WrAddress[10:9]==2'b11) ? WrWea : 1'b0; 
-
-reg  [ 2-1:0] ReadBankSel_D0=0;
-reg  [ 2-1:0] ReadBankSel_D1=0;
+wire [35:0] wRdData;
 
 always @(posedge RdClk)
 begin
-if (RdEna) 
-    begin
-    ReadBankSel_D0 <= RdAddress[10:9];
-    ReadBankSel_D1 <= ReadBankSel_D0;
-    
-    if (ReadBankSel_D1==2'b00) RdData <= wRdData0;
-        else if (ReadBankSel_D1==2'b01) RdData <= wRdData1;
-            else if (ReadBankSel_D1==2'b10) RdData <= wRdData2;
-                else if (ReadBankSel_D1==2'b11) RdData <= wRdData3;
-    end
+if (RdEna) RdData <= wRdData;
 end
 
 (* KEEP_HIERARCHY = "TRUE" *)
-XLX_x36_2k_BLK #(.ARCH(ARCH)) XLX_x36_2k_BLK_inst0  
+DataBuffer_8k_X36 #(.ARCH(ARCH)) DataBuffer_8k_X36_inst0  
 (
 .clka              (WrClk               ),
 .ena               (WrEna               ),
-.wea               (wWrWeaBank0         ),
-.addra             (WrAddress[9-1:0]    ),
+.wea               (WrWea               ),
+.addra             (WrAddress[10:0]     ),
 .dina              (WrData              ),
 
 .clkb              (RdClk               ),
 .enb               (RdEna               ),
-.addrb             (RdAddress[9-1:0]    ),
+.addrb             (RdAddress[10:0]     ),
 .doutb             (wRdData0            )
 );
 
-(* KEEP_HIERARCHY = "TRUE" *)
-XLX_x36_2k_BLK #(.ARCH(ARCH)) XLX_x36_2k_BLK_inst1  
-(
-.clka              (WrClk               ),
-.ena               (WrEna               ),
-.wea               (wWrWeaBank1         ),
-.addra             (WrAddress[9-1:0]    ),
-.dina              (WrData              ),
-
-.clkb              (RdClk               ),
-.enb               (RdEna               ),
-.addrb             (RdAddress[9-1:0]    ),
-.doutb             (wRdData1            )
-);
-
-(* KEEP_HIERARCHY = "TRUE" *)
-XLX_x36_2k_BLK #(.ARCH(ARCH)) XLX_x36_2k_BLK_inst2  
-(
-.clka              (WrClk               ),
-.ena               (WrEna               ),
-.wea               (wWrWeaBank2         ),
-.addra             (WrAddress[9-1:0]    ),
-.dina              (WrData              ),
-
-.clkb              (RdClk               ),
-.enb               (RdEna               ),
-.addrb             (RdAddress[9-1:0]    ),
-.doutb             (wRdData2            )
-);
-
-(* KEEP_HIERARCHY = "TRUE" *)
-XLX_x36_2k_BLK #(.ARCH(ARCH)) XLX_x36_2k_BLK_inst3  
-(
-.clka              (WrClk               ),
-.ena               (WrEna               ),
-.wea               (wWrWeaBank3         ),
-.addra             (WrAddress[9-1:0]    ),
-.dina              (WrData              ),
-
-.clkb              (RdClk               ),
-.enb               (RdEna               ),
-.addrb             (RdAddress[9-1:0]    ),
-.doutb             (wRdData3            )
-);
 endmodule

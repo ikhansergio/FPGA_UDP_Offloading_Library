@@ -23,59 +23,58 @@
 //SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-module DataBuffer_4k_X36
+module DataBuffer_512_X36
 #(parameter ARCH = "XLX_ULTRASCALE")
 (
 input  wire          WrClk       ,
 input  wire          WrEna       ,
 input  wire [ 0:0]   WrWea       ,
-input  wire [ 9:0]   WrAddress   ,
-input  wire [35:0]   WrData      ,
+input  wire [ 6:0]   WrAddress   ,
+input  wire [31:0]   WrData      ,
 
 input  wire          RdClk       ,
 input  wire          RdEna       ,
-input  wire [ 9:0]   RdAddress   ,
-output wire [35:0]   RdData     
+input  wire [ 6:0]   RdAddress   ,
+output wire [31:0]   RdData     
+
 );
 
     if (ARCH == "XLX_SERIES7")
     begin
         (* KEEP_HIERARCHY = "TRUE" *)
-        XLX_x36_4k_BLK      XLX_x36_4k_BLK_inst  
-        (
-        .clka              (WrClk           ),
-        .ena               (WrEna           ),
-        .wea               (WrWea           ),
-        .addra             (WrAddress       ),
-        .dina              (WrData          ),
+		
+		XLX_x36_512_DIST XLX_x36_512_DIST_inst (
+		.a						(WrAddress		),  // input wire [6 : 0] a
+		.d						(WrData			),  // input wire [35 : 0] d
+		.dpra					(RdAddress		),  // input wire [6 : 0] dpra
+		.clk					(WrClk			),  // input wire clk
+		.we						(WrWea			),  // input wire we
+		.i_ce					(WrEna			),  // input wire i_ce
+		.qdpo_ce				(RdEna			),  // input wire qdpo_ce
+		.qdpo_clk				(RdClk			),  // input wire qdpo_clk
+		.qdpo					(RdData			)   // output wire [35 : 0] qdpo
+		);
 
-        .clkb              (RdClk           ),
-        .enb               (RdEna           ),
-        .addrb             (RdAddress       ),
-        .doutb             (RdData          )
-        );
     end else if (ARCH == "XLX_ULTRASCALE")
         begin
         (* KEEP_HIERARCHY = "TRUE" *)
-        XLX_x36_4k_BLK      XLX_x36_4k_BLK_inst   
-        (
-        .clka              (WrClk           ),
-        .ena               (WrEna           ),
-        .wea               (WrWea           ),
-        .addra             (WrAddress       ),
-        .dina              (WrData          ),
-
-        .clkb              (RdClk           ),
-        .enb               (RdEna           ),
-        .addrb             (RdAddress       ),
-        .doutb             (RdData          )
-        );
+		XLX_x36_512_DIST XLX_x36_512_DIST_inst (
+		.a						(WrAddress		),  // input wire [6 : 0] a
+		.d						(WrData			),  // input wire [35 : 0] d
+		.dpra					(RdAddress		),  // input wire [6 : 0] dpra
+		.clk					(WrClk			),  // input wire clk
+		.we						(WrWea			),  // input wire we
+		.i_ce					(WrEna			),  // input wire i_ce
+		.qdpo_ce				(RdEna			),  // input wire qdpo_ce
+		.qdpo_clk				(RdClk			),  // input wire qdpo_clk
+		.qdpo					(RdData			)   // output wire [35 : 0] qdpo
+		);
     end else  // if (ARCH == "DEFAULT_LOGIC")
     begin
-    (* KEEP_HIERARCHY = "TRUE" *)
+        (* KEEP_HIERARCHY = "TRUE" *)
     DataBuffer_Fabric_X36   
     #(
-    . RAM_DEPTH ( 1024 )
+    . RAM_DEPTH ( 128 )
     )DataBuffer_Fabric_X36_inst
     (
     .WrClk              (WrClk),
@@ -90,4 +89,6 @@ output wire [35:0]   RdData
     .RdData             (RdData)   
     );
     end
+
+
 endmodule
