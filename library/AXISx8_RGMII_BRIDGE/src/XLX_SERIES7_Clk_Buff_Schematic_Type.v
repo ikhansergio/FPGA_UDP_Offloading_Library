@@ -33,6 +33,8 @@ output  wire    CLK_IDDR,
 output  wire    CLK_FABRIC
 );
 
+generate
+
 if (RX_CLK_BUFF_SCH_TYPE == 0 )        // Default Auto mode
 begin
 	assign CLK_IDDR 	= RGMII_RXC;
@@ -124,5 +126,7 @@ begin
 //		);
 		assign CLK_FABRIC = CLK_IDDR;
 end
+
+endgenerate
 
 endmodule

@@ -51,6 +51,8 @@ output  wire [4-1:0]  RGMII_TXD
 
 //  Parameters validation
 
+generate
+
 if (RGMII_TXD_REFERENCE_CLK == "REFERENCE_PHY_RXC") 
     begin
         // If the REFERENCE_PHY_RXC clock is selected on the data line, then only the REFERENCE_PHY_RXC clock can be used to form the external TXC clock.
@@ -67,7 +69,6 @@ else
     begin
         RGMII_Error RGMII_Error_inst ( );
     end      
-
 
     if (RGMII_TXC_REFERENCE_CLK == "REFERENCE_PHY_RXC") // If the RGMII uses its own local clock, which is obtained from the PHY.
         begin
@@ -90,6 +91,7 @@ else
     begin
         RGMII_Error RGMII_Error_inst ( );
     end
+endgenerate
 
 reg         RGMII_LINK_VAL =0;
 reg [2-1:0] RGMII_SPEED_STATE=0;
@@ -200,6 +202,7 @@ end
 wire wClkTimingD1;
 wire wClkTimingD2;
 
+generate
 if (RGMII_TXC_REFERENCE_CLK=="REFERENCE_PHY_RXC") // If the RGMII uses its own local clock, which is obtained from the PHY.
     begin
         (* KEEP_HIERARCHY = "TRUE" *)
@@ -253,6 +256,7 @@ if (RGMII_TXC_REFERENCE_CLK=="REFERENCE_PHY_RXC") // If the RGMII uses its own l
         );
     end 
 
+endgenerate
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///// RGMII ODDR instance
 ///////////////////////////////////////////////////////////////////////////////////////////////

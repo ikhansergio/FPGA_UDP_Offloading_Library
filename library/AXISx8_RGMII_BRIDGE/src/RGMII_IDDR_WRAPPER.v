@@ -73,6 +73,7 @@ RGMII_IDDR
 .RGMII_RX_DATA_Q      (wRGMII_RX_DATA_Q    )
 );
  
+generate 
 if (OPPOSITE_EDGE_LATCH_MODE == "YES") 
     begin
     
@@ -105,6 +106,8 @@ else
     assign RGMII_RX_CTL_Q2     = wRGMII_RX_CTL_Q2;
     assign RGMII_RX_DATA_Q     = wRGMII_RX_DATA_Q;
     
-    end         
+    end    
+	 
+endgenerate
 
 endmodule

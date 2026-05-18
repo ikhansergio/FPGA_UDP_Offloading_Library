@@ -55,6 +55,7 @@ wire [8-1:0]  wRGMII_RX_DATA_Q;
 
 assign RGMII_RX_dCLK = wRGMII_RX_dCLK;
 
+generate
 if (OVER_SAMPLING == "YES") 
 begin
 RGMII_OverSampler 
@@ -101,7 +102,7 @@ RGMII_IDDR_WRAPPER
 .RGMII_RX_DATA_Q      (wRGMII_RX_DATA_Q    )
 );
 end
-
+endgenerate
 
 reg [2:0] InBandStatusCounter=0;
 reg [3:0] InBandStatusData=1'b0;
