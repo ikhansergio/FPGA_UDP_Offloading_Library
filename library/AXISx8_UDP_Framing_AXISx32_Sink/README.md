@@ -6,9 +6,9 @@ AXISx8_UDP_Framing_AXISx32_Sink - Verilog library that implements UDP datagram g
 ARCH - Supported architectures.
 
 Valid values:
-*      "XLX_ULTRASCALE", - Xilinx ULTRASCALE FPGAs
-*      "XLX_SERIES7", - Xilinx 7 Series FPGAs
-*      "DEFAULT_LOGIC",  - implementation on FPGA fabric
+*     "XLX_ULTRASCALE", - Xilinx ULTRASCALE FPGAs
+      "XLX_SERIES7", - Xilinx 7 Series FPGAs
+      "DEFAULT_LOGIC",  - implementation on FPGA fabric
 
 PADDING_INSERTION -  Inserts padding for frames shorter than 64 bytes.
 
