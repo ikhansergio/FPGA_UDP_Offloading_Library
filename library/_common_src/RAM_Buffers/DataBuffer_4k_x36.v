@@ -23,7 +23,7 @@
 //SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-module UDP_4k_DataBuffer_x36
+module DataBuffer_4k_x36
 #(parameter ARCH = "XLX_ULTRASCALE")
 (
 input  wire                                 WrClk       ,
@@ -59,7 +59,9 @@ if (RdEna)
 end
 
 (* KEEP_HIERARCHY = "TRUE" *)
-DataBuffer_4k_X36 #(.ARCH(ARCH)) DataBuffer_4k_X36_inst0  
+DataBuffer_BlockRAM_4k_X36 
+#(.ARCH(ARCH)
+)DataBuffer_BlockRAM_4k_X36_inst  
 (
 .WrClk             (WrClk               ),
 .WrEna             (WrEna               ),

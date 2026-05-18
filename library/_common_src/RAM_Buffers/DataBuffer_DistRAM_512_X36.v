@@ -23,7 +23,7 @@
 //SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-module DataBuffer_512_X36
+module DataBuffer_DistRAM_512_X36
 #(parameter ARCH = "XLX_ULTRASCALE")
 (
 input  wire          WrClk       ,

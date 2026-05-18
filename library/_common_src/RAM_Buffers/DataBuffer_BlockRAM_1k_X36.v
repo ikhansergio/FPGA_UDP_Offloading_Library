@@ -23,7 +23,7 @@
 //SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-module DataBuffer_1k_X36
+module DataBuffer_BlockRAM_1k_X36
 #(parameter ARCH = "XLX_ULTRASCALE")
 (
 input  wire          WrClk       ,

@@ -23,7 +23,7 @@
 //SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-module UDP_6k_DataBuffer_x36
+module DataBuffer_6k_x36
 #(parameter ARCH = "XLX_ULTRASCALE")
 (
 input  wire                                 WrClk       ,
@@ -77,7 +77,10 @@ if (RdEna)
 end
 
 (* KEEP_HIERARCHY = "TRUE" *)
-DataBuffer_4k_X36 #(.ARCH(ARCH)) DataBuffer_4k_X36_inst0  
+DataBuffer_BlockRAM_4k_X36 
+#(
+.ARCH(ARCH)
+) DataBuffer_BlockRAM_4k_X36_inst  
 (
 .clka              (WrClk               ),
 .ena               (WrEna               ),
@@ -92,7 +95,10 @@ DataBuffer_4k_X36 #(.ARCH(ARCH)) DataBuffer_4k_X36_inst0
 );
 
 (* KEEP_HIERARCHY = "TRUE" *)
-DataBuffer_2k_X36 #(.ARCH(ARCH)) DataBuffer_2k_X36_inst1  
+DataBuffer_BlockRAM_2k_X36 
+#(
+.ARCH(ARCH)
+) DataBuffer_BlockRAM_2k_X36_inst  
 (
 .clka              (WrClk               ),
 .ena               (WrEna               ),
@@ -105,6 +111,5 @@ DataBuffer_2k_X36 #(.ARCH(ARCH)) DataBuffer_2k_X36_inst1
 .addrb             (RdAddress[ 8:0]     ),
 .doutb             (wRdData1            )
 );
-
 
 endmodule

@@ -56,7 +56,7 @@ endfunction
 if (BUFFER_COUNT_1K == 0 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    UDP_512_DataBuffer_x36  #(.ARCH(ARCH)) UDP_512_DataBuffer_x36_inst
+    DataBuffer_512_x36  #(.ARCH(ARCH)) PING_DataBuffer_512_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -73,7 +73,7 @@ if (BUFFER_COUNT_1K == 0 )
 else if (BUFFER_COUNT_1K == 1 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    UDP_1k_DataBuffer_x36  #(.ARCH(ARCH)) UDP_1k_DataBuffer_x36_inst
+    DataBuffer_1k_x36  #(.ARCH(ARCH)) PING_DataBuffer_1k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -90,7 +90,7 @@ else if (BUFFER_COUNT_1K == 1 )
 else if (BUFFER_COUNT_1K == 2 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    UDP_2k_DataBuffer_x36  #(.ARCH(ARCH)) UDP_2k_DataBuffer_x36_inst
+    DataBuffer_2k_x36  #(.ARCH(ARCH)) PING_DataBuffer_2k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -107,7 +107,7 @@ else if (BUFFER_COUNT_1K == 2 )
 else if (BUFFER_COUNT_1K == 3 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    UDP_3k_DataBuffer_x36  #(.ARCH(ARCH)) UDP_3k_DataBuffer_x36_inst
+    DataBuffer_3k_x36  #(.ARCH(ARCH)) PING_DataBuffer_3k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -124,7 +124,41 @@ else if (BUFFER_COUNT_1K == 3 )
 else if (BUFFER_COUNT_1K == 4 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    UDP_4k_DataBuffer_x36  #(.ARCH(ARCH)) UDP_4k_DataBuffer_x36_inst
+    DataBuffer_4k_x36  #(.ARCH(ARCH)) PING_DataBuffer_4k_x36_inst
+    (
+    .WrClk       (WrClk),
+    .WrEna       (WrEna),
+    .WrWea       (WrWea),
+    .WrAddress   (WrAddress),
+    .WrData      (WrData),
+
+    .RdClk       (RdClk),
+    .RdEna       (RdEna),
+    .RdAddress   (RdAddress),
+    .RdData      (RdData)
+    );       
+    end
+else if (BUFFER_COUNT_1K == 8 )        
+    begin
+    (* KEEP_HIERARCHY = "TRUE" *)
+    DataBuffer_8k_x36  #(.ARCH(ARCH)) PING_DataBuffer_8k_x36_inst
+    (
+    .WrClk       (WrClk),
+    .WrEna       (WrEna),
+    .WrWea       (WrWea),
+    .WrAddress   (WrAddress),
+    .WrData      (WrData),
+
+    .RdClk       (RdClk),
+    .RdEna       (RdEna),
+    .RdAddress   (RdAddress),
+    .RdData      (RdData)
+    );       
+    end
+else if (BUFFER_COUNT_1K == 16 )        
+    begin
+    (* KEEP_HIERARCHY = "TRUE" *)
+    DataBuffer_16k_x36  #(.ARCH(ARCH)) PING_DataBuffer_16k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),

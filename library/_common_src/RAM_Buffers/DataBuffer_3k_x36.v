@@ -22,7 +22,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-module UDP_3k_DataBuffer_x36
+module DataBuffer_3k_x36
 #(parameter ARCH = "XLX_ULTRASCALE")
 (
 input  wire                                 WrClk       ,
@@ -78,7 +78,10 @@ if (RdEna)
 end
 
 (* KEEP_HIERARCHY = "TRUE" *)
-DataBuffer_2k_X36 #(.ARCH(ARCH)) DataBuffer_2k_X36_inst0  
+DataBuffer_BlockRAM_2k_X36 
+#(
+.ARCH(ARCH)
+) DataBuffer_BlockRAM_2k_X36_inst  
 (
 .WrClk             (WrClk           ),
 .WrEna             (WrEna           ),
@@ -93,7 +96,10 @@ DataBuffer_2k_X36 #(.ARCH(ARCH)) DataBuffer_2k_X36_inst0
 );
 
 (* KEEP_HIERARCHY = "TRUE" *)
-DataBuffer_1k_X36 #(.ARCH(ARCH)) DataBuffer_1k_X36_inst1  
+DataBuffer_BlockRAM_1k_X36
+#(
+.ARCH(ARCH)
+) DataBuffer_BlockRAM_1k_X36_inst  
 (
 .WrClk             (WrClk           ),
 .WrEna             (WrEna           ),

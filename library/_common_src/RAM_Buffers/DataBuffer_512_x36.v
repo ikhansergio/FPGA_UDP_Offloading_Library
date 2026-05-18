@@ -23,7 +23,7 @@
 //SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-module UDP_512_DataBuffer_x36
+module DataBuffer_512_x36
 #(parameter ARCH = "XLX_ULTRASCALE")
 (
 input  wire                                 WrClk       ,
@@ -54,7 +54,10 @@ wire [35:0]   wRdData;
 always @(posedge RdClk) if (RdEna) RdData <= wRdData;
 
 (* KEEP_HIERARCHY = "TRUE" *)
-DataBuffer_512_X36 #(.ARCH(ARCH)) DataBuffer_512_X36_inst  
+DataBuffer_DistRAM_512_X36 
+#(
+.ARCH(ARCH)
+) DataBuffer_DistRAM_512_X36_inst  
 (
 .WrClk             (WrClk           ),
 .WrEna             (WrEna           ),
