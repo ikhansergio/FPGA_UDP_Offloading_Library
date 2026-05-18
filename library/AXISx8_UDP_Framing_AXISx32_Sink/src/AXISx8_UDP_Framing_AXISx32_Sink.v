@@ -481,12 +481,12 @@ UDP_Header_Generator                UDP_Header_Generator_inst
 (* KEEP_HIERARCHY = "TRUE" *)
 ICMP_UDP_Frame_Header_Multiplexer   UDP_Frame_Header_Multiplexer_inst
 (
-.CLK                                (Source_CLK                                     ),
+.CLK                                (Source_CLK                             ),
 
-.Frame_TRY                          (Source_TRDY                                    ),
-.Frame_PreSet                       (Tx_MAC_FrameBody_StartReadPulse                ),
-.Frame_PreSetValue                  (MAC_REMOTE_ADDR_IN [47:40]                     ),
-.Frame_Position                     (Tx_MAC_FrameBody_ByteCounter                   ),
+.Frame_TRY                          (Source_TRDY                            ),
+.Frame_PreSet                       (Tx_MAC_FrameBody_StartReadPulse        ),
+.Frame_PreSetValue                  (MAC_REMOTE_ADDR_IN [47:40]             ),
+.Frame_Position                     (Tx_MAC_FrameBody_ByteCounter           ),
 
 .Header_Ethernet_II_MAC_Part        (wTX_SwitchREG_Ethernet_II_MAC          ),
 .Header_IPv4_Part                   (wTX_SwitchREG_Ethernet_II_IP4          ),

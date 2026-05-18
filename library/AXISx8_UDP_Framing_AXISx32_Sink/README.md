@@ -29,7 +29,9 @@ Valid values:
       1 - 1024 bytes Block RAM are used.
       2 - 2048 bytes Block RAM are used.
       ...
-      16 - 16384 bytes Block RAM are used.  
+      16 - 16384 bytes Block RAM are used. 
+      PS: Odd buffer sizes such as 1k, 3k, 5k, 7k, 9k, 11k, 13k, 15k are not optimal for Xilinx/AMD devices like: XLX_SERIES7, XLX_ULTRASCALE.
+	  since the minimum memory block size is 18k
 ETHERNET_MTU -  The standard Ethernet Maximum Transmission Unit (MTU) .
 
 Valid values:

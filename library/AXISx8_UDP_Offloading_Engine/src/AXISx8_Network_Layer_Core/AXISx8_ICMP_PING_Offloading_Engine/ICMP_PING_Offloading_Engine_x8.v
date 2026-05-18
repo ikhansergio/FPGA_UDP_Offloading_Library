@@ -155,19 +155,14 @@ AXIS_Width_Up_Converter
 (* KEEP = "TRUE" *)reg [16-1:0] ICMP_PING_Req_Header_Identifier=0;
 (* KEEP = "TRUE" *)reg [16-1:0] ICMP_PING_Req_Header_SequenceNumber=0;
 
-
 (* KEEP = "TRUE" *)reg [16-1:0] ICMP_PING_RxData_Length_Counter=0;
 
-
 (* KEEP = "TRUE" *)reg [16-1:0] ICMP_PING_Payload_WrRAM_Pointer=0;
-
 
 //(* KEEP = "TRUE" *)reg [32-1:0] ICMP_PING_Payload_WrRAM_Data=0;
 (* KEEP = "TRUE" *)reg [ 1-1:0] ICMP_PING_WrWea=0;
 
 (* KEEP = "TRUE" *)reg rICMP_Core_TFIRST_x32=0 ;
-
-
 
  (* KEEP_HIERARCHY = "TRUE" *)
  ICMP_PING_CheckSum      ICMP_PING_CheckSum_inst
@@ -186,41 +181,20 @@ begin
 	       else if (wICMP_Core_TVALID_x32&&(ICMP_PING_RxData_Length_Counter>BufferSize)) ICMP_PING_RxData_Length_Counter <= ICMP_PING_RxData_Length_Counter;    
 	           else if (wICMP_Core_TVALID_x32) ICMP_PING_RxData_Length_Counter <= ICMP_PING_RxData_Length_Counter + wICMP_Core_Byte_COUNT_x32;  
 
- //   if (wICMP_Core_TVALID_x32 && wICMP_Core_TFIRST_x32) ICMP_PING_CheckSUM_Sub <= wICMP_Core_TDATA_x32[32-1:16] + wICMP_Core_TDATA_x32[16-1:0 ];
-
-//	if (wICMP_Core_TVALID_x32 && wICMP_Core_TFIRST_x32) ICMP_CheckSUM_Packet_L <= {16'h00,wICMP_Core_TDATA_x32[16-1:0 ]}; 
-//		else if (wICMP_Core_TVALID_x32) ICMP_CheckSUM_Packet_L <=ICMP_CheckSUM_Packet_L + {16'h00,wICMP_Core_TDATA_x32[16-1:0 ]};   
-		
-//	if (wICMP_Core_TVALID_x32 && wICMP_Core_TFIRST_x32) ICMP_CheckSUM_Packet_H <= {16'h00,wICMP_Core_TDATA_x32[32-1:16]}; 
-//		else if (wICMP_Core_TVALID_x32) ICMP_CheckSUM_Packet_H <=ICMP_CheckSUM_Packet_H + {16'h00,wICMP_Core_TDATA_x32[32-1:16]};
-			
-	//ICMP_PING_CheckSUM_FullPacket    <=  ICMP_CheckSUM_Packet_L        + ICMP_CheckSUM_Packet_H;
-
-//	ICMP_PING_CheckSUM_Reply         <=  ICMP_PING_CheckSUM_FullPacket - ICMP_PING_CheckSUM_Sub;
-//    ICMP_PING_CheckSUM_Reply         <= wICMP_PING_CheckSUM_FullPacket - ICMP_PING_CheckSUM_Sub;
-
-
 if (wICMP_Core_TFIRST_x32&&wICMP_Core_TVALID_x32) ICMP_PING_TypeFlag <= (wICMP_Core_TDATA_x32[31:24] == 8'h8);
 if (wICMP_Core_TFIRST_x32&&wICMP_Core_TVALID_x32) ICMP_PING_CodeFlag <= (wICMP_Core_TDATA_x32[23:16] == 8'h0);
-
 
 if (wICMP_Core_TVALID_x32) rICMP_Core_TFIRST_x32 <= wICMP_Core_TFIRST_x32;
 
 if (wICMP_Core_TVALID_x32 && wICMP_Core_TFIRST_x32)  ICMP_PING_WrWea <= 0;  
     else if (wICMP_Core_TVALID_x32 && rICMP_Core_TFIRST_x32)  ICMP_PING_WrWea <= ICMP_PING_TypeFlag&&ICMP_PING_CodeFlag;
     
-    
-  
-//if (wICMP_Core_TVALID_x32 && rICMP_Core_TFIRST_x32) {ICMP_PING_Req_Header_SequenceNumber,ICMP_PING_Req_Header_Identifier}   <= wICMP_Core_TDATA_x32[32-1:0];
 if (wICMP_Core_TVALID_x32 && rICMP_Core_TFIRST_x32) {ICMP_PING_Req_Header_Identifier,ICMP_PING_Req_Header_SequenceNumber}   <= wICMP_Core_TDATA_x32[32-1:0];
 
 if (wICMP_Core_TVALID_x32 && rICMP_Core_TFIRST_x32) ICMP_PING_Payload_WrRAM_Pointer<=0;
     else if (wICMP_Core_TVALID_x32 && (ICMP_PING_Payload_WrRAM_Pointer!=255) ) ICMP_PING_Payload_WrRAM_Pointer <= ICMP_PING_Payload_WrRAM_Pointer+1'b1;
 
 end
-
-
-
 
 (* KEEP = "TRUE" *) reg Start0 =0;
 (* KEEP = "TRUE" *) reg Start1 =0;
@@ -230,16 +204,12 @@ end
 (* KEEP = "TRUE" *) reg Start_Wide =0;
 (* KEEP = "TRUE" *) reg [3:0]Wide_Counter =0;
 
-
-
-
 //(* KEEP = "TRUE" *) reg [16-1:0] ICMP_PING_Payload_RdRAM_Pointer=0;
 (* KEEP = "TRUE" *) wire [32-1:0] wICMP_PING_Payload_WrRAM_Data;
 
 (* KEEP = "TRUE" *) reg             ICMP_PING_ReplyPulse                      =   1'b0;
 (* KEEP = "TRUE" *) reg [8-1:0]     ICMP_PING_ReplyWiderCouter                =   1'b0;
 (* KEEP = "TRUE" *) reg             ICMP_PING_ReplyWidePulse                  =   1'b0;
-
 
 always @(posedge Sink_CLK)
 begin
@@ -262,7 +232,6 @@ end
 
 (* KEEP = "TRUE" *) reg ICMP_PING_StartReplyPulse =   0;
 
-
 always @(posedge ICMP_PING_Source_CLK)
 begin
 
@@ -271,11 +240,7 @@ ICMP_PING_ReplyWidePulse_ResyncD1<=ICMP_PING_ReplyWidePulse_ResyncD0;
 ICMP_PING_ReplyWidePulse_ResyncD2<=ICMP_PING_ReplyWidePulse_ResyncD1;
 ICMP_PING_StartReplyPulse<=ICMP_PING_ReplyWidePulse_ResyncD1 && ! ICMP_PING_ReplyWidePulse_ResyncD2;
 
-
-//if (ICMP_PING_StartReplyPulse) ICMP_PING_Payload_RdRAM_Pointer<=0;
-//    else if (ICMP_PING_Source_TRDY) ICMP_PING_Payload_RdRAM_Pointer<=ICMP_PING_Payload_RdRAM_Pointer+1'b1;
 end 
-
 
 (* KEEP = "TRUE" *) reg  [16-1:0]    DATA_TotalLength_Full                     =   0;
 (* KEEP = "TRUE" *) reg  [14-1:0]    DATA_TotalLength                          =   0;
@@ -448,25 +413,7 @@ ICMP_UDP_Frame_Header_Multiplexer   ICMP_Frame_Header_Multiplexer_inst
 
 .Tx_MAC_FrameBody_TDATA             (wTx_MAC_FrameBody_TDATA                )
 );
-
-
-
-
-
-//(* KEEP_HIERARCHY = "TRUE" *)
-//UDP_512_DataBuffer_x36  #(.ARCH("XLX_ULTRASCALE")) UDP_512_DataBuffer_x36_inst
-//(
-//.WrClk       ( Sink_CLK                         ),
-//.WrEna       (wICMP_Core_TVALID_x32             ),
-//.WrWea       ( ICMP_PING_WrWea                  ),
-//.WrAddress   ( ICMP_PING_Payload_WrRAM_Pointer  ),
-//.WrData      (wICMP_Core_TDATA_x32              ),
-
-//.RdClk       ( ICMP_PING_Source_CLK             ),
-//.RdEna       ( 1'b1                             ),
-//.RdAddress   ( ICMP_PING_Payload_RdRAM_Pointer  ),
-//.RdData      (wICMP_PING_Payload_WrRAM_Data     )
-//);  
+   
 
 (* KEEP_HIERARCHY = "TRUE" *)
 ICMP_PING_RAM_DataBuffer_x32 
