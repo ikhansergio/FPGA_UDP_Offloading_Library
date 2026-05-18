@@ -49,3 +49,10 @@ Valid values:
 		Also, no manipulation of the MDIO registers in the PHY was required.
 		IDELAYE2 primitives were also not used.
 		Timing constraints were met.
+
+**RGMII_TXC_FRONT_POSITION** - Position of the clock front relative to the eye diagram
+This parameter is needed only for control purposes, to exclude conflicting parameters. The user must specify how the TXC edge should be formed in relation to the eye diagram.
+
+Valid values:
+*      "EDGE_ALIGNED" or "CENTER_ALIGNED"
+
