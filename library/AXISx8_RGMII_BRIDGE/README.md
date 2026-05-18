@@ -35,7 +35,7 @@ Valid values:
 	The IDDR primitive can be connected via BUFIO, BUFR, or BUFG.
 	Each method has its pros and cons.
 	Each connection type has its own differences in the length of the clock signal path from the pin to the IDDR register.
-	For example: Working with the Microchip KSZ9031 PHY, which has a default RXC signal delay of 1.2n after reset,
+	For example: Working with the [Microchip KSZ9031RNX](https://www.microchip.com/en-us/product/KSZ9031) PHY, which has a default RXC signal delay of 1.2n after reset,
 	experimentation revealed the following:
 
 		On Spartan 7 devices, when connecting the RGMII to the HR port, schemes 0 and 3 proved to be optimal in terms of timing.
