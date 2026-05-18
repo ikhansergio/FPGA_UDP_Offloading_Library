@@ -19,3 +19,26 @@ OVER_SAMPLING - Experimental feature.
 	that occur in process of developing the RGMII interface.
 	In some designs, the RGMII_RXC clock from the PHY was connected to the CLK_n clock pin of the Xilinx FPGA,
 	which cannot be used as a clock input in LVCMOS mode.
+
+Valid values:
+*      "YES" or "NO"
+
+RX_CLK_BUFF_SCH_TYPE - Possible methods for connecting clock buffers.
+	For XLX_SERIES7 devices, there are several ways to connect the clock to the IDDR primitive.
+	The IDDR primitive can be connected via BUFIO, BUFR, or BUFG.
+	Each method has its pros and cons.
+	Each connection type has its own differences in the length of the clock signal path from the pin to the IDDR register.
+	For example: Working with the Microchip KSZ9031 PHY, which has a default RXC signal delay of 1.2n after reset,
+	experimentation revealed the following:
+
+		On Spartan 7 devices, when connecting the RGMII to the HR port, schemes 0 and 3 proved to be optimal in terms of timing.
+		These schemes use BUFIO and BUFR to connect the clock to the IDDR primitive.
+		No manipulation of the MDIO registers in the PHY was required.
+		IDELAYE2 primitives were also not used.
+		Timing constraints were correct.
+	
+		On Zynq 7000 devices, when connecting the RGMII to the HR port, only scheme 3 proved to be optimal in terms of timing.
+		This scheme uses BUFR to connect the clock to the IDDR primitive.
+		Also, no manipulation of the MDIO registers in the PHY was required.
+		IDELAYE2 primitives were also not used.
+		Timing constraints were met.
