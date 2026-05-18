@@ -163,7 +163,7 @@ IPv4_Core_x8                        IPv4_Core_x8_inst
 .IPv4_Core_Source_TLAST             (Source_TLAST               ),
 .IPv4_Core_Source_TDATA             (Source_TDATA               )
 );
-
+generate
 if (Has_ARP_Proc == "YES") 
 begin
     (*KEEP_HIERARCHY = "TRUE"*)
@@ -201,6 +201,8 @@ begin
     assign wARP_Core_TDATA  =0;
 end
 
+endgenerate
+
 /////////////////////////////////////////////////////////////////////////////////////
 //---------------------------------------------------------------------------------//
 //      Network Layer. PING offloading engine                                      //
@@ -208,6 +210,8 @@ end
 //                                                                                 //
 //---------------------------------------------------------------------------------//
 /////////////////////////////////////////////////////////////////////////////////////
+
+generate
 
 if (HasICMP_PING == "YES") 
 begin
@@ -243,5 +247,6 @@ begin
     assign wICMP_PING_Core_TDATA  =0;
 end
 
+endgenerate
 
 endmodule

@@ -45,6 +45,7 @@ integer i=0;
 reg    [REQUEST_COUNT(INDEX_WIDTH)-1:0]    wValidRequest;
 reg    [REQUEST_COUNT(INDEX_WIDTH)-1:0]    wValidMask;
 
+generate
 always @(*) begin
     for (i = 0; i <= MAX_TxPortCount-1; i = i + 1) 
     begin
@@ -55,8 +56,10 @@ always @(*) begin
             else  wValidMask[i]<=wValidRequest[i]||wValidMask[i-1];
     end
 end
+endgenerate
  
-integer j=0;  
+integer j=0;
+generate  
 always @(posedge Clk)
 begin
 HasValidRequest<=|wValidRequest;
@@ -68,5 +71,6 @@ HasValidRequest<=|wValidRequest;
           //  else CurrentValidIndex<=0;
     end
 end
+endgenerate
 
 endmodule
