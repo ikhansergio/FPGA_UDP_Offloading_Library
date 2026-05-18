@@ -50,7 +50,7 @@ Valid values:
 		IDELAYE2 primitives were also not used.
 		Timing constraints were met.
 
-**RGMII_TXC_FRONT_POSITION** - Position of the clock front relative to the eye diagram
+**RGMII_TXC_FRONT_POSITION** - The position of the TXC clock signal edge relative to the TX_Data eye diagram.
 This parameter is needed only for control purposes, to exclude conflicting parameters. The user must specify how the TXC edge should be formed in relation to the eye diagram.
 
 Valid values:
