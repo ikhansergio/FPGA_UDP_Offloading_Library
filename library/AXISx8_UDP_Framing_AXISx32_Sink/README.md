@@ -26,14 +26,15 @@ Valid values:
 *      0, 1, 2, 3, .., 14, 15, 16.
 
       0 - 512 bytes Distributed RAM for Xilinx Devices are used.
-      1 - 1024 bytes Block RAM are used.
-      2 - 2048 bytes Block RAM are used.
+      1 - A 1024-byte block of RAM is used.
+      2 - A 2048-byte block of RAM is used.
       ...
-      16 - 16384 bytes Block RAM are used. 
+      16 - A 16384-byte block of RAM is used. 
       PS: Odd buffer sizes such as 1k, 3k, 5k, 7k, 9k, 11k, 13k, 15k are not optimal for Xilinx/AMD devices like:
 	  XLX_SERIES7, XLX_ULTRASCALE,since the minimum memory block size is 18k
 **ETHERNET_MTU** -  The standard Ethernet Maximum Transmission Unit (MTU) .
 
 Valid values:
 *      64 .. 16384
+
 
