@@ -2,19 +2,21 @@
 
 AXISx8_RGMII_BRIDGE - Verilog library implementing 1000Base-T Ethernet PHY interfacing via RGMII interface.
 # Parameters:
-RX_ARCH - Supported architectures for RX path.
+**RX_ARCH** - Supported architectures for RX path.
 
 Valid values:
-*    "XLX_ULTRASCALE", - Xilinx ULTRASCALE FPGAs
-     "XLX_SERIES7", - Xilinx 7 Series FPGAs
-     "DEFAULT_LOGIC",  - implementation on FPGA fabric
-TX_ARCH - Supported architectures for TX path.
+*     "XLX_ULTRASCALE", - Xilinx ULTRASCALE FPGAs
+      "XLX_SERIES7", - Xilinx 7 Series FPGAs
+      "DEFAULT_LOGIC",  - implementation on FPGA fabric
+
+**TX_ARCH** - Supported architectures for TX path.
 
 Valid values:
-*    "XLX_ULTRASCALE", - Xilinx ULTRASCALE FPGAs
-     "XLX_SERIES7", - Xilinx 7 Series FPGAs
-     "DEFAULT_LOGIC",  - implementation on FPGA fabric
-OVER_SAMPLING - Experimental feature.
+*     "XLX_ULTRASCALE", - Xilinx ULTRASCALE FPGAs
+      "XLX_SERIES7", - Xilinx 7 Series FPGAs
+      "DEFAULT_LOGIC",  - implementation on FPGA fabric
+
+**OVER_SAMPLING** - Experimental feature.
 	This feature was introduced due to rare but fatal design errors 
 	that occur in process of developing the RGMII interface.
 	In some designs, the RGMII_RXC clock from the PHY was connected to the CLK_n clock pin of the Xilinx FPGA,
@@ -28,7 +30,7 @@ OVER_SAMPLING - Experimental feature.
 Valid values:
 *      "YES" or "NO"
 
-RX_CLK_BUFF_SCH_TYPE - Possible methods for connecting clock buffers.
+**RX_CLK_BUFF_SCH_TYPE** - Possible methods for connecting clock buffers.
 	For XLX_SERIES7 devices, there are several ways to connect the clock to the IDDR primitive.
 	The IDDR primitive can be connected via BUFIO, BUFR, or BUFG.
 	Each method has its pros and cons.
