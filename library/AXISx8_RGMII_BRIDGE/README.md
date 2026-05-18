@@ -42,13 +42,13 @@ Valid values:
 		These schemes use BUFIO and BUFR to connect the clock to the IDDR primitive.
 		No manipulation of the MDIO registers in the PHY was required.
 		IDELAYE2 primitives were also not used.
-		Timing constraints were correct.
+		Timing constraints were met by default settings.
 	
 		On Zynq 7000 devices, when connecting the RGMII to the HR port, only scheme 3 proved to be optimal in terms of timing.
 		This scheme uses BUFR to connect the clock to the IDDR primitive.
 		Also, no manipulation of the MDIO registers in the PHY was required.
 		IDELAYE2 primitives were also not used.
-		Timing constraints were met.
+		Timing constraints were met by default settings.
 
 **RGMII_TXC_FRONT_POSITION** - The position of the TXC clock signal edge relative to the TX_Data eye diagram.
 This parameter is needed only for control purposes, to exclude conflicting parameters. The user must specify how the TXC edge should be formed in relation to the eye diagram.
