@@ -75,9 +75,9 @@ localparam MAX_UDP_PayloadSize = ETHERNET_MTU - 28;
 
 localparam BufferSize = (BUFFER_COUNT_1K==0) ? 128 : BUFFER_COUNT_1K * (1024/4); 
 
-if ( ETHERNET_MTU <= 28                         )             begin AXISx32_UDP_Tx_Offload_Engine_Error MTU_Erorr ( );           end
+generate if ( ETHERNET_MTU <= 28                         )             begin AXISx32_UDP_Tx_Offload_Engine_Error MTU_Erorr ( );           end	endgenerate
 //if ((BufferSize*4) < MAX_UDP_PayloadSize        )             begin AXISx32_UDP_Tx_Offload_Engine_Error BufferSize_Erorr ( );    end
-if ((BUFFER_COUNT_1K>16)                        )             begin AXISx32_UDP_Tx_Offload_Engine_Error BufferCount_Erorr ( );   end
+generate if ((BUFFER_COUNT_1K>16)                        )             begin AXISx32_UDP_Tx_Offload_Engine_Error BufferCount_Erorr ( );   end	endgenerate
         
 //////////////////////////////////////////////////////////////////////////////////////
 // find the beginning of a package 
@@ -150,7 +150,7 @@ reg RxPacketValid=0;
 assign wPacketDropFlag = (RxDataLengthCounter>MAX_UDP_PayloadSize) || (  (DROP_IF_OVERFLOW == "YES" ) && (( WrBufferElements > (BufferSize- 8))||wCommandFIFO_Full)); 
 
 wire 	wWrDataRDY;
-if (DROP_IF_OVERFLOW == "YES" ) assign 	wWrDataRDY = 1; else  assign 	wWrDataRDY = WrOverflow_n;
+generate if (DROP_IF_OVERFLOW == "YES" ) assign 	wWrDataRDY = 1; else  assign 	wWrDataRDY = WrOverflow_n;	endgenerate
 assign 	Sink_TRDY = wWrDataRDY;
 
 (* KEEP_HIERARCHY = "TRUE" *)
@@ -160,6 +160,8 @@ Gray2BinRegisteredInOut #( .WIDTH(BitWidth(BufferSize)) ) Gray2BinRegisteredInOu
 .GrayIn             (wRdPointerGray),
 .BinOut             (wRdPointer)
  ); 
+ 
+ generate
  
  (* keep = "true" *) wire[16-1:0]wCheckSUM_UDP;
  if (UDP_CHECKSUM_CALK=="YES")
@@ -182,6 +184,7 @@ end else
 begin
 assign wCheckSUM_UDP = 16'h0;
 end
+endgenerate
  
 always @(posedge Sink_CLK) WrOverflow_n  <= !(( WrBufferElements > (BufferSize- 8))||wCommandFIFO_Full);  
 

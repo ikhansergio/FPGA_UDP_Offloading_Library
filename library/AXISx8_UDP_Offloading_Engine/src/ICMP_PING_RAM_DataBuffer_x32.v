@@ -53,6 +53,8 @@ function integer UDP_RAM_BitWidth (input integer BUFF_COUNT);
         end                                                          
 endfunction 
 
+generate
+
 if (BUFFER_COUNT_1K == 0 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
@@ -177,4 +179,6 @@ else
         ICMP_PING_Error ICMP_PING_BufferSizeError ( );
     end    
 
+endgenerate	 
+	 
 endmodule

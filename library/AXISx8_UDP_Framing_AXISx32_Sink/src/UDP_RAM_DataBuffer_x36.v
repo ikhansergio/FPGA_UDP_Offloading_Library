@@ -53,6 +53,8 @@ function integer UDP_RAM_BitWidth (input integer BUFF_COUNT);
         end                                                          
 endfunction 
 
+generate
+
 if (BUFFER_COUNT_1K == 0 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
@@ -346,5 +348,7 @@ else
     begin
         UDP_Framing_Error UDP_Framing_BufferSizeError ( );
     end    
+
+endgenerate
 
 endmodule
