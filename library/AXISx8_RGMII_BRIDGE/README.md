@@ -38,17 +38,34 @@ Valid values:
 	For example: Working with the [Microchip KSZ9031RNX](https://www.microchip.com/en-us/product/KSZ9031) PHY, which has a default RXC signal delay of 1.2n after reset,
 	experimentation revealed the following:
 
-		On Spartan 7 devices, when connecting the RGMII to the HR port, schemes 0 and 3 proved to be optimal in terms of timing.
+		On Spartan 7 devices in pair with Microchip KSZ9031RNX PHY, connected to the HR port by the RGMII interface,
+		schemes 1, 2, 3, 4 proved to be optimal in terms of timing.
 		These schemes use BUFIO and BUFR to connect the clock to the IDDR primitive.
 		No manipulation of the MDIO registers in the PHY was required.
 		IDELAYE2 primitives were also not used.
 		Timing constraints were met by default settings.
 	
-		On Zynq 7000 devices, when connecting the RGMII to the HR port, only scheme 3 proved to be optimal in terms of timing.
+		On Zynq 7000 devices in pair with Microchip KSZ9031RNX PHY, connected to the HR port by the RGMII interface,
+		only schemes 3, 4 proved to be optimal in terms of timing.
 		This scheme uses BUFR to connect the clock to the IDDR primitive.
 		Also, no manipulation of the MDIO registers in the PHY was required.
 		IDELAYE2 primitives were also not used.
 		Timing constraints were met by default settings.
+
+Valid values:
+*      0, 1, 2, 3, 4, 5, 6
+
+	| RX_CLK_BUFF_SCH_TYPE | CLK_IDDR | CLK_FABRIC |
+	| :---: | :---: | :---: |
+	| 0 | AUTO | AUTO |
+	| 1 | BUFIO | BUFR |
+	| 2 | BUFIO | BUFG |
+	| 3 | BUFR | BUFR |
+	| 4 | BUFR | BUFG |
+	| 5 | BUFG | BUFR |
+	| 6 | BUFG | BUFG |
+
+	Xilinx Ultrascale devices do not have BUFIO and BUFR primitives, so this parameter has no meaning for these devices.
 
 **RGMII_TXC_FRONT_POSITION** - The position of the TXC clock signal edge relative to the TX_Data eye diagram.
 This parameter is needed only for control purposes, to exclude conflicting parameters. The user must specify how the TXC edge should be formed in relation to the eye diagram.
