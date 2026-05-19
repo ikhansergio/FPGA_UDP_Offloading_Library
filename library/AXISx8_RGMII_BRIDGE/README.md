@@ -19,7 +19,7 @@ Valid values:
 **OVER_SAMPLING** - Experimental feature.
 	This feature was introduced due to rare but fatal design errors 
 	that occur in process of developing the RGMII interface.
-	In some designs, the RGMII_RXC clock from the PHY was connected to the CLK_n clock pin of the Xilinx FPGA,
+	In some PCB designs, the RGMII_RXC clock from the PHY was connected to the CLK_n clock pin of the Xilinx FPGA,
 	which cannot be used as a clock input in LVCMOS mode.
 	If OVER_SAMPLING = "YES," the RGMII_RXC signal from the PHY is used not as a clock, but as another data line.
 	The clock is an internal 625 MHz signal, received from the PLL inside the FPGA.
