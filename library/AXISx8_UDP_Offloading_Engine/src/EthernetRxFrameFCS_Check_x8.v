@@ -77,14 +77,30 @@ generate
 
    genvar j;
    
-   for (j = 0;j < 32; j = j + 1) begin  assign wCRC_out[j] = ~crc[(32-1) - j]; end
+	for (j = 0;j < 32; j = j + 1) 
+		begin : LOGIC_CRC_INVERSE0 
+		assign wCRC_out[j] = ~crc[(32-1) - j]; 
+		end
      
-   if (INPUT_REVERCEORDER) for (j = 0;j < 8;  j = j + 1) begin  assign wReverseBitOrder[j] = FCS_Check_Sink_Dat[(8-1) - j]; end
-    else for (j = 0;j < 8;  j = j + 1) begin  assign wReverseBitOrder[j] = FCS_Check_Sink_Dat[j]; end
+	if (INPUT_REVERCEORDER) 
+	for (j = 0;j < 8;  j = j + 1) 
+		begin : LOGIC_INPUT_REVERCEORDER_Y
+		assign wReverseBitOrder[j] = FCS_Check_Sink_Dat[(8-1) - j]; 
+		end
+    else for (j = 0;j < 8;  j = j + 1) 
+		begin : LOGIC_INPUT_REVERCEORDER_N  
+		assign wReverseBitOrder[j] = FCS_Check_Sink_Dat[j]; 
+		end
    
-   if (INPUT_INVERCE) for (j = 0;j < 8;  j = j + 1) begin  assign wInverce[j] = ~wReverseBitOrder[ j]; end
-    else for (j = 0;j < 8;  j = j + 1) begin  assign wInverce[j] =  wReverseBitOrder[ j]; end
-   
+	if (INPUT_INVERCE) 
+		for (j = 0;j < 8;  j = j + 1) 
+		begin : LOGIC_CRC_INPUT_INVERCE_Y  
+		assign wInverce[j] = ~wReverseBitOrder[ j]; 
+		end
+		else for (j = 0;j < 8;  j = j + 1) 
+		begin : LOGIC_LOGIC_CRC_INPUT_INVERCE_N  
+		assign wInverce[j] =  wReverseBitOrder[ j]; 
+		end
 endgenerate
 
 

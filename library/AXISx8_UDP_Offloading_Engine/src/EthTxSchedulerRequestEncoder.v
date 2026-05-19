@@ -42,18 +42,22 @@ endfunction
 localparam MAX_TxPortCount  = REQUEST_COUNT(INDEX_WIDTH);
  
 integer i=0; 
-reg    [REQUEST_COUNT(INDEX_WIDTH)-1:0]    wValidRequest;
-reg    [REQUEST_COUNT(INDEX_WIDTH)-1:0]    wValidMask;
+reg    [REQUEST_COUNT(INDEX_WIDTH)-1:0]    wValidRequest=0;
+reg    [REQUEST_COUNT(INDEX_WIDTH)-1:0]    wValidMask=0;
 
 generate
 always @(*) begin
-    for (i = 0; i <= MAX_TxPortCount-1; i = i + 1) 
+
+wValidRequest=0;
+wValidMask=0;
+
+    for (i = 0; i < MAX_TxPortCount ; i = i + 1) 
     begin
-        if (i>=CurrentCheckIndex) wValidRequest[i]<=ValidRequest[i];
-            else wValidRequest[i]<=1'b0;
+        if (i>=CurrentCheckIndex) wValidRequest[i] =ValidRequest[i];
+            else wValidRequest[i] =1'b0;
             
-        if (i==0) wValidMask[i]<=wValidRequest[i];
-            else  wValidMask[i]<=wValidRequest[i]||wValidMask[i-1];
+        if (i==0) begin wValidMask[i] =wValidRequest[i]; end
+            else begin wValidMask[i] =wValidRequest[i]||wValidMask[i-1]; end
     end
 end
 endgenerate
@@ -66,8 +70,8 @@ HasValidRequest<=|wValidRequest;
 
     for (j = 0; j <= MAX_TxPortCount-1; j = j + 1) 
     begin
-    if ((j==0)&&(wValidMask[j]==1)) CurrentValidIndex<=0;
-        else if ((j!=0)&&(wValidMask[j]==1)&&(wValidMask[j-1]==0))  CurrentValidIndex<=j;
+    if ((j==0)) begin if (wValidMask[j]==1) CurrentValidIndex<=0; end
+        else if (j!=0)  begin  if ((wValidMask[j]==1)&&(wValidMask[j-1]==0))CurrentValidIndex<=j; end
           //  else CurrentValidIndex<=0;
     end
 end

@@ -28,8 +28,7 @@ module AXIS_Width_Up_Converter
     parameter BIT_WIDTH = 8,
     parameter N = 4,
 	parameter BIG_ENDIAN = 0,    	 
-    parameter TFIRST_ReSTORE = 0,    // Altera/Intel Avalon stream  and AXI Stream Compatibility. If TFIRST_ReSTORE ==1 : TFIRST ignored else TFIRST is equivalent AVALON SOP signal
-    localparam WordCount=clogb2(N)
+    parameter TFIRST_ReSTORE = 0    // Altera/Intel Avalon stream  and AXI Stream Compatibility. If TFIRST_ReSTORE ==1 : TFIRST ignored else TFIRST is equivalent AVALON SOP signal
    )
     (
     
@@ -46,8 +45,8 @@ module AXIS_Width_Up_Converter
     output reg                          TERROR_OUT,
     output reg                          TLAST_OUT,
     output reg [N-1:0]                  TKEEP_OUT,
-	output reg [WordCount-1:0]          EMPTY_OUT,
-	output reg [WordCount  :0]          TCOUNT_OUT,
+	output reg [clogb2(N)-1:0]          EMPTY_OUT,
+	output reg [clogb2(N)  :0]          TCOUNT_OUT,
     output reg [(N*BIT_WIDTH)-1:0]      TDATA_OUT 
 
     );
@@ -59,6 +58,9 @@ module AXIS_Width_Up_Converter
     depth = depth >> 1;
     end
     endfunction 
+	 
+	 localparam WordCount=clogb2(N);
+	 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// find the beginning of a package 
     wire wTFIRST0;   
@@ -134,6 +136,4 @@ module AXIS_Width_Up_Converter
     end
     endgenerate
     
-    
-
 endmodule

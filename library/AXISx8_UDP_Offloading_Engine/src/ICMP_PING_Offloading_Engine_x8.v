@@ -70,9 +70,9 @@ localparam MAX_IP4_PayloadSize      = ETHERNET_MTU - 20;
 localparam MAX_ICMP_PayloadSize     = ETHERNET_MTU - 28;
 //localparam MAX_ICMP_PayloadSize_BUF = BufferSize - 28;
 
-if ( ETHERNET_MTU <= 28                         )             begin Error_Generation MTU_Erorr ( );           end
+generate if ( ETHERNET_MTU <= 28                         )             begin Error_Generation MTU_Erorr ( );           end	endgenerate 
 //if ((BufferSize*4) < MAX_ICMP_PayloadSize_MTU   )             begin AXISx32_UDP_Tx_Offload_Engine_Error BufferSize_Erorr ( );    end
-if ((BUFFER_COUNT_1K==0)||(BUFFER_COUNT_1K>16)  )             begin Error_Generation BufferCount_Erorr ( );   end
+generate if ((BUFFER_COUNT_1K==0)||(BUFFER_COUNT_1K>16)  )             begin Error_Generation BufferCount_Erorr ( );   end	endgenerate 
 
 (* KEEP = "TRUE" *) wire         wSink_TFIRST;
 (* KEEP = "TRUE" *) wire         wSink_TVALID;

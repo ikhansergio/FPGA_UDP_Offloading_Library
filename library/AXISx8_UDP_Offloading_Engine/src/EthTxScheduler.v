@@ -111,23 +111,29 @@ EthTxSchedulerRequestEncoder #(.INDEX_WIDTH(INDEX_WIDTH))EthTxSchedulerRequestEn
 . CurrentValidIndex                     (wConfirmedIndex    )       // Index of first ValidRequest greater than or equal to CurrentCheckIndex
 );
 
-reg   [1-1:0]                 wSource_Val;
-reg   [1-1:0]                 wSource_Err;
-reg   [1-1:0]                 wSource_EoF;
-reg   [8-1:0]                 wSource_DAT;
+reg   [1-1:0]                 wSource_Val =1'b0;
+reg   [1-1:0]                 wSource_Err =1'b0;
+reg   [1-1:0]                 wSource_EoF =1'b0;
+reg   [8-1:0]                 wSource_DAT =8'b0;
 
 integer i=0; 
 always @(*)
 begin
-for (i = 0; i <= TxPortCount-1; i = i + 1) 
+
+wSource_Val =1'b0;
+wSource_Err =1'b0;
+wSource_EoF =1'b0;
+wSource_DAT =8'b0;
+
+for (i = 0; i <  TxPortCount ; i = i + 1) 
     begin
-    Sink_TRDY[i]<=Sink_RDY_REG[i]&Source_RDY;
+    Sink_TRDY[i] =Sink_RDY_REG[i]&Source_RDY;
     if (ConfirmedIndex==i)
         begin
-        wSource_Val <=  Sink_TVALID[i]; 
-        wSource_Err <=  Sink_TERROR[i];
-        wSource_EoF <=  Sink_TLAST[i];
-        wSource_DAT <=  Sink_TDATA[i*8+:8];
+        wSource_Val =  Sink_TVALID[i]; 
+        wSource_Err =  Sink_TERROR[i];
+        wSource_EoF =  Sink_TLAST[i];
+        wSource_DAT =  Sink_TDATA[i*8+:8];
         end    
     end
 end
@@ -182,7 +188,7 @@ if (Source_RDY)
 
 if (Source_RDY)
     begin
-        if (LastDone) GapCounter<= 20;                          // 12 ticks interframe gap plus 8 ticks preamble plus 4 ticks FCS -> 24 ticks for gap 
+        if (LastDone) GapCounter<= 5'd20;                          // 12 ticks interframe gap plus 8 ticks preamble plus 4 ticks FCS -> 24 ticks for gap 
             else if (GapCounter!=0) GapCounter<=GapCounter-1;
         GapDoneFlag<=(GapCounter==0);
         

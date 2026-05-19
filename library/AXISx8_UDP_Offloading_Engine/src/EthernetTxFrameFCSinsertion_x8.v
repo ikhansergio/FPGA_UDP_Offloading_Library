@@ -1,23 +1,27 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 16.10.2025 11:25:51
-// Design Name: 
-// Module Name: EthernetTxFrameFCSinsertion
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//MIT License
+
+//Copyright (c) 2026 Sergio Batu    ikhan.sergio@gmail.com
+
+//Permission is hereby granted, free of charge, to any person obtaining a copy
+//of this software and associated documentation files (the "Software"), to deal
+//in the Software without restriction, including without limitation the rights
+//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//copies of the Software, and to permit persons to whom the Software is
+//furnished to do so, subject to the following conditions:
+
+//The above copyright notice and this permission notice shall be included in all
+//copies or substantial portions of the Software.
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//SOFTWARE.
+////////////////////////////////////////////////////////////////////////////////
 
 module EthernetTxFrameFCSinsertion_x8
 #(
@@ -52,21 +56,34 @@ wire [7:0] wInverce;
 
 wire [7:0] wINIT_Value;
 assign wINIT_Value =   (INIT_FF) ?  8'hFF : 8'h00 ;
-
-                                                    
-                                                    
+         
 generate
-
    genvar j;
    
-   for (j = 0;j < 32; j = j + 1) begin  assign wCRC_out[j] = ~crc[(32-1) - j]; end
+   for (j = 0;j < 32; j = j + 1) 
+		begin : LOGIC_CRC_INVERSE0  
+		assign wCRC_out[j] = ~crc[(32-1) - j];
+		end
      
-   if (INPUT_REVERCEORDER) for (j = 0;j < 8;  j = j + 1) begin  assign wReverseBitOrder[j] = FCSinsertion_Sink_Dat[(8-1) - j]; end
-    else for (j = 0;j < 8;  j = j + 1) begin  assign wReverseBitOrder[j] = FCSinsertion_Sink_Dat[j]; end
+	if (INPUT_REVERCEORDER) 
+	for (j = 0;j < 8;  j = j + 1) 
+		begin : LOGIC_INPUT_REVERCEORDER_Y  
+		assign wReverseBitOrder[j] = FCSinsertion_Sink_Dat[(8-1) - j]; 
+		end
+    else for (j = 0;j < 8;  j = j + 1) 
+		begin : LOGIC_INPUT_REVERCEORDER_N  
+		assign wReverseBitOrder[j] = FCSinsertion_Sink_Dat[j]; 
+		end
    
-   if (INPUT_INVERCE) for (j = 0;j < 8;  j = j + 1) begin  assign wInverce[j] = ~wReverseBitOrder[ j]; end
-    else for (j = 0;j < 8;  j = j + 1) begin  assign wInverce[j] =  wReverseBitOrder[ j]; end
-   
+	if (INPUT_INVERCE) 
+	for (j = 0;j < 8;  j = j + 1) 
+	begin : LOGIC_INPUT_INVERCE_Y
+		assign wInverce[j] = ~wReverseBitOrder[ j]; 
+	end
+    else for (j = 0;j < 8;  j = j + 1)
+		begin : LOGIC_INPUT_INVERCE_N
+		assign wInverce[j] =  wReverseBitOrder[ j]; 
+		end
 endgenerate
 
 // Counter for Valid extension
