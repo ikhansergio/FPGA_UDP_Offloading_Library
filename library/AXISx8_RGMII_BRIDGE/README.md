@@ -64,10 +64,18 @@ Valid values:
 **RGMII_TXC_REFERENCE_CLK** - A clock generator used to generate the TXC signal.
 
 Valid values:
-*      "REFERENCE_PHY_RXC", "REFERENCE_125MHz", "REFERENCE_125MHz_90", "REFERENCE_250MHz"
+*      "REFERENCE_PHY_RXC", "REFERENCE_125MHz", "REFERENCE_125MHz_90"
 
 If the REFERENCE_PHY_RXC parameter is used, it is assumed that the user uses the PHY's RXC clock output to generate TXD data and the TXC clock. Depending on the PHY speed, the PHY automatically switches 		frequencies between 125 MHz, 25 MHz, and 2.5 MHz. With this configuration, the RGMII_TXC_FRONT_POSITION parameter must be set to "EDGE_ALIGNED." 
 
 If the REFERENCE_125MHz parameter is used, it is assumed that the user is using a local frequency of 125 MHz obtained from a crystal oscillator or PLL. Depending on the PHY speed, AXISx8_RGMII_BRIDGE automatically calculates the frequency division factors and controls the Sink_PHY_TREADY signal.
 
+**Valid combinations:**
 
+| The source clock used | RGMII_TXD_REFERENCE_CLK | RGMII_TXC_REFERENCE_CLK | RGMII_TXC_FRONT_POSITION |
+| :--- | :---: | :---: | :---: |
+| REFERENCE PHY RXC | "REFERENCE_PHY_RXC"  | "REFERENCE_PHY_RXC"  | "EDGE_ALIGNED"  |
+| Local 125 MHz for TXD and TXC| "REFERENCE_125MHz" | "REFERENCE_125MHz" | "EDGE_ALIGNED" |
+| Local 125 MHz for TXD and 125 MHz 90 degrees shifted for TXC | "REFERENCE_125MHz" | "REFERENCE_125MHz_90" | "CENTER_ALIGNED" |
+
+	
