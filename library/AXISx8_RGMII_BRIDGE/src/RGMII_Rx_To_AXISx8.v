@@ -25,26 +25,26 @@
 
 module RGMII_Rx_To_AXISx8 
 #(
-parameter ARCH = "DEFAULT_LOGIC"        ,
-parameter RX_CLK_BUFF_SCH_TYPE=1		,
+parameter ARCH = "DEFAULT_LOGIC"                ,
+parameter RX_CLK_BUFF_SCH_TYPE=1		        ,
 parameter OVER_SAMPLING = "NO"
 )
 (
-input   wire            CLK625MHZ,
+input   wire            CLK625MHZ               ,
 
-output  wire            RGMII_LINK_UP,
-output  wire            RGMII_DUPLEX ,
-output  wire  [2-1:0]   RGMII_SPEED  ,
+output  wire            RGMII_LINK_UP           ,
+output  wire            RGMII_DUPLEX            ,
+output  wire  [2-1:0]   RGMII_SPEED             ,
 
-input   wire            RGMII_RXC,
-input   wire            RGMII_RX_CTL,
-input   wire [4-1:0]    RGMII_RXD,
+input   wire            RGMII_RXC               ,
+input   wire            RGMII_RX_CTL            ,
+input   wire [4-1:0]    RGMII_RXD               ,
 
 output  wire            Source_CLK,
-output  reg             Source_TVALID = 1'b0,
-output  reg             Source_TERROR = 1'b0,
-output  reg             Source_TFIRST = 1'b0,
-output  reg             Source_TLAST  = 1'b0,
+output  reg             Source_TVALID = 1'b0    ,
+output  reg             Source_TERROR = 1'b0    ,
+output  reg             Source_TFIRST = 1'b0    ,
+output  reg             Source_TLAST  = 1'b0    ,
 output  reg  [8-1:0]    Source_TDATA  = 1'b0
 );
 

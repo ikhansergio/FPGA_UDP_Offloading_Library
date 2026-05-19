@@ -27,25 +27,25 @@ module RGMII_TX_PHY
 #(
 parameter ARCH = "DEFAULT_LOGIC",
 parameter RGMII_InBandStatusEnabled = 0,
-parameter RGMII_TXC_FRONT_POSITION = "EDGE_ALIGNED",        // EDGE_ALIGNED , CENTER_ALIGNED
+parameter RGMII_TXC_FRONT_POSITION = "EDGE_ALIGNED"     ,   // EDGE_ALIGNED , CENTER_ALIGNED
 parameter RGMII_TXD_REFERENCE_CLK  = "REFERENCE_PHY_RXC",   // REFERENCE_PHY_RXC, REFERENCE_125MHz,
 parameter RGMII_TXC_REFERENCE_CLK  = "REFERENCE_PHY_RXC"    // REFERENCE_PHY_RXC, REFERENCE_125MHz, REFERENCE_125MHz_90, REFERENCE_250MHz,    
 )
 (
-input  wire           RGMII_LINK_UP,
-input  wire  [2-1:0]  RGMII_SPEED,
+input  wire           RGMII_LINK_UP         ,
+input  wire  [2-1:0]  RGMII_SPEED           ,
 
-input  wire           RGMII_TxClockSync,
+input  wire           RGMII_TxClockSync     ,
 
-input   wire          RGMII_TXC_REFERENCE,
-input   wire          RGMII_TXD_REFERENCE,
-input   wire          RGMII_TX_VAL,
-input   wire          RGMII_TX_Err,
-input   wire [8-1:0]  RGMII_TX_DAT,
-output  reg           RGMII_TX_RDY =1'b1,
+input   wire          RGMII_TXC_REFERENCE   ,
+input   wire          RGMII_TXD_REFERENCE   ,
+input   wire          RGMII_TX_VAL          ,
+input   wire          RGMII_TX_Err          ,
+input   wire [8-1:0]  RGMII_TX_DAT          ,
+output  reg           RGMII_TX_RDY =1'b1    ,
 
-output  wire          RGMII_TXC,
-output  wire          RGMII_TX_CTL,
+output  wire          RGMII_TXC             ,
+output  wire          RGMII_TX_CTL          ,
 output  wire [4-1:0]  RGMII_TXD
 );
 

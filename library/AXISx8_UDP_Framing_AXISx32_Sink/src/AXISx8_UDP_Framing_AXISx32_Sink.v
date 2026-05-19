@@ -33,28 +33,28 @@ module AXISx8_UDP_Framing_AXISx32_Sink
     parameter ETHERNET_MTU = 1*1024      
 ) 
 (     
-    input  wire                     Sink_CLK,
-    output wire                     Sink_TRDY  ,
-    input  wire                     Sink_TVALID,
-    input  wire                     Sink_TLAST,
-    input  wire [ 4-1:0]            Sink_TKEEP,
-    input  wire [32-1:0]            Sink_TDATA,
+    input  wire                     Sink_CLK                   ,
+    output wire                     Sink_TRDY                  ,
+    input  wire                     Sink_TVALID                ,
+    input  wire                     Sink_TLAST                 ,
+    input  wire [ 4-1:0]            Sink_TKEEP                 ,
+    input  wire [32-1:0]            Sink_TDATA                 ,
     
-    output reg  [32-1:0]            DATA_DROP_Cnt =             0,
+    output reg  [32-1:0]            DATA_DROP_Cnt = 0          ,
  
- 	input  wire [16-1:0]   			UDP_LOCAL_PORT_IN         	,
-	input  wire [16-1:0]   			UDP_REMOTE_PORT_IN         	,
+ 	input  wire [16-1:0]   			UDP_LOCAL_PORT_IN          ,
+	input  wire [16-1:0]   			UDP_REMOTE_PORT_IN         ,
 
-	input  wire [32-1:0]   			IP4_LOCAL_ADDR_IN         	,
-	input  wire [32-1:0]   			IP4_REMOTE_ADDR_IN         	,
+	input  wire [32-1:0]   			IP4_LOCAL_ADDR_IN          ,
+	input  wire [32-1:0]   			IP4_REMOTE_ADDR_IN         ,
 
-	input  wire [48-1:0]   			MAC_LOCAL_ADDR_IN          	,  
-    input  wire [48-1:0]   			MAC_REMOTE_ADDR_IN         	,
+	input  wire [48-1:0]   			MAC_LOCAL_ADDR_IN          ,  
+    input  wire [48-1:0]   			MAC_REMOTE_ADDR_IN         ,
 
-    input   wire                   	Source_CLK,
-    input   wire [1-1:0]	       	Source_TRDY,
-    output  wire [1-1:0]	       	Source_TVALID,
-    output  wire [1-1:0]	       	Source_TLAST,
+    input   wire                   	Source_CLK                 ,
+    input   wire [1-1:0]	       	Source_TRDY                ,
+    output  wire [1-1:0]	       	Source_TVALID              ,
+    output  wire [1-1:0]	       	Source_TLAST               ,
     output  wire [8-1:0]           	Source_TDATA
 );
 function integer BitWidth (input integer Value);                  

@@ -25,26 +25,26 @@
 
 module RGMII_RX_PHY
 #(
-parameter ARCH = "DEFAULT_LOGIC"        ,
-parameter RX_CLK_BUFF_SCH_TYPE=1		,
+parameter ARCH = "DEFAULT_LOGIC"                ,
+parameter RX_CLK_BUFF_SCH_TYPE=1		        ,
 parameter OVER_SAMPLING = "NO"
 )
 (
-input   wire          CLK625MHZ,
+input   wire          CLK625MHZ                 ,
 
-output  reg           RGMII_LINK_UP = 1'b0,
-output  reg           RGMII_DUPLEX  = 1'b0,
-output  reg  [2-1:0]  RGMII_SPEED   = 1'b0,
+output  reg           RGMII_LINK_UP = 1'b0      ,
+output  reg           RGMII_DUPLEX  = 1'b0      ,
+output  reg  [2-1:0]  RGMII_SPEED   = 1'b0      ,
 
-input   wire          RGMII_RXC,
-input   wire          RGMII_RX_CTL,
-input   wire [4-1:0]  RGMII_RXD,
+input   wire          RGMII_RXC                 ,
+input   wire          RGMII_RX_CTL              ,
+input   wire [4-1:0]  RGMII_RXD                 ,
 
 output  wire          RGMII_RX_dCLK,
-output  reg           RGMII_Rx_ValFlag=1'b1,
-output  wire          RGMII_Rx_Reset,
-output  reg           RGMII_RX_CTL_Q1 = 1'b0,
-output  reg           RGMII_RX_CTL_Q2 = 1'b0,
+output  reg           RGMII_Rx_ValFlag=1'b1     ,
+output  wire          RGMII_Rx_Reset            ,
+output  reg           RGMII_RX_CTL_Q1 = 1'b0    ,
+output  reg           RGMII_RX_CTL_Q2 = 1'b0    ,
 output  reg  [8-1:0]  RGMII_RX_DATA_Q = 1'b0
 );
 
