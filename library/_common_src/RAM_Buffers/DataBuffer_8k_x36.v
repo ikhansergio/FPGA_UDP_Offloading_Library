@@ -58,10 +58,10 @@ if (RdEna) RdData <= wRdData;
 end
 
 (* KEEP_HIERARCHY = "TRUE" *)
-DataBuffer_BlockRAM_8k_X36 
+DataBuffer_BlockRAM_8k_x36 
 #(
 .ARCH(ARCH)
-) DataBuffer_BlockRAM_8k_X36_inst  
+) DataBuffer_BlockRAM_8k_x36_inst  
 (
 .clka              (WrClk               ),
 .ena               (WrEna               ),

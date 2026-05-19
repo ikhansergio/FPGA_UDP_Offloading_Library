@@ -23,7 +23,7 @@
 //SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-module DataBuffer_Fabric_X36
+module DataBuffer_Fabric_x36
 #(
 parameter RAM_DEPTH = 256
 )

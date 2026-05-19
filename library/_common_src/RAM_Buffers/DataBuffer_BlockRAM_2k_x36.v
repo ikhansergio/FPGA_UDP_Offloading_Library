@@ -23,25 +23,25 @@
 //SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-module DataBuffer_BlockRAM_4k_X36
+module DataBuffer_BlockRAM_2k_x36
 #(parameter ARCH = "XLX_ULTRASCALE")
 (
 input  wire          WrClk       ,
 input  wire          WrEna       ,
 input  wire [ 0:0]   WrWea       ,
-input  wire [ 9:0]   WrAddress   ,
+input  wire [ 8:0]   WrAddress   ,
 input  wire [35:0]   WrData      ,
 
 input  wire          RdClk       ,
 input  wire          RdEna       ,
-input  wire [ 9:0]   RdAddress   ,
+input  wire [ 8:0]   RdAddress   ,
 output wire [35:0]   RdData     
 );
 
     if (ARCH == "XLX_SERIES7")
     begin
         (* KEEP_HIERARCHY = "TRUE" *)
-        XLX_x36_4k_BLK      XLX_x36_4k_BLK_inst  
+        XLX_x36_2k_BLK      XLX_x36_2k_BLK_inst  
         (
         .clka              (WrClk           ),
         .ena               (WrEna           ),
@@ -57,7 +57,7 @@ output wire [35:0]   RdData
     end else if (ARCH == "XLX_ULTRASCALE")
         begin
         (* KEEP_HIERARCHY = "TRUE" *)
-        XLX_x36_4k_BLK      XLX_x36_4k_BLK_inst   
+        XLX_x36_2k_BLK      XLX_x36_2k_BLK_inst   
         (
         .clka              (WrClk           ),
         .ena               (WrEna           ),
@@ -75,7 +75,7 @@ output wire [35:0]   RdData
     (* KEEP_HIERARCHY = "TRUE" *)
     DataBuffer_Fabric_X36   
     #(
-    . RAM_DEPTH ( 1024 )
+    . RAM_DEPTH ( 512 )
     )DataBuffer_Fabric_X36_inst
     (
     .WrClk              (WrClk),

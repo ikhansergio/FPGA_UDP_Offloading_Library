@@ -76,10 +76,10 @@ if (RdEna)
 end
 
 (* KEEP_HIERARCHY = "TRUE" *)
-DataBuffer_BlockRAM_8k_X36 
+DataBuffer_BlockRAM_8k_x36 
 #(
 .ARCH(ARCH)
-) DataBuffer_BlockRAM_1k_X36_inst0  
+) DataBuffer_BlockRAM_8k_x36_inst0  
 (
 .clka              (WrClk               ),
 .ena               (WrEna               ),
@@ -94,10 +94,10 @@ DataBuffer_BlockRAM_8k_X36
 );
 
 (* KEEP_HIERARCHY = "TRUE" *)
-DataBuffer_BlockRAM_8k_X36 
+DataBuffer_BlockRAM_8k_x36 
 #(
 .ARCH(ARCH)
-) DataBuffer_BlockRAM_1k_X36_inst1  
+) DataBuffer_BlockRAM_8k_x36_inst1  
 (
 .clka              (WrClk               ),
 .ena               (WrEna               ),

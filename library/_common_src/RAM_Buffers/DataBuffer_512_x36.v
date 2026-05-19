@@ -54,10 +54,10 @@ wire [35:0]   wRdData;
 always @(posedge RdClk) if (RdEna) RdData <= wRdData;
 
 (* KEEP_HIERARCHY = "TRUE" *)
-DataBuffer_DistRAM_512_X36 
+DataBuffer_DistRAM_512_x36 
 #(
 .ARCH(ARCH)
-) DataBuffer_DistRAM_512_X36_inst  
+) DataBuffer_DistRAM_512_x36_inst  
 (
 .WrClk             (WrClk           ),
 .WrEna             (WrEna           ),
