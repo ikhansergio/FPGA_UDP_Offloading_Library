@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="RGMII_TB_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="RGMII_TB" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
+      <ZoomEndTime time="3.547905 us"></ZoomEndTime>
+      <Cursor1Time time="0.752000 us"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="701"></NameColumnWidth>
+      <ValueColumnWidth column_width="58"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="31" />
+   <wvobject fp_name="/RGMII_TB/CLK125MhzOS" type="logic">
+      <obj_property name="ElementShortName">CLK125MhzOS</obj_property>
+      <obj_property name="ObjectShortName">CLK125MhzOS</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/CLK125Mhz" type="logic">
+      <obj_property name="ElementShortName">CLK125Mhz</obj_property>
+      <obj_property name="ObjectShortName">CLK125Mhz</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/CLK250Mhz" type="logic">
+      <obj_property name="ElementShortName">CLK250Mhz</obj_property>
+      <obj_property name="ObjectShortName">CLK250Mhz</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/CLK625Mhz" type="logic">
+      <obj_property name="ElementShortName">CLK625Mhz</obj_property>
+      <obj_property name="ObjectShortName">CLK625Mhz</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/DATA_TRDY" type="logic">
+      <obj_property name="ElementShortName">DATA_TRDY</obj_property>
+      <obj_property name="ObjectShortName">DATA_TRDY</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/DATA_TVALID" type="logic">
+      <obj_property name="ElementShortName">DATA_TVALID</obj_property>
+      <obj_property name="ObjectShortName">DATA_TVALID</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/DATA_TLAST" type="logic">
+      <obj_property name="ElementShortName">DATA_TLAST</obj_property>
+      <obj_property name="ObjectShortName">DATA_TLAST</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/DATA_TKEEP" type="array">
+      <obj_property name="ElementShortName">DATA_TKEEP[3:0]</obj_property>
+      <obj_property name="ObjectShortName">DATA_TKEEP[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/DATA_TDATA" type="array">
+      <obj_property name="ElementShortName">DATA_TDATA[31:0]</obj_property>
+      <obj_property name="ObjectShortName">DATA_TDATA[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/DATA_TDATA_Counter" type="array">
+      <obj_property name="ElementShortName">DATA_TDATA_Counter[15:0]</obj_property>
+      <obj_property name="ObjectShortName">DATA_TDATA_Counter[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/EthPackSize" type="array">
+      <obj_property name="ElementShortName">EthPackSize[31:0]</obj_property>
+      <obj_property name="ObjectShortName">EthPackSize[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/StartValue" type="array">
+      <obj_property name="ElementShortName">StartValue[31:0]</obj_property>
+      <obj_property name="ObjectShortName">StartValue[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/LenghValue" type="array">
+      <obj_property name="ElementShortName">LenghValue[31:0]</obj_property>
+      <obj_property name="ObjectShortName">LenghValue[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/GapValue" type="array">
+      <obj_property name="ElementShortName">GapValue[31:0]</obj_property>
+      <obj_property name="ObjectShortName">GapValue[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider15">
+   </wvobject>
+   <wvobject type="divider" fp_name="divider31">
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Sink_CLK" type="logic">
+      <obj_property name="ElementShortName">Sink_CLK</obj_property>
+      <obj_property name="ObjectShortName">Sink_CLK</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Sink_TRDY" type="logic">
+      <obj_property name="ElementShortName">Sink_TRDY</obj_property>
+      <obj_property name="ObjectShortName">Sink_TRDY</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Sink_TVALID" type="logic">
+      <obj_property name="ElementShortName">Sink_TVALID</obj_property>
+      <obj_property name="ObjectShortName">Sink_TVALID</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Sink_TLAST" type="logic">
+      <obj_property name="ElementShortName">Sink_TLAST</obj_property>
+      <obj_property name="ObjectShortName">Sink_TLAST</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Sink_TKEEP" type="array">
+      <obj_property name="ElementShortName">Sink_TKEEP[3:0]</obj_property>
+      <obj_property name="ObjectShortName">Sink_TKEEP[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Sink_TDATA" type="array">
+      <obj_property name="ElementShortName">Sink_TDATA[31:0]</obj_property>
+      <obj_property name="ObjectShortName">Sink_TDATA[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider29">
+   </wvobject>
+   <wvobject type="divider" fp_name="divider30">
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Source_TRDY" type="array">
+      <obj_property name="ElementShortName">Source_TRDY[0:0]</obj_property>
+      <obj_property name="ObjectShortName">Source_TRDY[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Source_TVALID" type="array">
+      <obj_property name="ElementShortName">Source_TVALID[0:0]</obj_property>
+      <obj_property name="ObjectShortName">Source_TVALID[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Source_TDATA" type="array">
+      <obj_property name="ElementShortName">Source_TDATA[7:0]</obj_property>
+      <obj_property name="ObjectShortName">Source_TDATA[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Source_TLAST" type="array">
+      <obj_property name="ElementShortName">Source_TLAST[0:0]</obj_property>
+      <obj_property name="ObjectShortName">Source_TLAST[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Tx_MAC_FrameBody_ByteCounter" type="array">
+      <obj_property name="ElementShortName">Tx_MAC_FrameBody_ByteCounter[5:0]</obj_property>
+      <obj_property name="ObjectShortName">Tx_MAC_FrameBody_ByteCounter[5:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/DATA_TotalLength_Full" type="array">
+      <obj_property name="ElementShortName">DATA_TotalLength_Full[15:0]</obj_property>
+      <obj_property name="ObjectShortName">DATA_TotalLength_Full[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/DATA_TotalLength" type="array">
+      <obj_property name="ElementShortName">DATA_TotalLength[13:0]</obj_property>
+      <obj_property name="ObjectShortName">DATA_TotalLength[13:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+</wave_config>
