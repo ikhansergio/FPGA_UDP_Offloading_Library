@@ -155,14 +155,18 @@ AXIS_Width_Up_Converter
 
 (* KEEP = "TRUE" *)reg rICMP_Core_TFIRST_x32=0 ;
 
+
+(* KEEP = "TRUE" *)wire wReqPackCheckSUM_Val;
+
  (* KEEP_HIERARCHY = "TRUE" *)
  ICMP_PING_CheckSum      ICMP_PING_CheckSum_inst
 (
-.CLK                    (Sink_CLK   ),
-.TFIRST                 (wICMP_Core_TFIRST_x32),
-.TVALID                 (wICMP_Core_TVALID_x32),
-.TDATA                  (wICMP_Core_TDATA_x32),
-.CheckSUM               (wICMP_PING_CheckSUM_Reply)
+.CLK                    (Sink_CLK                       ),
+.TFIRST                 (wICMP_Core_TFIRST_x32          ),
+.TVALID                 (wICMP_Core_TVALID_x32          ),
+.TDATA                  (wICMP_Core_TDATA_x32           ),
+.ReqPackCheckSUM_Val    (wReqPackCheckSUM_Val           ),
+.CheckSUM               (wICMP_PING_CheckSUM_Reply      )
 );
 
 always @(posedge Sink_CLK)
@@ -204,12 +208,13 @@ end
 
 always @(posedge Sink_CLK)
 begin
-Start0 <= (wICMP_Core_TVALID_x32 && wICMP_Core_TLAST_x32 && !wICMP_Core_TERROR_x32);
+Start0 <= (wICMP_Core_TVALID_x32 && wICMP_Core_TLAST_x32 && !wICMP_Core_TERROR_x32)  ;
 Start1 <= Start0;
 Start2 <= Start1;
 Start3 <= Start2;
 
-ICMP_PING_ReplyPulse <= Start3;
+ICMP_PING_ReplyPulse <= Start3 && wReqPackCheckSUM_Val;
+
 if (ICMP_PING_ReplyPulse) ICMP_PING_ReplyWiderCouter<=1'b1;
     else if (ICMP_PING_ReplyWiderCouter!=0) ICMP_PING_ReplyWiderCouter<=ICMP_PING_ReplyWiderCouter+1'b1;
 
