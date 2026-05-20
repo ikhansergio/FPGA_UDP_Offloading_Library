@@ -249,7 +249,7 @@ if (IP4_Core_TVALID)
 
     IPv4_Core_Source_TFIRST <= IP4_Core_TVALID_D2 && IPv4_HeaderValidationDonePulse ;
     IPv4_Core_Source_TVALID <= IP4_Core_TVALID_D2 && IPv4_HeaderValidationDoneFlag  ;
-    IPv4_Core_Source_TLAST  <= IP4_Core_TVALID_D2 && IP4_Core_TLAST_D2; 
+    IPv4_Core_Source_TLAST  <= IP4_Core_TVALID_D2 && IPv4_HeaderValidationDoneFlag && IP4_Core_TLAST_D2; 
     if (IPv4_HeaderValidationDoneFlag) IPv4_Core_Source_TERROR <= IP4_Core_TERROR_D2; else  IPv4_Core_Source_TERROR <=0;   
     if (IPv4_HeaderValidationDoneFlag) IPv4_Core_Source_TDATA  <= IP4_Core_TDATA_D2;  else  IPv4_Core_Source_TDATA  <=0;    
     

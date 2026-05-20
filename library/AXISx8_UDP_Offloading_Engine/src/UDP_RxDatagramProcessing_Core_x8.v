@@ -87,7 +87,7 @@ assign UDP_Core_Sink_TFIRST =  TLAST_DONE_FLAG && UDP_Core_Sink_TVALID && (IP4_U
 //////////////////////////////////////////////////////////////////////////////////////
 
 
-reg             UDP_ProtocolFlag =0;
+reg             UDP_ProtocolFlag                   =0;
 
 reg             UDP_Core_Sink_REG_TFIRST           =0;
 reg             UDP_Core_Sink_REG_TVALID           =0;
@@ -147,7 +147,8 @@ reg [16-1:0]    UDP_REMOTE_PORT                     =1'b0;
 
 always @(posedge CLK)
 begin
-if (TLAST_DONE_FLAG&&UDP_Core_Sink_TVALID) UDP_ProtocolFlag    <=  (IP4_Used_Protocol_IN     == UDP_ProtocolCode);
+
+if ( TLAST_DONE_FLAG&&UDP_Core_Sink_TVALID ) UDP_ProtocolFlag    <=   ( IP4_Used_Protocol_IN == UDP_ProtocolCode );
 
 UDP_Core_Sink_REG_TFIRST     <=     UDP_Core_Sink_TFIRST;
 UDP_Core_Sink_REG_TVALID     <=     UDP_Core_Sink_TVALID;
@@ -217,7 +218,7 @@ UDP_CheckSum <= UDP_PseudoHeader_CheckSum + UDP_CheckSumCounter;
 UDP_CheckSumDone <= UDP_CheckSum[32-1:16] + UDP_CheckSum[16-1: 0];   
 
 UDP_Core_TVALID_D0      <=  UDP_Core_TVALID&&UDP_HeaderValidationDoneFlag;
-UDP_Core_TLAST_D0       <=  UDP_Core_TLAST;
+UDP_Core_TLAST_D0       <=  UDP_Core_TLAST&&UDP_HeaderValidationDoneFlag;
 
 if (UDP_Core_TVALID) UDP_Core_TFIRST_D0 <= UDP_HeaderValidationDonePulse;
 
@@ -229,7 +230,6 @@ if (UDP_HeaderValidationDoneFlag&&UDP_Core_TVALID)   UDP_Core_TERROR_D0      <= 
     
 if (UDP_HeaderValidationDoneFlag&&UDP_Core_TVALID)   UDP_Core_TDATA_D0       <=  UDP_Core_TDATA;  
     else   if (UDP_Core_TVALID_D0&&UDP_Core_TLAST_D0)  UDP_Core_TDATA_D0       <=  8'h00;
-
 
 UDP_Need2CheckFlag_D1   <=  UDP_Need2CheckFlag_D0;
 UDP_Core_TFIRST_D1      <=  UDP_Core_TFIRST_D0;
