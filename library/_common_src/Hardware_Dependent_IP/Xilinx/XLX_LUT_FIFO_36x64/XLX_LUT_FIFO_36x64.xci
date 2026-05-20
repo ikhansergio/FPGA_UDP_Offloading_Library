@@ -400,7 +400,7 @@
         "OUTPUTDIR": [ { "value": "../../../../../../../FPGA_UDP_Offloading_Library.gen/sources_1/ip/XLX_LUT_FIFO_36x64" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
-        "SWVERSION": [ { "value": "2023.1.2" } ],
+        "SWVERSION": [ { "value": "2023.1" } ],
         "SYNTHESISFLOW": [ { "value": "OUT_OF_CONTEXT" } ]
       }
     },

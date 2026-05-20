@@ -30,7 +30,7 @@ module AXISx8_UDP_Framing_AXISx32_Sink
     parameter DROP_IF_OVERFLOW  = "YES" ,  // "YES" or "NO"
     parameter UDP_CHECKSUM_CALK = "YES" ,  // "YES" or "NO"
     parameter BUFFER_COUNT_1K   = 3     ,
-    parameter ETHERNET_MTU = 1*1024      
+    parameter ETHERNET_MTU      = 1*1024      
 ) 
 (     
     input  wire                     Sink_CLK                   ,
@@ -94,13 +94,13 @@ wire [32-1:0]           wSink_TDATA;
 (* KEEP_HIERARCHY = "TRUE" *)
 AXISx32_InputChecker    AXISx32_InputChecker_inst
 (
-.TLAST_IN    (Sink_TLAST),
-.TKEEP_IN    (Sink_TKEEP),
-.TDATA_IN    (Sink_TDATA),
+.Sink_TLAST             (Sink_TLAST),
+.Sink_TKEEP             (Sink_TKEEP),
+.Sink_TDATA             (Sink_TDATA),
 
-.TKEEP_OUT   (wSink_TKEEP),
-.COUNT_OUT   (wDATA_COUNT),
-.TDATA_OUT   (wSink_TDATA)
+.Source_TKEEP           (wSink_TKEEP),
+.Source_COUNT           (wDATA_COUNT),
+.Source_TDATA           (wSink_TDATA)
 );
 
 wire wCommandFIFO_Full;

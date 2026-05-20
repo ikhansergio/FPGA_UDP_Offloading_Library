@@ -42,12 +42,12 @@ module ICMP_PING_Offloading_Engine_x8
 	input  wire	[32-1:0]           IP4_LOCAL_ADDR_IN       ,
 	input  wire	[32-1:0]           IP4_REMOTE_ADDR_IN      ,
 
-    input  wire 	               ICMP_PING_Source_CLK,
-	input  wire	                   ICMP_PING_Source_TRDY,
-	output wire	                   ICMP_PING_Source_TVALID,
-	output wire	                   ICMP_PING_Source_TERROR,
-	output wire	                   ICMP_PING_Source_TLAST,
-	output wire	[ 8-1:0]           ICMP_PING_Source_TDATA
+    input  wire 	               Source_CLK              ,
+	input  wire	                   Source_TRDY             ,
+	output wire	                   Source_TVALID           ,
+	output wire	                   Source_TERROR           ,
+	output wire	                   Source_TLAST            ,
+	output wire	[ 8-1:0]           Source_TDATA
 );
 
 function integer BitWidth (input integer Value);                  
@@ -137,16 +137,7 @@ AXIS_Width_Up_Converter
 . TDATA_OUT                 (wICMP_Core_TDATA_x32           )
  );  
                        
-                                        
-//(* KEEP = "TRUE" *)reg [32-1:0] ICMP_CheckSUM_Packet_L=0;
-//(* KEEP = "TRUE" *)reg [32-1:0] ICMP_CheckSUM_Packet_H=0;
-//(* KEEP = "TRUE" *)reg [16-1:0] ICMP_CheckSUM_CalkRes=0;
 
-//(* KEEP = "TRUE" *) reg [32-1:0] ICMP_PING_CheckSUM_FullPacket=0;
-//(* KEEP = "TRUE" *)wire [32-1:0]wICMP_PING_CheckSUM_FullPacket;
-
-//(* KEEP = "TRUE" *)reg [17-1:0] ICMP_PING_CheckSUM_Sub =0;
-//(* KEEP = "TRUE" *)reg [32-1:0] ICMP_PING_CheckSUM_Reply=0;
 (* KEEP = "TRUE" *)wire [32-1:0] wICMP_PING_CheckSUM_Reply;
 
 (* KEEP = "TRUE" *)reg [ 1-1:0] ICMP_PING_TypeFlag=0;
@@ -232,7 +223,7 @@ end
 
 (* KEEP = "TRUE" *) reg ICMP_PING_StartReplyPulse =   0;
 
-always @(posedge ICMP_PING_Source_CLK)
+always @(posedge Source_CLK)
 begin
 
 ICMP_PING_ReplyWidePulse_ResyncD0<=ICMP_PING_ReplyWidePulse;
@@ -283,7 +274,7 @@ end
 
 (* KEEP = "TRUE" *) reg [16-1:0]    wDataLength_Rd=0;
 (* KEEP = "TRUE" *) reg [16-1:0]    IPv4_TotalLength                          =   0;
-always @(posedge ICMP_PING_Source_CLK)
+always @(posedge Source_CLK)
 begin
 IPv4_TotalLength<= wDataLength_Rd+20;//+8;
 wDataLength_Rd <=  ICMP_PING_RxData_Length_Counter;
@@ -298,10 +289,9 @@ wDataLength_Rd <=  ICMP_PING_RxData_Length_Counter;
         Tx_MAC_FrameBody_TLAST                      <=1'b0;
 
         end
-        else if (ICMP_PING_Source_TRDY)
+        else if (Source_TRDY)
             begin
             LoadDataPulse[3:0] <=  {RdPointerIncPulse, LoadDataPulse[3:1]};
-            //if (LoadDataPulse[0])  {ShiftRegD3,ShiftRegD2,ShiftRegD1,ShiftRegD0} <=  wICMP_PING_Payload_WrRAM_Data;   ////// !!!!!!!!!!!!!!!!!!!!!!!
             if (LoadDataPulse[0])  {ShiftRegD0,ShiftRegD1,ShiftRegD2,ShiftRegD3} <=  wICMP_PING_Payload_WrRAM_Data;
                 else  
                 begin
@@ -359,8 +349,8 @@ Ethernet_II_MAC_Header_Generator
  #(.EtherTypeValue(16'h0800))   
 Ethernet_II_MAC_Header_Generator_inst
 (
-.CLK                                (ICMP_PING_Source_CLK),
-.MAC_TRY                            (ICMP_PING_Source_TRDY),
+.CLK                                (Source_CLK),
+.MAC_TRY                            (Source_TRDY),
 .MAC_Header_PreSet                  (ICMP_PING_StartReplyPulse),
 .MAC_Header_Position                (Tx_MAC_FrameBody_ByteCounter),
 .MAC_LOCAL_ADDR                     (MAC_LOCAL_ADDR_IN),
@@ -374,20 +364,20 @@ IPv4_Header_Generator
 #(.IPv4_Protocol_Number(8'h1)) 
 IPv4_Header_Generator_inst
 (
-.CLK                                (ICMP_PING_Source_CLK),
-.IPv4_TRY                           (ICMP_PING_Source_TRDY),
-.IPv4_TotalLength                   (IPv4_TotalLength),
-.IPv4_Header_Position               (Tx_MAC_FrameBody_ByteCounter),
-.IPv4_LOCAL_ADDR                    (IP4_LOCAL_ADDR_IN),
-.IPv4_REMOTE_ADDR                   (IP4_REMOTE_ADDR_IN),
+.CLK                                ( Source_CLK                            ),
+.IPv4_TRY                           ( Source_TRDY                           ),
+.IPv4_TotalLength                   ( IPv4_TotalLength                      ),
+.IPv4_Header_Position               ( Tx_MAC_FrameBody_ByteCounter          ),
+.IPv4_LOCAL_ADDR                    ( IP4_LOCAL_ADDR_IN                     ),
+.IPv4_REMOTE_ADDR                   ( IP4_REMOTE_ADDR_IN                    ),
 
-.IPv4_Header                        (wTX_SwitchREG_Ethernet_II_IP4)
+.IPv4_Header                        (wTX_SwitchREG_Ethernet_II_IP4          )
 );
 
 (* KEEP_HIERARCHY = "TRUE" *)
 ICMP_PING_IPv4_Header_Generator_x8  ICMP_PING_IPv4_Header_Generator_x8_inst
 (
-.CLK                                ( ICMP_PING_Source_CLK                  ),
+.CLK                                ( Source_CLK                            ),
 .ICMP_PING_Position                 ( Tx_MAC_FrameBody_ByteCounter          ),
 .ICMP_PING_CheckSUM_Reply           (wICMP_PING_CheckSUM_Reply              ),
 .ICMP_PING_Identifier               ( ICMP_PING_Req_Header_Identifier       ),
@@ -399,9 +389,9 @@ ICMP_PING_IPv4_Header_Generator_x8  ICMP_PING_IPv4_Header_Generator_x8_inst
 (* KEEP_HIERARCHY = "TRUE" *)
 ICMP_UDP_Frame_Header_Multiplexer   ICMP_Frame_Header_Multiplexer_inst
 (
-.CLK                                (ICMP_PING_Source_CLK                   ),
+.CLK                                ( Source_CLK                            ),
 
-.Frame_TRY                          (ICMP_PING_Source_TRDY                  ),
+.Frame_TRY                          ( Source_TRDY                           ),
 .Frame_PreSet                       (ICMP_PING_StartReplyPulse              ),
 .Frame_PreSetValue                  (MAC_REMOTE_ADDR_IN [47:40]             ),
 .Frame_Position                     (Tx_MAC_FrameBody_ByteCounter           ),
@@ -428,15 +418,15 @@ ICMP_PING_RAM_DataBuffer_x32
 . WrAddress                         ( ICMP_PING_Payload_WrRAM_Pointer     ),
 . WrData                            (wICMP_Core_TDATA_x32                 ),
 
-. RdClk                             ( ICMP_PING_Source_CLK                ),
+. RdClk                             ( Source_CLK                          ),
 . RdEna                             ( 1'b1                                ),
 . RdAddress                         ( ICMP_PING_Payload_RdRAM_Pointer     ),
 . RdData                            (wICMP_PING_Payload_WrRAM_Data        )
 );
 
-assign ICMP_PING_Source_TVALID  =   Tx_MAC_FrameBody_VALID;
-assign ICMP_PING_Source_TLAST   =   Tx_MAC_FrameBody_TLAST;
-assign ICMP_PING_Source_TDATA   =  wTx_MAC_FrameBody_TDATA;
-assign ICMP_PING_Source_TERROR  = 0;
+assign Source_TVALID  =   Tx_MAC_FrameBody_VALID;
+assign Source_TLAST   =   Tx_MAC_FrameBody_TLAST;
+assign Source_TDATA   =  wTx_MAC_FrameBody_TDATA;
+assign Source_TERROR  = 0;
 
 endmodule

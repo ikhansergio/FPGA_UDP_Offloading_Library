@@ -231,12 +231,12 @@ begin
     .IP4_LOCAL_ADDR_IN          (IP4_LOCAL_ADDR_IN                  ),
     .IP4_REMOTE_ADDR_IN         (IP4_REMOTE_ADDR_OUT                ),
 
-    .ICMP_PING_Source_CLK       (Source_PHY_TX_CLK                  ),
-    .ICMP_PING_Source_TRDY      (wICMP_PING_Core_TRDY               ),
-    .ICMP_PING_Source_TVALID    (wICMP_PING_Core_TVALID             ),
-    .ICMP_PING_Source_TERROR    (wICMP_PING_Core_TERROR             ),
-    .ICMP_PING_Source_TLAST     (wICMP_PING_Core_TLAST              ),
-    .ICMP_PING_Source_TDATA     (wICMP_PING_Core_TDATA              )
+    .Source_CLK                 (Source_PHY_TX_CLK                  ),
+    .Source_TRDY                (wICMP_PING_Core_TRDY               ),
+    .Source_TVALID              (wICMP_PING_Core_TVALID             ),
+    .Source_TERROR              (wICMP_PING_Core_TERROR             ),
+    .Source_TLAST               (wICMP_PING_Core_TLAST              ),
+    .Source_TDATA               (wICMP_PING_Core_TDATA              )
     );
 end
 else 
