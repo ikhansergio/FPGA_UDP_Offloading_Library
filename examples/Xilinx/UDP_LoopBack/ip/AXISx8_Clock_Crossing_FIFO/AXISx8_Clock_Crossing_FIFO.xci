@@ -4,7 +4,7 @@
     "xci_name": "AXISx8_Clock_Crossing_FIFO",
     "component_reference": "xilinx.com:ip:axis_data_fifo:2.0",
     "ip_revision": "10",
-    "gen_directory": "../../../../Simple_UDP_LoopBack_Spartan7.gen/sources_1/ip/AXISx8_Clock_Crossing_FIFO",
+    "gen_directory": "../../vv_Spartan7/UDP_LoopBack_Spartan7.gen/sources_1/ip/AXISx8_Clock_Crossing_FIFO",
     "parameters": {
       "component_parameters": {
         "TDATA_NUM_BYTES": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
@@ -68,7 +68,7 @@
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
         "IPREVISION": [ { "value": "10" } ],
         "MANAGED": [ { "value": "TRUE" } ],
-        "OUTPUTDIR": [ { "value": "../../../../Simple_UDP_LoopBack_Spartan7.gen/sources_1/ip/AXISx8_Clock_Crossing_FIFO" } ],
+        "OUTPUTDIR": [ { "value": "../../vv_Spartan7/UDP_LoopBack_Spartan7.gen/sources_1/ip/AXISx8_Clock_Crossing_FIFO" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
         "SWVERSION": [ { "value": "2023.1.2" } ],
