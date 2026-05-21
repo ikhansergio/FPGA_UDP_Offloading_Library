@@ -602,7 +602,7 @@
         "OUTPUTDIR": [ { "value": "../../vv_Spartan7/UDP_LoopBack_Spartan7.gen/sources_1/ip/Sys_Clk_PLL" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
-        "SWVERSION": [ { "value": "2023.1.2" } ],
+        "SWVERSION": [ { "value": "2023.1" } ],
         "SYNTHESISFLOW": [ { "value": "OUT_OF_CONTEXT" } ]
       }
     },
