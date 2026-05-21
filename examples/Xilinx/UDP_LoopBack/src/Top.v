@@ -38,10 +38,17 @@ wire wEth_RXC;
 (* keep = "true" *) reg [16-1:0] wUDP_LOCAL_PORT = 16'd9999;  
 
 
+(* keep = "true" *) wire [48-1:0] wMAC_REMOTE_ADDR;
+(* keep = "true" *) wire [32-1:0] wIP4_REMOTE_ADDR; 
+(* keep = "true" *) wire [16-1:0] wUDP_REMOTE_PORT;  
+
  wire wMCK;
  
  (* KEEP_HIERARCHY = "TRUE" *)
- UDP_Offloading_Engine_Wrapper UDP_Offloading_Engine_Wrapper_inst
+ UDP_Offloading_Engine_Wrapper
+#(
+.RX_CLK_BUFF_SCH_TYPE(3)
+)UDP_Offloading_Engine_Wrapper_inst
 (
 .CLK                        (CLK),
 
@@ -55,6 +62,14 @@ wire wEth_RXC;
 .MAC_LOCAL_ADDR_IN          (wMAC_LOCAL_ADDR),
 .IP4_LOCAL_ADDR_IN          (wIP4_LOCAL_ADDR),
 .UDP_LOCAL_PORT_IN          (wUDP_LOCAL_PORT),
+
+.MAC_REMOTE_ADDR_IN         (wMAC_REMOTE_ADDR),
+.IP4_REMOTE_ADDR_IN         (wIP4_REMOTE_ADDR),
+.UDP_REMOTE_PORT_IN         (wUDP_REMOTE_PORT),
+
+.MAC_REMOTE_ADDR_OUT        (wMAC_REMOTE_ADDR),
+.IP4_REMOTE_ADDR_OUT        (wIP4_REMOTE_ADDR),
+.UDP_REMOTE_PORT_OUT        (wUDP_REMOTE_PORT),
 
 .UDP_Data_Source_CLK        (wEth_RXC),
 .UDP_Data_Source_TFIRST     (wUDP_Data_TFIRST    ),

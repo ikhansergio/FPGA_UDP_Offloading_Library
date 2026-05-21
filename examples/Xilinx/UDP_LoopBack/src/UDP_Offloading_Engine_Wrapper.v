@@ -1,6 +1,9 @@
 `timescale 1ns / 1ps
 
 module UDP_Offloading_Engine_Wrapper
+#(
+parameter RX_CLK_BUFF_SCH_TYPE  = 3 
+)
 (
 input CLK,
 
@@ -21,6 +24,14 @@ output wire [ 8-1:0] UDP_Data_Source_TDATA ,
 input  wire [48-1:0] MAC_LOCAL_ADDR_IN  ,
 input  wire [32-1:0] IP4_LOCAL_ADDR_IN  ,
 input  wire [16-1:0] UDP_LOCAL_PORT_IN  ,
+
+input  wire [48-1:0] MAC_REMOTE_ADDR_IN,
+input  wire [32-1:0] IP4_REMOTE_ADDR_IN,
+input  wire [16-1:0] UDP_REMOTE_PORT_IN,
+
+output wire [48-1:0] MAC_REMOTE_ADDR_OUT,
+output wire [32-1:0] IP4_REMOTE_ADDR_OUT,
+output wire [16-1:0] UDP_REMOTE_PORT_OUT,
 
 input  wire          Sink_CLK,
 output wire          Sink_TRDY  ,
@@ -61,7 +72,7 @@ wire [8*1-1:0]          wMAC_TxFrameBody_TDATA;
 
 
 (* keep = "true" *) wire [48-1:0] wMAC_REMOTE_ADDR ;
-(* keep = "true" *) wire [32-1:0] wIPv4_REMOTE_ADDR ;
+(* keep = "true" *) wire [32-1:0] wIP4_REMOTE_ADDR ;
 (* keep = "true" *) wire [16-1:0] wUDP_REMOTE_PORT ;
  
  
@@ -81,12 +92,13 @@ wire [8*1-1:0]          wMAC_TxFrameBody_TDATA;
 (* KEEP_HIERARCHY = "TRUE" *)
 AXISx8_RGMII_BRIDGE 
 #(
-.RX_ARCH("XLX_SERIES7"),                              // "XLX_SERIES7", "DEFAULT_LOGIC"
-//.RX_ARCH("DEFAULT_LOGIC"),                                // "XLX_SERIES7", "DEFAULT_LOGIC"
-.TX_ARCH("XLX_SERIES7"),
-.RGMII_TXC_FRONT_POSITION ("CENTER_ALIGNED"),           // EDGE_ALIGNED , CENTER_ALIGNED
-.RGMII_TXD_REFERENCE_CLK  ("REFERENCE_125MHz"),         // REFERENCE_PHY_RXC, REFERENCE_125MHz,     
-.RGMII_TXC_REFERENCE_CLK  ("REFERENCE_125MHz_90")       // REFERENCE_PHY_RXC, REFERENCE_125MHz, REFERENCE_125MHz_90, REFERENCE_250MHz,
+.RX_ARCH                    ("XLX_SERIES7"),             // "XLX_SERIES7", "DEFAULT_LOGIC"
+//.RX_ARCH("DEFAULT_LOGIC"),                             // "XLX_SERIES7", "DEFAULT_LOGIC"
+.TX_ARCH                    ("XLX_SERIES7"),
+.RX_CLK_BUFF_SCH_TYPE       (RX_CLK_BUFF_SCH_TYPE),
+.RGMII_TXC_FRONT_POSITION   ("CENTER_ALIGNED"),           // EDGE_ALIGNED , CENTER_ALIGNED
+.RGMII_TXD_REFERENCE_CLK    ("REFERENCE_125MHz"),         // REFERENCE_PHY_RXC, REFERENCE_125MHz,     
+.RGMII_TXC_REFERENCE_CLK    ("REFERENCE_125MHz_90")       // REFERENCE_PHY_RXC, REFERENCE_125MHz, REFERENCE_125MHz_90, REFERENCE_250MHz,
 ) AXISx8_RGMII_BRIDGE_INST
 (
 .RGMII_LINK_UP              (),
@@ -165,7 +177,7 @@ AXISx8_UDP_Offloading_Engine
 .UDP_LOCAL_PORT_IN          (UDP_LOCAL_PORT_IN  ),
 
 .MAC_REMOTE_ADDR_OUT        (wMAC_REMOTE_ADDR),
-.IP4_REMOTE_ADDR_OUT        (wIPv4_REMOTE_ADDR),
+.IP4_REMOTE_ADDR_OUT        (wIP4_REMOTE_ADDR),
 .UDP_REMOTE_PORT_OUT        (wUDP_REMOTE_PORT),
 	
 /////////////////////////////////////////////////////////////////////////////////////
@@ -205,13 +217,13 @@ AXISx8_UDP_Framing_AXISx32_Sink_inst
 . Sink_TDATA            (Sink_TDATA                 ),
  
 . UDP_LOCAL_PORT_IN     (UDP_LOCAL_PORT_IN          ),
-. UDP_REMOTE_PORT_IN    (wUDP_REMOTE_PORT           ),
+. UDP_REMOTE_PORT_IN    (UDP_REMOTE_PORT_IN         ),
   
 . IP4_LOCAL_ADDR_IN     (IP4_LOCAL_ADDR_IN          ),
-. IP4_REMOTE_ADDR_IN    (wIPv4_REMOTE_ADDR          ),
+. IP4_REMOTE_ADDR_IN    (IP4_REMOTE_ADDR_IN         ),
 
 . MAC_LOCAL_ADDR_IN     (MAC_LOCAL_ADDR_IN          ),  
-. MAC_REMOTE_ADDR_IN    (wMAC_REMOTE_ADDR           ),
+. MAC_REMOTE_ADDR_IN    (MAC_REMOTE_ADDR_IN         ),
 
 . Source_CLK            (wEthClk125                 ),    
 . Source_TRDY           (wMAC_TxFrameBody_TRDY      ),
@@ -220,5 +232,9 @@ AXISx8_UDP_Framing_AXISx32_Sink_inst
 . Source_TDATA          (wMAC_TxFrameBody_TDATA     )       
 );
 
+
+assign MAC_REMOTE_ADDR_OUT      =  wMAC_REMOTE_ADDR;
+assign IP4_REMOTE_ADDR_OUT     =   wIP4_REMOTE_ADDR;
+assign UDP_REMOTE_PORT_OUT      =  wUDP_REMOTE_PORT;
 
 endmodule
