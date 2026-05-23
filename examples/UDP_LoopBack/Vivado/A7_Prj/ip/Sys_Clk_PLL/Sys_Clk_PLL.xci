@@ -4,7 +4,7 @@
     "xci_name": "Sys_Clk_PLL",
     "component_reference": "xilinx.com:ip:clk_wiz:6.0",
     "ip_revision": "12",
-    "gen_directory": "../../../../vv_Spartan7.gen/sources_1/ip/Sys_Clk_PLL",
+    "gen_directory": "../../vv_Artix7/vv_Artix7.gen/sources_1/ip/Sys_Clk_PLL",
     "parameters": {
       "component_parameters": {
         "Component_Name": [ { "value": "Sys_Clk_PLL", "resolve_type": "user", "usage": "all" } ],
@@ -599,7 +599,7 @@
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
         "IPREVISION": [ { "value": "12" } ],
         "MANAGED": [ { "value": "TRUE" } ],
-        "OUTPUTDIR": [ { "value": "../../../../vv_Spartan7.gen/sources_1/ip/Sys_Clk_PLL" } ],
+        "OUTPUTDIR": [ { "value": "../../vv_Artix7/vv_Artix7.gen/sources_1/ip/Sys_Clk_PLL" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
         "SWVERSION": [ { "value": "2023.1.2" } ],
