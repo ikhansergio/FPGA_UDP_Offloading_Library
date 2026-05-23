@@ -15,7 +15,7 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
 ##################################################################
 
 # To test this script, run the following commands from Vivado Tcl console:
-# source Generate_Prj_IPs.tcl
+# source my_ips.tcl
 # If there is no project opened, this script will create a
 # project, but make sure you do not have an existing project
 # in the current working folder.
@@ -60,7 +60,6 @@ if { $bCheckIPsPassed != 1 } {
 # CREATE IP AXISx8_Clock_Crossing_FIFO
 ##################################################################
 
-set_property PART xc7s25csga225-2 [current_project]
 set AXISx8_Clock_Crossing_FIFO [create_ip -name axis_data_fifo -vendor xilinx.com -library ip -version 2.0 -module_name AXISx8_Clock_Crossing_FIFO]
 
 # User Parameters
