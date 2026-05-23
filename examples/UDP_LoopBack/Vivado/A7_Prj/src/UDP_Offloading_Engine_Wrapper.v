@@ -1,11 +1,35 @@
 `timescale 1ns / 1ps
+////////////////////////////////////////////////////////////////////////////////
+//MIT License
+
+//Copyright (c) 2026 Sergio Batu    ikhan.sergio@gmail.com
+
+//Permission is hereby granted, free of charge, to any person obtaining a copy
+//of this software and associated documentation files (the "Software"), to deal
+//in the Software without restriction, including without limitation the rights
+//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//copies of the Software, and to permit persons to whom the Software is
+//furnished to do so, subject to the following conditions:
+
+//The above copyright notice and this permission notice shall be included in all
+//copies or substantial portions of the Software.
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//SOFTWARE.
+////////////////////////////////////////////////////////////////////////////////
 
 module UDP_Offloading_Engine_Wrapper
 #(
 parameter RX_CLK_BUFF_SCH_TYPE  = 3 
 )
 (
-input CLK,
+input  wire          EthClk125,
+input  wire          EthClk125_90,
 
 input  wire          Eth_RX_CTL,
 input  wire          Eth_RXC,
@@ -41,8 +65,7 @@ input  wire [ 4-1:0] Sink_TKEEP,
 input  wire [32-1:0] Sink_TDATA
 );
 
-wire                    wEthClk125;
-wire                    wEthClk125_90;
+
  
 wire                    wRGMII_RX_dCLK;
 wire                    wRGMII_RX_dVAL;
@@ -76,19 +99,6 @@ wire [8*1-1:0]          wMAC_TxFrameBody_TDATA;
 (* keep = "true" *) wire [16-1:0] wUDP_REMOTE_PORT ;
  
  
- (* KEEP_HIERARCHY = "TRUE" *)
- Sys_Clk_PLL  Sys_Clk_PLL_inst
- (
-  // Clock out ports
-  .clk_out1 (wEthClk125),
-  .clk_out2 (wEthClk125_90),
-  // Status and control signals
-  .locked   (),
- // Clock in ports
-  .clk_in1 (CLK)
- );
- 
- 
 (* KEEP_HIERARCHY = "TRUE" *)
 AXISx8_RGMII_BRIDGE 
 #(
@@ -113,8 +123,8 @@ AXISx8_RGMII_BRIDGE
 .RGMII_TXD                  (Eth_TXD),
 
 .RGMII_TxClockSync          (0),
-.RGMII_TXC_REFERENCE        (wEthClk125_90 ),
-.RGMII_TXD_REFERENCE        (wEthClk125    ),
+.RGMII_TXC_REFERENCE        (EthClk125_90 ),
+.RGMII_TXD_REFERENCE        (EthClk125    ),
 
 .Sink_PHY_TVALID            (wRGMII_TX_dVAL),
 .Sink_PHY_TERROR            (wRGMII_TX_dERR),
@@ -141,7 +151,7 @@ AXISx8_Clock_Crossing_FIFO AXISx8_Clock_Crossing_FIFO_INST
   .s_axis_tlast                     (wRGMII_RX_dEoF                             ),      // input wire s_axis_tlast
   .s_axis_tuser                     (wRGMII_RX_dErr                             ),      // input wire [0 : 0] s_axis_tuser
   
-  .m_axis_aclk                      (wEthClk125                                 ),        // input wire m_axis_aclk
+  .m_axis_aclk                      ( EthClk125                                 ),        // input wire m_axis_aclk
   .m_axis_tvalid                    (wRGMII_FIFO_RX_dVAL                        ),    // output wire m_axis_tvalid
   .m_axis_tready                    (1'b1                                       ),    // input wire m_axis_tready
   .m_axis_tdata                     (wRGMII_FIFO_RX_DATA                        ),      // output wire [7 : 0] m_axis_tdata
@@ -160,7 +170,7 @@ AXISx8_UDP_Offloading_Engine
 )
  AXISx8_UDP_Offloading_Engine_inst
  (
-.Sink_PHY_RX_CLK            (wEthClk125         ),
+.Sink_PHY_RX_CLK            ( EthClk125         ),
 .Sink_PHY_RX_TVALID         (wRGMII_FIFO_RX_dVAL),
 .Sink_PHY_RX_TERROR         (wRGMII_FIFO_RX_dErr),
 .Sink_PHY_RX_TLAST          (wRGMII_FIFO_RX_dEoF),
@@ -189,7 +199,7 @@ AXISx8_UDP_Offloading_Engine
 .Sink_TLAST                 (wMAC_TxFrameBody_TLAST),
 .Sink_TDATA                 (wMAC_TxFrameBody_TDATA),
 
-.Source_PHY_TX_CLK          (wEthClk125),	
+.Source_PHY_TX_CLK          ( EthClk125   ),	
 .Source_PHY_TX_TRDY         (wRGMII_TX_RDY),
 .Source_PHY_TX_TVALID       (wRGMII_TX_dVAL),
 .Source_PHY_TX_TERROR       (wRGMII_TX_dERR),
@@ -197,7 +207,7 @@ AXISx8_UDP_Offloading_Engine
 .Source_PHY_TX_TDATA        (wRGMII_TX_DATA)
 );
 
-assign UDP_Data_Source_CLK = wEthClk125;
+assign UDP_Data_Source_CLK =  EthClk125;
 
 (* KEEP_HIERARCHY = "TRUE" *)
 AXISx8_UDP_Framing_AXISx32_Sink    
@@ -225,7 +235,7 @@ AXISx8_UDP_Framing_AXISx32_Sink_inst
 . MAC_LOCAL_ADDR_IN     (MAC_LOCAL_ADDR_IN          ),  
 . MAC_REMOTE_ADDR_IN    (MAC_REMOTE_ADDR_IN         ),
 
-. Source_CLK            (wEthClk125                 ),    
+. Source_CLK            ( EthClk125                 ),    
 . Source_TRDY           (wMAC_TxFrameBody_TRDY      ),
 . Source_TVALID         (wMAC_TxFrameBody_TVALID    ),
 . Source_TLAST          (wMAC_TxFrameBody_TLAST     ),

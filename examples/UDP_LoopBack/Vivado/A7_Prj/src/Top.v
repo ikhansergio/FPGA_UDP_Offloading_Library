@@ -2,8 +2,7 @@
 
 module Top
 (
-input CLK                           ,
-
+input CLK_100MHZ                    ,
 
 input  wire          Eth_RXC        ,
 input  wire          Eth_RX_CTL     ,
@@ -13,7 +12,7 @@ output wire          Eth_TXC        ,
 output wire          Eth_TX_CTL     ,
 output wire [4-1:0]  Eth_TXD        ,
 
-output reg EtheReset =0             // Invered on PCB. EtheReset == 1 -> PHY is reseted
+output reg EtheReset =0             // Inverted on PCB. EtheReset == 1 -> PHY is reseted
 
  );
  
@@ -42,7 +41,21 @@ wire wEth_RXC;
 (* keep = "true" *) wire [32-1:0] wIP4_REMOTE_ADDR; 
 (* keep = "true" *) wire [16-1:0] wUDP_REMOTE_PORT;  
 
- wire wMCK;
+
+(* keep = "true" *) wire           wEthClk125;
+(* keep = "true" *) wire           wEthClk125_90;
+
+ (* KEEP_HIERARCHY = "TRUE" *)
+ Sys_Clk_PLL  Sys_Clk_PLL_inst
+ (
+  // Clock out ports
+  .clk_out1 (wEthClk125),
+  .clk_out2 (wEthClk125_90),
+  // Status and control signals
+  .locked   (),
+ // Clock in ports
+  .clk_in1 (CLK_100MHZ)
+ );
  
  (* KEEP_HIERARCHY = "TRUE" *)
  UDP_Offloading_Engine_Wrapper
@@ -50,7 +63,8 @@ wire wEth_RXC;
 .RX_CLK_BUFF_SCH_TYPE(3)
 )UDP_Offloading_Engine_Wrapper_inst
 (
-.CLK                        (CLK),
+.EthClk125                  (wEthClk125),
+.EthClk125_90               (wEthClk125_90),
 
 .Eth_RX_CTL                 (Eth_RX_CTL),
 .Eth_RXC                    (Eth_RXC),

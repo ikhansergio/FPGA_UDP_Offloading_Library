@@ -2,8 +2,8 @@
 set_property IOSTANDARD LVCMOS33 [get_ports EtheReset]
 set_property PACKAGE_PIN D10 [get_ports EtheReset]
 
-set_property IOSTANDARD LVCMOS33 [get_ports CLK]
-set_property PACKAGE_PIN E15 [get_ports CLK]
+set_property IOSTANDARD LVCMOS33 [get_ports CLK_100MHZ]
+set_property PACKAGE_PIN E15 [get_ports CLK_100MHZ]
 
 set_property PACKAGE_PIN D8 [get_ports {Eth_TXD[0]}]
 set_property PACKAGE_PIN C8 [get_ports {Eth_TXD[1]}]
