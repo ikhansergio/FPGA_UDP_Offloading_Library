@@ -45,7 +45,7 @@ Valid values:
 		IDELAYE2 primitives were also not used.
 		Timing constraints were met by default settings.
 	
-		On Zynq 7000 devices in pair with Microchip KSZ9031RNX PHY, connected to the HR port by the RGMII interface,
+		On Zynq 7000 and Artix 7 devices in pair with Microchip KSZ9031RNX PHY, connected to the HR port by the RGMII interface,
 		only schemes 3, 4 proved to be optimal in terms of timing.
 		This scheme uses BUFR to connect the clock to the IDDR primitive.
 		Also, no manipulation of the MDIO registers in the PHY was required.
