@@ -39,6 +39,8 @@ output wire [35:0]   RdData
 
 );
 
+generate
+
     if (ARCH == "XLX_SERIES7")
     begin
         (* KEEP_HIERARCHY = "TRUE" *)
@@ -90,5 +92,6 @@ output wire [35:0]   RdData
     );
     end
 
+endgenerate
 
 endmodule

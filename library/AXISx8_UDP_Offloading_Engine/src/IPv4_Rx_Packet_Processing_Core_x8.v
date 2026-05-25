@@ -23,7 +23,7 @@
 //SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-module IPv4_Core_x8
+module IPv4_Rx_Packet_Processing_Core_x8
 (
 	input	wire					CLK						,
 	input	wire					IPv4_Core_Sink_TVALID	,

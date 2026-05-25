@@ -142,7 +142,7 @@ AXISx8_Ethernet_II_MAC_Core
 //---------------------------------------------------------------------------------//
 /////////////////////////////////////////////////////////////////////////////////////
 (*KEEP_HIERARCHY = "TRUE"*)
-IPv4_Core_x8                        IPv4_Core_x8_inst
+IPv4_Rx_Packet_Processing_Core_x8   IPv4_Rx_Packet_Processing_Core_x8_inst
 (
 .CLK                                (Sink_PHY_RX_CLK            ),
 .IPv4_Core_Sink_TVALID              (wEthernet_II_Frame_TVALID  ),
@@ -163,6 +163,7 @@ IPv4_Core_x8                        IPv4_Core_x8_inst
 .IPv4_Core_Source_TLAST             (Source_TLAST               ),
 .IPv4_Core_Source_TDATA             (Source_TDATA               )
 );
+
 generate
 if (Has_ARP_Proc == "YES") 
 begin
