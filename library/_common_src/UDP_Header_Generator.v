@@ -27,7 +27,7 @@ module UDP_Header_Generator
 (
 input  wire              CLK,
 
-input  wire              UDP_TRY,
+input  wire              UDP_TRDY,
 
 input  wire [16-1:0]     UDP_LOCAL_PORT_IN ,
 input  wire [16-1:0]   	 UDP_REMOTE_PORT_IN,
@@ -40,7 +40,7 @@ output reg  [ 8-1:0]     UDP_Header =0
 
 always @(posedge CLK)
 begin
-if (UDP_TRY)
+if (UDP_TRDY)
     begin
     if (UDP_Position==7'd34) UDP_Header<=UDP_LOCAL_PORT_IN  [15:8];                                                  // Source Port High
         else if (UDP_Position==7'd35) UDP_Header<=UDP_LOCAL_PORT_IN  [ 7:0];                                         // Source Port Low

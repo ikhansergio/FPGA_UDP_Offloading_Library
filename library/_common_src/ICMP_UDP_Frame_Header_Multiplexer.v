@@ -27,7 +27,7 @@ module ICMP_UDP_Frame_Header_Multiplexer
 (
 input  wire              CLK,
 
-input  wire              Frame_TRY,
+input  wire              Frame_TRDY,
 input  wire              Frame_PreSet,
 input  wire [ 8-1:0]     Frame_PreSetValue,
 input  wire [ 6-1:0]     Frame_Position,
@@ -49,7 +49,7 @@ if (Frame_PreSet)
         Tx_MAC_FrameBody_TDATA <= Frame_PreSetValue;
         TX_SwitchREG_Decoder   <=0;
     end 
-    else if (Frame_TRY) 
+    else if (Frame_TRDY) 
     begin
         if ((Frame_Position>=7'd00)&& (Frame_Position<=7'd05)) TX_SwitchREG_Decoder <= 0;
             else if ((Frame_Position>=7'd06)&& (Frame_Position<=7'd13)) TX_SwitchREG_Decoder <= 1;

@@ -472,7 +472,7 @@ UDP_Header_Generator                UDP_Header_Generator_inst
 (
 .CLK                                (Source_CLK                             ),
 
-.UDP_TRY                            (Source_TRDY                            ),
+.UDP_TRDY                           (Source_TRDY                            ),
 
 .UDP_LOCAL_PORT_IN                  (UDP_LOCAL_PORT_IN                      ),
 .UDP_REMOTE_PORT_IN                 (UDP_REMOTE_PORT_IN                     ),
@@ -488,7 +488,7 @@ ICMP_UDP_Frame_Header_Multiplexer   UDP_Frame_Header_Multiplexer_inst
 (
 .CLK                                (Source_CLK                             ),
 
-.Frame_TRY                          (Source_TRDY                            ),
+.Frame_TRDY                         (Source_TRDY                            ),
 .Frame_PreSet                       (Tx_MAC_FrameBody_StartReadPulse        ),
 .Frame_PreSetValue                  (MAC_REMOTE_ADDR_IN [47:40]             ),
 .Frame_Position                     (Tx_MAC_FrameBody_ByteCounter           ),

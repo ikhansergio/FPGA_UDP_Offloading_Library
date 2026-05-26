@@ -383,6 +383,7 @@ IPv4_Header_Generator_inst
 ICMP_PING_IPv4_Header_Generator_x8  ICMP_PING_IPv4_Header_Generator_x8_inst
 (
 .CLK                                ( Source_CLK                            ),
+.ICMP_PING_TRDY                     ( Source_TRDY                           ),
 .ICMP_PING_Position                 ( Tx_MAC_FrameBody_ByteCounter          ),
 .ICMP_PING_CheckSUM_Reply           (wICMP_PING_CheckSUM_Reply              ),
 .ICMP_PING_Identifier               ( ICMP_PING_Req_Header_Identifier       ),
@@ -396,7 +397,7 @@ ICMP_UDP_Frame_Header_Multiplexer   ICMP_Frame_Header_Multiplexer_inst
 (
 .CLK                                ( Source_CLK                            ),
 
-.Frame_TRY                          ( Source_TRDY                           ),
+.Frame_TRDY                         ( Source_TRDY                           ),
 .Frame_PreSet                       (ICMP_PING_StartReplyPulse              ),
 .Frame_PreSetValue                  (MAC_REMOTE_ADDR_IN [47:40]             ),
 .Frame_Position                     (Tx_MAC_FrameBody_ByteCounter           ),

@@ -27,6 +27,8 @@ module ICMP_PING_IPv4_Header_Generator_x8
 (
 input  wire              CLK,
 
+input  wire              ICMP_PING_TRDY,
+
 input  wire [ 6-1:0]     ICMP_PING_Position,
 
 input  wire [32-1:0]     ICMP_PING_CheckSUM_Reply,
@@ -43,15 +45,18 @@ begin
 
 ICMP_CheckSUM_CalkRes <= ~(ICMP_PING_CheckSUM_Reply[32-1:16] +  ICMP_PING_CheckSUM_Reply[16-1: 0]);
 
-if (ICMP_PING_Position==7'd34) ICMP_PING_Header<=8'b0;                                                        // Source Port High
-    else if (ICMP_PING_Position==7'd35) ICMP_PING_Header<=8'b0;                                                // Source Port Low
-        else if (ICMP_PING_Position==7'd36) ICMP_PING_Header<=ICMP_CheckSUM_CalkRes[15:8];                                             // Destination Port High
-	       else if (ICMP_PING_Position==7'd37) ICMP_PING_Header<=ICMP_CheckSUM_CalkRes[ 7:0];                                         // Destination Port Low
-	           else if (ICMP_PING_Position==7'd38) ICMP_PING_Header<=ICMP_PING_Identifier[15:8];                                      // Length High
-	               else if (ICMP_PING_Position==7'd39) ICMP_PING_Header<=ICMP_PING_Identifier[ 7:0];                                  // Length Low
-	                   else if (ICMP_PING_Position==7'd40) ICMP_PING_Header<=ICMP_PING_Sequence_Number[15:8];                                  // Checksum High
-	                       else if (ICMP_PING_Position==7'd41) ICMP_PING_Header<=ICMP_PING_Sequence_Number[ 7:0];                              // Checksum Low
-	                           else ICMP_PING_Header<=0;                    
+if (ICMP_PING_TRDY)
+    begin 
+    if (ICMP_PING_Position==7'd34) ICMP_PING_Header<=8'b0;                                                        // Source Port High
+        else if (ICMP_PING_Position==7'd35) ICMP_PING_Header<=8'b0;                                                // Source Port Low
+            else if (ICMP_PING_Position==7'd36) ICMP_PING_Header<=ICMP_CheckSUM_CalkRes[15:8];                                             // Destination Port High
+	           else if (ICMP_PING_Position==7'd37) ICMP_PING_Header<=ICMP_CheckSUM_CalkRes[ 7:0];                                         // Destination Port Low
+	               else if (ICMP_PING_Position==7'd38) ICMP_PING_Header<=ICMP_PING_Identifier[15:8];                                      // Length High
+	                   else if (ICMP_PING_Position==7'd39) ICMP_PING_Header<=ICMP_PING_Identifier[ 7:0];                                  // Length Low
+	                       else if (ICMP_PING_Position==7'd40) ICMP_PING_Header<=ICMP_PING_Sequence_Number[15:8];                                  // Checksum High
+	                           else if (ICMP_PING_Position==7'd41) ICMP_PING_Header<=ICMP_PING_Sequence_Number[ 7:0];                              // Checksum Low
+	                               else ICMP_PING_Header<=0;    
+    end                
 end 
                                      
 endmodule
