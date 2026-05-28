@@ -27,12 +27,14 @@ module RMII_RX_PHY
 (
 input   wire          RMII_REFERENCE_CLK50 ,
 input   wire          RMII_CRS_DV          ,
-input   wire [2-1:0]  RMII_RXD			,
+input   wire [2-1:0]  RMII_RXD			   ,
 
-output  wire Test
+output  reg           Source_TFIRST  	   ,
+output  reg           Source_TVALID  	   ,
+output  wire [8-1:0]  Source_TDATA  	   
 );
 
-(* KEEP = "TRUE" *)reg 	     	DV_FrameFlag=0;
+(* KEEP = "TRUE" *)reg          RMII_CRS_DV_reg=0;
 (* KEEP = "TRUE" *)reg [2-1:0]  RMII_RXD_reg=0;
 (* KEEP = "TRUE" *)reg [6-1:0]  GapCounter=0;
 
@@ -41,13 +43,13 @@ output  wire Test
 
 (* KEEP = "TRUE" *)reg FirstStrobe=0;
 
+(* KEEP = "TRUE" *) reg [4-1:0]  SHIFT1 =0;
+(* KEEP = "TRUE" *) reg [4-1:0]  SHIFT0 =0;
+
 always @(posedge RMII_REFERENCE_CLK50)
 begin
 if (RMII_CRS_DV)  GapCounter<= 39;
 	else if (GapCounter!=0) GapCounter<=GapCounter-1;
-
-if (RMII_CRS_DV)  DV_FrameFlag<= 1;
-	else if (GapCounter==0) DV_FrameFlag<= 0;
 	
 if (RMII_CRS_DV) RMII_RXD_reg <= RMII_RXD;
 	else RMII_RXD_reg <= 0;
@@ -62,10 +64,16 @@ if (RMII_CRS_DV&&(RMII_RXD!=0)&&(GapCounter==0))  DivCounter<= 3;
 if (RMII_CRS_DV&&(RMII_RXD!=0)&&(GapCounter==0))  FirstStrobe<= 1;
 	else if (RMII_CRS_DV&&(RMII_RXD!=0)&&SyncWaitFlag)  FirstStrobe<= 1;
 		else if (DivCounter==0) FirstStrobe<= 0;
+		
+RMII_CRS_DV_reg <= RMII_CRS_DV ;	
+
+Source_TFIRST  	 <= RMII_CRS_DV_reg&& ! SyncWaitFlag && FirstStrobe&&(DivCounter==0);
+Source_TVALID  	 <= RMII_CRS_DV_reg&& ! SyncWaitFlag && (DivCounter==0);
+
+SHIFT1[3:0] <= {RMII_RXD_reg[1],SHIFT1[3:1]};
+SHIFT0[3:0] <= {RMII_RXD_reg[0],SHIFT0[3:1]};		
 end
 
-
-assign Test = (|RMII_RXD_reg) || FirstStrobe ||  (|DivCounter) ||  DV_FrameFlag;
-
+assign Source_TDATA = {SHIFT1[3],SHIFT0[3],SHIFT1[2],SHIFT0[2],SHIFT1[1],SHIFT0[1],SHIFT1[0],SHIFT0[0]};
 
 endmodule
