@@ -63,16 +63,19 @@ function integer BitWidth (input integer Value);
 endfunction 
 
 localparam ICMP_ProtocolCode = 8'h01;
+localparam BufferSize_Bytes = BUFFER_COUNT_1K*(1024); // BUFFER_COUNT_1K * 256 
 localparam BufferSize = BUFFER_COUNT_1K*(1024/4); // BUFFER_COUNT_1K * 256 
+//localparam BufferSize = (BUFFER_COUNT_1K==0) ? 128 : BUFFER_COUNT_1K * (1024/4);  // BUFFER_COUNT_1K * 256 
+
 
 localparam MAX_Eth_PayloadSize      = ETHERNET_MTU - 0;
 localparam MAX_IP4_PayloadSize      = ETHERNET_MTU - 20;
 localparam MAX_ICMP_PayloadSize     = ETHERNET_MTU - 28;
 //localparam MAX_ICMP_PayloadSize_BUF = BufferSize - 28;
 
-generate if ( ETHERNET_MTU <= 28                         )             begin Error_Generation MTU_Erorr ( );           end	endgenerate 
-//if ((BufferSize*4) < MAX_ICMP_PayloadSize_MTU   )             begin AXISx32_UDP_Tx_Offload_Engine_Error BufferSize_Erorr ( );    end
-generate if ((BUFFER_COUNT_1K==0)||(BUFFER_COUNT_1K>16)  )             begin Error_Generation BufferCount_Erorr ( );   end	endgenerate 
+generate if ( ETHERNET_MTU <= 28                         )              begin Error_Generation MTU_Erorr ( );           end	endgenerate 
+//if ((BufferSize*4) < MAX_ICMP_PayloadSize_MTU   )                     begin AXISx32_UDP_Tx_Offload_Engine_Error BufferSize_Erorr ( );    end
+generate if ((BUFFER_COUNT_1K==0)||(BUFFER_COUNT_1K>16)  )              begin Error_Generation BufferCount_Erorr ( );   end	endgenerate 
 
 (* KEEP = "TRUE" *) wire         wSink_TFIRST;
 (* KEEP = "TRUE" *) wire         wSink_TVALID;
@@ -173,7 +176,7 @@ always @(posedge Sink_CLK)
 begin
 	if (wICMP_Core_TVALID_x32 && wICMP_Core_TFIRST_x32) ICMP_PING_RxData_Length_Counter <= wICMP_Core_Byte_COUNT_x32;  
 	   else if (wICMP_Core_TVALID_x32&&(ICMP_PING_RxData_Length_Counter>MAX_ICMP_PayloadSize)) ICMP_PING_RxData_Length_Counter <= ICMP_PING_RxData_Length_Counter;
-	       else if (wICMP_Core_TVALID_x32&&(ICMP_PING_RxData_Length_Counter>BufferSize)) ICMP_PING_RxData_Length_Counter <= ICMP_PING_RxData_Length_Counter;    
+	       else if (wICMP_Core_TVALID_x32&&(ICMP_PING_RxData_Length_Counter>BufferSize_Bytes)) ICMP_PING_RxData_Length_Counter <= ICMP_PING_RxData_Length_Counter;    
 	           else if (wICMP_Core_TVALID_x32) ICMP_PING_RxData_Length_Counter <= ICMP_PING_RxData_Length_Counter + wICMP_Core_Byte_COUNT_x32;  
 
 if (wICMP_Core_TFIRST_x32&&wICMP_Core_TVALID_x32) ICMP_PING_TypeFlag <= (wICMP_Core_TDATA_x32[31:24] == 8'h8);
@@ -187,7 +190,7 @@ if (wICMP_Core_TVALID_x32 && wICMP_Core_TFIRST_x32)  ICMP_PING_WrWea <= 0;
 if (wICMP_Core_TVALID_x32 && rICMP_Core_TFIRST_x32) {ICMP_PING_Req_Header_Identifier,ICMP_PING_Req_Header_SequenceNumber}   <= wICMP_Core_TDATA_x32[32-1:0];
 
 if (wICMP_Core_TVALID_x32 && rICMP_Core_TFIRST_x32) ICMP_PING_Payload_WrRAM_Pointer<=0;
-    else if (wICMP_Core_TVALID_x32 && (ICMP_PING_Payload_WrRAM_Pointer!=255) ) ICMP_PING_Payload_WrRAM_Pointer <= ICMP_PING_Payload_WrRAM_Pointer+1'b1;
+    else if (wICMP_Core_TVALID_x32 && (ICMP_PING_Payload_WrRAM_Pointer!=(BufferSize-1)) ) ICMP_PING_Payload_WrRAM_Pointer <= ICMP_PING_Payload_WrRAM_Pointer+1'b1;
 
 end
 
@@ -415,7 +418,7 @@ ICMP_UDP_Frame_Header_Multiplexer   ICMP_Frame_Header_Multiplexer_inst
 ICMP_PING_RAM_DataBuffer_x32 
 #(
 .ARCH ("XLX_ULTRASCALE" ),
-.BUFFER_COUNT_1K(0)
+.BUFFER_COUNT_1K(BUFFER_COUNT_1K)
 ) ICMP_PING_RAM_DataBuffer_x32_inst
 (
 . WrClk                             ( Sink_CLK                            ),

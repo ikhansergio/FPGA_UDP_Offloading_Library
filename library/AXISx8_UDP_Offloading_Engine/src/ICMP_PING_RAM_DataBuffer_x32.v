@@ -33,12 +33,12 @@ input  wire                                             WrClk       ,
 input  wire                                             WrEna       ,
 input  wire [ 1-1:0]                                    WrWea       ,
 input  wire [UDP_RAM_BitWidth(BUFFER_COUNT_1K)-1:0]     WrAddress   ,
-input  wire [31-1:0]                                    WrData      ,
+input  wire [32-1:0]                                    WrData      ,
 
 input  wire                                             RdClk       ,
 input  wire                                             RdEna       ,
 input  wire [UDP_RAM_BitWidth(BUFFER_COUNT_1K)-1:0]     RdAddress   ,
-output wire [31-1:0]                                    RdData   
+output wire [32-1:0]                                    RdData   
 );
 
 function integer UDP_RAM_BitWidth (input integer BUFF_COUNT);                  
