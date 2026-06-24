@@ -54,7 +54,8 @@ wire [35:0] wRdData;
 
 always @(posedge RdClk)
 begin
-if (RdEna) RdData <= wRdData;
+if (RdEna) 
+    RdData <= wRdData;
 end
 
 (* KEEP_HIERARCHY = "TRUE" *)
@@ -63,16 +64,16 @@ DataBuffer_BlockRAM_8k_x36
 .ARCH(ARCH)
 ) DataBuffer_BlockRAM_8k_x36_inst  
 (
-.clka              (WrClk               ),
-.ena               (WrEna               ),
-.wea               (WrWea               ),
-.addra             (WrAddress[10:0]     ),
-.dina              (WrData              ),
-
-.clkb              (RdClk               ),
-.enb               (RdEna               ),
-.addrb             (RdAddress[10:0]     ),
-.doutb             (wRdData0            )
+.WrClk             (WrClk               ),
+.WrEna             (WrEna               ),
+.WrWea             (WrWea               ),
+.WrAddress         (WrAddress[10:0]     ),
+.WrData            (WrData              ),
+			 
+.RdClk             (RdClk               ),
+.RdEna             (RdEna               ),
+.RdAddress         (RdAddress[10:0]     ),
+.RdData            (wRdData             )
 );
 
 endmodule

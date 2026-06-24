@@ -86,16 +86,16 @@ DataBuffer_BlockRAM_4k_x36
 .ARCH(ARCH)
 ) DataBuffer_BlockRAM_4k_x36_inst  
 (
-.clka              (WrClk               ),
-.ena               (WrEna               ),
-.wea               (wWrWeaBank0         ),
-.addra             (WrAddress[ 9:0]     ),
-.dina              (WrData              ),
+.WrClk                  (WrClk               ),
+.WrEna                  (WrEna               ),
+.WrWea                  (wWrWeaBank0         ),
+.WrAddress              (WrAddress[ 9:0]     ),
+.WrData                 (WrData              ),
 
-.clkb              (RdClk               ),
-.enb               (RdEna               ),
-.addrb             (RdAddress[ 9:0]     ),
-.doutb             (wRdData0            )
+.RdClk                  (RdClk               ),
+.RdEna                  (RdEna               ),
+.RdAddress              (RdAddress[ 9:0]     ),
+.RdData                 (wRdData0            )
 );
 
 (* KEEP_HIERARCHY = "TRUE" *)
@@ -104,17 +104,16 @@ DataBuffer_BlockRAM_1k_x36
 .ARCH(ARCH)
 ) DataBuffer_BlockRAM_1k_x36_inst  
 (
-.clka              (WrClk               ),
-.ena               (WrEna               ),
-.wea               (wWrWeaBank1         ),
-.addra             (WrAddress[ 7:0]     ),
-.dina              (WrData              ),
+.WrClk                  (WrClk               ),
+.WrEna                  (WrEna               ),
+.WrWea                  (wWrWeaBank1         ),
+.WrAddress              (WrAddress[ 7:0]     ),
+.WrData                 (WrData              ),
 
-.clkb              (RdClk               ),
-.enb               (RdEna               ),
-.addrb             (RdAddress[ 7:0]     ),
-.doutb             (wRdData1            )
+.RdClk                  (RdClk               ),
+.RdEna                  (RdEna               ),
+.RdAddress              (RdAddress[ 7:0]     ),
+.RdData                 (wRdData1            )
 );
-
 
 endmodule

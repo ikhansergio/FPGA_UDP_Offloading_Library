@@ -60,7 +60,8 @@ end
 
 (* KEEP_HIERARCHY = "TRUE" *)
 DataBuffer_BlockRAM_4k_x36 
-#(.ARCH(ARCH)
+#(
+.ARCH(ARCH)
 )DataBuffer_BlockRAM_4k_x36_inst  
 (
 .WrClk             (WrClk               ),
@@ -76,4 +77,3 @@ DataBuffer_BlockRAM_4k_x36
 );
 
 endmodule
-
