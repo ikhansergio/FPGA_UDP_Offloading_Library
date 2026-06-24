@@ -100,16 +100,16 @@ DataBuffer_BlockRAM_8k_x36
 .ARCH(ARCH)
 ) DataBuffer_BlockRAM_8k_x36_inst  
 (
-.clka              (WrClk               ),
-.ena               (WrEna               ),
-.wea               (wWrWeaBank0         ),
-.addra             (WrAddress[10:0]     ),
-.dina              (WrData              ),
+.WrClk                  (WrClk               ),
+.WrEna                  (WrEna               ),
+.WrWea                  (wWrWeaBank0         ),
+.WrAddress              (WrAddress[10:0]     ),
+.WrData                 (WrData              ),
 
-.clkb              (RdClk               ),
-.enb               (RdEna               ),
-.addrb             (RdAddress[10:0]     ),
-.doutb             (wRdData0            )
+.RdClk                  (RdClk               ),
+.RdEna                  (RdEna               ),
+.RdAddress              (RdAddress[10:0]     ),
+.RdData                 (wRdData0            )
 );
 
 (* KEEP_HIERARCHY = "TRUE" *)
@@ -118,16 +118,16 @@ DataBuffer_BlockRAM_4k_x36
 .ARCH(ARCH)
 ) DataBuffer_BlockRAM_4k_x36_inst  
 (
-.clka              (WrClk               ),
-.ena               (WrEna               ),
-.wea               (wWrWeaBank1         ),
-.addra             (WrAddress[ 9:0]     ),
-.dina              (WrData              ),
+.WrClk                  (WrClk               ),
+.WrEna                  (WrEna               ),
+.WrWea                  (wWrWeaBank1         ),
+.WrAddress              (WrAddress[ 9:0]     ),
+.WrData                 (WrData              ),
 
-.clkb              (RdClk               ),
-.enb               (RdEna               ),
-.addrb             (RdAddress[ 9:0]     ),
-.doutb             (wRdData1            )
+.RdClk                  (RdClk               ),
+.RdEna                  (RdEna               ),
+.RdAddress              (RdAddress[ 9:0]     ),
+.RdData                 (wRdData1            )
 );
 
 (* KEEP_HIERARCHY = "TRUE" *)
@@ -136,16 +136,16 @@ DataBuffer_BlockRAM_2k_x36
 .ARCH(ARCH)
 ) DataBuffer_BlockRAM_2k_x36_inst  
 (
-.clka              (WrClk               ),
-.ena               (WrEna               ),
-.wea               (wWrWeaBank2         ),
-.addra             (WrAddress[ 8:0]     ),
-.dina              (WrData              ),
+.WrClk                  (WrClk               ),
+.WrEna                  (WrEna               ),
+.WrWea                  (wWrWeaBank2         ),
+.WrAddress              (WrAddress[ 8:0]     ),
+.WrData                 (WrData              ),
 
-.clkb              (RdClk               ),
-.enb               (RdEna               ),
-.addrb             (RdAddress[ 8:0]     ),
-.doutb             (wRdData2            )
+.RdClk                  (RdClk               ),
+.RdEna                  (RdEna               ),
+.RdAddress              (RdAddress[ 8:0]     ),
+.RdData                 (wRdData2            )
 );
 
 (* KEEP_HIERARCHY = "TRUE" *)
@@ -154,16 +154,16 @@ DataBuffer_BlockRAM_1k_x36
 .ARCH(ARCH)
 ) DataBuffer_BlockRAM_1k_x36_inst 
 (
-.clka              (WrClk               ),
-.ena               (WrEna               ),
-.wea               (wWrWeaBank3         ),
-.addra             (WrAddress[ 7:0]     ),
-.dina              (WrData              ),
+.WrClk                  (WrClk               ),
+.WrEna                  (WrEna               ),
+.WrWea                  (wWrWeaBank3         ),
+.WrAddress              (WrAddress[ 7:0]     ),
+.WrData                 (WrData              ),
 
-.clkb              (RdClk               ),
-.enb               (RdEna               ),
-.addrb             (RdAddress[ 7:0]     ),
-.doutb             (wRdData3            )
+.RdClk                  (RdClk               ),
+.RdEna                  (RdEna               ),
+.RdAddress              (RdAddress[ 7:0]     ),
+.RdData                 (wRdData3            )
 );
 
 
