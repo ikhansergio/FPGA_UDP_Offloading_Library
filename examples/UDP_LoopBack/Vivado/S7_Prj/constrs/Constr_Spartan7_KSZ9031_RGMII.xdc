@@ -14,3 +14,11 @@ set_false_path -hold -fall_from [get_clocks rgmii_Virtual] -fall_to [get_clocks 
 set_false_path -hold -rise_from [get_clocks rgmii_Virtual] -rise_to [get_clocks Eth_RXC]
 
 
+create_clock -period 10.000 -name CLK_100MHZ -waveform {0.000 5.000} [get_ports CLK_100MHZ]
+
+create_generated_clock -name RGMII_TX_CLK_90 -source [get_pins Sys_Clk_PLL_inst/inst/clk_out2] -multiply_by 1 [get_ports Eth_TXC]
+
+set_output_delay -clock RGMII_TX_CLK_90 -min -1.0 [get_ports {Eth_TXD[0] Eth_TXD[1] Eth_TXD[2] Eth_TXD[3] Eth_TX_CTL}] -add_delay
+set_output_delay -clock RGMII_TX_CLK_90 -max 1.0 [get_ports {Eth_TXD[0] Eth_TXD[1] Eth_TXD[2] Eth_TXD[3] Eth_TX_CTL}] -add_delay
+set_output_delay -clock RGMII_TX_CLK_90 -clock_fall -min -1.0 [get_ports {Eth_TXD[0] Eth_TXD[1] Eth_TXD[2] Eth_TXD[3] Eth_TX_CTL}] -add_delay
+set_output_delay -clock RGMII_TX_CLK_90 -clock_fall -max 1.0 [get_ports {Eth_TXD[0] Eth_TXD[1] Eth_TXD[2] Eth_TXD[3] Eth_TX_CTL}] -add_delay
