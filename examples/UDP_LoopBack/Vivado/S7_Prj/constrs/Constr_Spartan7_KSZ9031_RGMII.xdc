@@ -26,7 +26,7 @@ set_output_delay -clock RGMII_TX_CLK_90 -max 1.00 [get_ports {Eth_TXD[0] Eth_TXD
 set_output_delay -clock RGMII_TX_CLK_90 -clock_fall -min -1.0 [get_ports {Eth_TXD[0] Eth_TXD[1] Eth_TXD[2] Eth_TXD[3] Eth_TX_CTL}] -add_delay
 set_output_delay -clock RGMII_TX_CLK_90 -clock_fall -max 1.00 [get_ports {Eth_TXD[0] Eth_TXD[1] Eth_TXD[2] Eth_TXD[3] Eth_TX_CTL}] -add_delay
 
-set_false_path -rise_from [get_clocks $CLK_125MHZ] -fall_to [get_clocks RGMII_TX_CLK_90] -setup
-set_false_path -fall_from [get_clocks $CLK_125MHZ] -rise_to [get_clocks RGMII_TX_CLK_90] -setup
-set_false_path -rise_from [get_clocks $CLK_125MHZ] -rise_to [get_clocks RGMII_TX_CLK_90] -hold
-set_false_path -fall_from [get_clocks $CLK_125MHZ] -fall_to [get_clocks RGMII_TX_CLK_90] -hold
+set_false_path -rise_from [get_clocks CLK_125MHZ] -fall_to [get_clocks RGMII_TX_CLK_90] -setup
+set_false_path -fall_from [get_clocks CLK_125MHZ] -rise_to [get_clocks RGMII_TX_CLK_90] -setup
+set_false_path -rise_from [get_clocks CLK_125MHZ] -rise_to [get_clocks RGMII_TX_CLK_90] -hold
+set_false_path -fall_from [get_clocks CLK_125MHZ] -fall_to [get_clocks RGMII_TX_CLK_90] -hold
