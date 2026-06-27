@@ -33,7 +33,7 @@ set_false_path -hold -fall_from [get_clocks RGMII_VIRT ] -fall_to [get_clocks RG
 set_false_path -hold -rise_from [get_clocks RGMII_VIRT ] -rise_to [get_clocks RGMII_RXC]
 ```
 
-![RGMII RX](./././docs/WaveDrom/generated/KSZ9031_RGMII_RX.svg)
+![RGMII RX](../../../docs/WaveDrom/generated/KSZ9031_RGMII_RX.svg)
 
 # SDC constraint for the KSZ9031 RGMII TX interface:
 
