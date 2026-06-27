@@ -96,4 +96,4 @@ If the REFERENCE_125MHz parameter is used, it is assumed that the user is using 
 | Local 125 MHz for TXD and 125 MHz 90 degrees shifted for TXC | "REFERENCE_125MHz" | "REFERENCE_125MHz_90" | "CENTER_ALIGNED" |
 
 	
-# [[...]](KSZ9031_Def_Constraint.md) -> SDC constraint example for the KSZ9031 in default mode.
+# [[...]](./KSZ9031_Def_Constraint.md) -> SDC constraint example for the KSZ9031 in default mode.
