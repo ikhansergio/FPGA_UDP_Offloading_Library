@@ -31,12 +31,13 @@ parameter RX_CLK_BUFF_SCH_TYPE  = 3
 input  wire          EthClk125,
 input  wire          EthClk125_90,
 
-input  wire          Eth_RX_CTL,
-input  wire          Eth_RXC,
-input  wire [4-1:0]  Eth_RXD,
-output wire          Eth_TX_CTL,
-output wire          Eth_TXC,
-output wire [4-1:0]  Eth_TXD,
+input  wire          RGMII_RXC,
+input  wire          RGMII_RX_CTL,
+input  wire [4-1:0]  RGMII_RXD,
+
+output wire          RGMII_TXC,
+output wire          RGMII_TXC_CTL,
+output wire [4-1:0]  RGMII_TXD,
 
 output wire  		 UDP_Data_Source_CLK,
 output wire  		 UDP_Data_Source_TFIRST,
@@ -115,12 +116,12 @@ AXISx8_RGMII_BRIDGE
 .RGMII_DUPLEX               (),
 .RGMII_SPEED                (),
 
-.RGMII_RXC                  (Eth_RXC),
-.RGMII_RX_CTL               (Eth_RX_CTL),
-.RGMII_RXD                  (Eth_RXD),
-.RGMII_TXC                  (Eth_TXC),
-.RGMII_TX_CTL               (Eth_TX_CTL),
-.RGMII_TXD                  (Eth_TXD),
+.RGMII_RXC                  (RGMII_RXC),
+.RGMII_RX_CTL               (RGMII_RX_CTL),
+.RGMII_RXD                  (RGMII_RXD),
+.RGMII_TXC                  (RGMII_TXC),
+.RGMII_TX_CTL               (RGMII_TXC_CTL),
+.RGMII_TXD                  (RGMII_TXD),
 
 .RGMII_TxClockSync          (0),
 .RGMII_TXC_REFERENCE        (EthClk125_90 ),
