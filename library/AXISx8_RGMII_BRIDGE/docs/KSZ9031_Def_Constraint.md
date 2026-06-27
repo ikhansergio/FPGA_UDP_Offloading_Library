@@ -1,4 +1,4 @@
-# SDC constraint example for the KSZ9031 in default mode. No MDIO registers access after reset. All MDIO registers are in default state.
+# SDC constraint example for the KSZ9031 in default mode. Access to MDIO registers is not performed after a reset. All MDIO registers are in default state.
 
 The KSZ9031 chip's RGMII TX interface requires a default 2 ns (90-degree) shift for the TXC clock. To achieve this, two 125 MHz clocks must be generated, with one shifted by 90 degrees using either a PLL or a delay line. Generate the clock signals CLK_125MHZ and CLK_125MHZ_90 (a copy of CLK_125MHZ phase-shifted by 90 degrees) based on the reference signal CLK_100MHZ supplied by the board:
 ```
