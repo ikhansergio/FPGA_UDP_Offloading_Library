@@ -4,19 +4,20 @@ module Top
 (
 input CLK_100MHZ                    ,
 
-input  wire          Eth_RXC        ,
-input  wire          Eth_RX_CTL     ,
-input  wire [4-1:0]  Eth_RXD        ,
 
-output wire          Eth_TXC        ,
-output wire          Eth_TX_CTL     ,
-output wire [4-1:0]  Eth_TXD        ,
+input  wire          RGMII_RXC,
+input  wire          RGMII_RX_CTL,
+input  wire [4-1:0]  RGMII_RXD,
+
+output wire          RGMII_TXC,
+output wire          RGMII_TXC_CTL,
+output wire [4-1:0]  RGMII_TXD,
 
 output reg EtheReset =0             // Inverted on PCB. EtheReset == 1 -> PHY is reseted
 
  );
  
-wire wEth_RXC;
+wire wRGMII_RXC;
  
 (* KEEP = "TRUE" *)wire  		 wUDP_Data_TFIRST;
 (* KEEP = "TRUE" *)wire 		 wUDP_Data_TVALID;
@@ -66,12 +67,13 @@ wire wEth_RXC;
 .EthClk125                  (wEthClk125),
 .EthClk125_90               (wEthClk125_90),
 
-.Eth_RX_CTL                 (Eth_RX_CTL),
-.Eth_RXC                    (Eth_RXC),
-.Eth_RXD                    (Eth_RXD),
-.Eth_TX_CTL                 (Eth_TX_CTL),
-.Eth_TXC                    (Eth_TXC),
-.Eth_TXD                    (Eth_TXD),
+.RGMII_RXC                  (RGMII_RXC),
+.RGMII_RX_CTL               (RGMII_RX_CTL),
+.RGMII_RXD                  (RGMII_RXD),
+
+.RGMII_TXC                  (RGMII_TXC),
+.RGMII_TXC_CTL              (RGMII_TXC_CTL),
+.RGMII_TXD                  (RGMII_TXD),
 
 .MAC_LOCAL_ADDR_IN          (wMAC_LOCAL_ADDR),
 .IP4_LOCAL_ADDR_IN          (wIP4_LOCAL_ADDR),
@@ -85,14 +87,14 @@ wire wEth_RXC;
 .IP4_REMOTE_ADDR_OUT        (wIP4_REMOTE_ADDR),
 .UDP_REMOTE_PORT_OUT        (wUDP_REMOTE_PORT),
 
-.UDP_Data_Source_CLK        (wEth_RXC),
+.UDP_Data_Source_CLK        (wRGMII_RXC),
 .UDP_Data_Source_TFIRST     (wUDP_Data_TFIRST    ),
 .UDP_Data_Source_TVALID     (wUDP_Data_TVALID    ),
 .UDP_Data_Source_TERROR     (wUDP_Data_TERROR    ),
 .UDP_Data_Source_TLAST      (wUDP_Data_TLAST     ),
 .UDP_Data_Source_TDATA      (wUDP_Data_TDATA     ),
 
-.Sink_CLK                   (wEth_RXC            ),
+.Sink_CLK                   (wRGMII_RXC            ),
 .Sink_TRDY                  (),
 .Sink_TVALID                (wUDP_Data_TVALID_x32),
 .Sink_TLAST                 (wUDP_Data_TLAST_x32 ),

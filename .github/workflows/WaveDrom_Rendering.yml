@@ -1,0 +1,51 @@
+name: Render WaveDrom Diagrams
+
+on:
+  push:
+    paths:
+      - 'docs/WaveDrom/*.wavedrom'
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+       #  with:
+       #    token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install WaveDrom CLI
+        run: npm install -g wavedrom-cli
+
+      - name: Create output directory
+        run: mkdir -p docs/generated
+
+      - name: Generate SVG
+        run: |
+          for f in docs/WaveDrom/*.wavedrom; do
+            base=$(basename "$f" .wavedrom)
+
+            wavedrom-cli \
+              -i "$f" \
+              -s "docs/WaveDrom/generated/$base.svg"
+          done
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add docs/WaveDrom/generated/*.svg
+
+          git diff --cached --quiet || git commit -m "Auto-generated SVG"
+
+          git push
