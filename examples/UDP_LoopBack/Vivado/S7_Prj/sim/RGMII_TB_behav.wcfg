@@ -11,133 +11,417 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
-      <ZoomEndTime time="3.547905 us"></ZoomEndTime>
-      <Cursor1Time time="0.752000 us"></Cursor1Time>
+      <ZoomStartTime time="68,082.400 ns"></ZoomStartTime>
+      <ZoomEndTime time="70,834.401 ns"></ZoomEndTime>
+      <Cursor1Time time="68,702.400 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="701"></NameColumnWidth>
+      <NameColumnWidth column_width="237"></NameColumnWidth>
       <ValueColumnWidth column_width="58"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="31" />
-   <wvobject fp_name="/RGMII_TB/CLK125MhzOS" type="logic">
-      <obj_property name="ElementShortName">CLK125MhzOS</obj_property>
-      <obj_property name="ObjectShortName">CLK125MhzOS</obj_property>
-   </wvobject>
+   <WVObjectSize size="118" />
    <wvobject fp_name="/RGMII_TB/CLK125Mhz" type="logic">
       <obj_property name="ElementShortName">CLK125Mhz</obj_property>
       <obj_property name="ObjectShortName">CLK125Mhz</obj_property>
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/CLK250Mhz" type="logic">
-      <obj_property name="ElementShortName">CLK250Mhz</obj_property>
-      <obj_property name="ObjectShortName">CLK250Mhz</obj_property>
+   <wvobject fp_name="/RGMII_TB/i" type="array">
+      <obj_property name="ElementShortName">i[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i[31:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/CLK625Mhz" type="logic">
-      <obj_property name="ElementShortName">CLK625Mhz</obj_property>
-      <obj_property name="ObjectShortName">CLK625Mhz</obj_property>
+   <wvobject fp_name="/RGMII_TB/ARP_Test_TRDY" type="logic">
+      <obj_property name="ElementShortName">ARP_Test_TRDY</obj_property>
+      <obj_property name="ObjectShortName">ARP_Test_TRDY</obj_property>
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/DATA_TRDY" type="logic">
-      <obj_property name="ElementShortName">DATA_TRDY</obj_property>
-      <obj_property name="ObjectShortName">DATA_TRDY</obj_property>
+   <wvobject fp_name="/RGMII_TB/ARP_Test_TLast" type="logic">
+      <obj_property name="ElementShortName">ARP_Test_TLast</obj_property>
+      <obj_property name="ObjectShortName">ARP_Test_TLast</obj_property>
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/DATA_TVALID" type="logic">
-      <obj_property name="ElementShortName">DATA_TVALID</obj_property>
-      <obj_property name="ObjectShortName">DATA_TVALID</obj_property>
+   <wvobject fp_name="/RGMII_TB/ARP_Test_TValid" type="logic">
+      <obj_property name="ElementShortName">ARP_Test_TValid</obj_property>
+      <obj_property name="ObjectShortName">ARP_Test_TValid</obj_property>
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/DATA_TLAST" type="logic">
-      <obj_property name="ElementShortName">DATA_TLAST</obj_property>
-      <obj_property name="ObjectShortName">DATA_TLAST</obj_property>
+   <wvobject fp_name="/RGMII_TB/ARP_Test_TData" type="array">
+      <obj_property name="ElementShortName">ARP_Test_TData[7:0]</obj_property>
+      <obj_property name="ObjectShortName">ARP_Test_TData[7:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/DATA_TKEEP" type="array">
-      <obj_property name="ElementShortName">DATA_TKEEP[3:0]</obj_property>
-      <obj_property name="ObjectShortName">DATA_TKEEP[3:0]</obj_property>
+   <wvobject fp_name="/RGMII_TB/ARP_TestFrameAdress" type="array">
+      <obj_property name="ElementShortName">ARP_TestFrameAdress[12:0]</obj_property>
+      <obj_property name="ObjectShortName">ARP_TestFrameAdress[12:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/DATA_TDATA" type="array">
-      <obj_property name="ElementShortName">DATA_TDATA[31:0]</obj_property>
-      <obj_property name="ObjectShortName">DATA_TDATA[31:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
+   <wvobject type="divider" fp_name="divider198">
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/DATA_TDATA_Counter" type="array">
-      <obj_property name="ElementShortName">DATA_TDATA_Counter[15:0]</obj_property>
-      <obj_property name="ObjectShortName">DATA_TDATA_Counter[15:0]</obj_property>
+   <wvobject fp_name="/RGMII_TB/wARP_PhysicalFrame_TRDY" type="logic">
+      <obj_property name="ElementShortName">wARP_PhysicalFrame_TRDY</obj_property>
+      <obj_property name="ObjectShortName">wARP_PhysicalFrame_TRDY</obj_property>
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/EthPackSize" type="array">
-      <obj_property name="ElementShortName">EthPackSize[31:0]</obj_property>
-      <obj_property name="ObjectShortName">EthPackSize[31:0]</obj_property>
+   <wvobject fp_name="/RGMII_TB/wARP_PhysicalFrame_TDATA" type="array">
+      <obj_property name="ElementShortName">wARP_PhysicalFrame_TDATA[7:0]</obj_property>
+      <obj_property name="ObjectShortName">wARP_PhysicalFrame_TDATA[7:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/StartValue" type="array">
-      <obj_property name="ElementShortName">StartValue[31:0]</obj_property>
-      <obj_property name="ObjectShortName">StartValue[31:0]</obj_property>
+   <wvobject fp_name="/RGMII_TB/wARP_PhysicalFrame_TLAST" type="logic">
+      <obj_property name="ElementShortName">wARP_PhysicalFrame_TLAST</obj_property>
+      <obj_property name="ObjectShortName">wARP_PhysicalFrame_TLAST</obj_property>
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/LenghValue" type="array">
-      <obj_property name="ElementShortName">LenghValue[31:0]</obj_property>
-      <obj_property name="ObjectShortName">LenghValue[31:0]</obj_property>
+   <wvobject fp_name="/RGMII_TB/wARP_PhysicalFrame_TVALID" type="logic">
+      <obj_property name="ElementShortName">wARP_PhysicalFrame_TVALID</obj_property>
+      <obj_property name="ObjectShortName">wARP_PhysicalFrame_TVALID</obj_property>
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/GapValue" type="array">
-      <obj_property name="ElementShortName">GapValue[31:0]</obj_property>
-      <obj_property name="ObjectShortName">GapValue[31:0]</obj_property>
+   <wvobject type="divider" fp_name="divider217">
    </wvobject>
-   <wvobject type="divider" fp_name="divider15">
+   <wvobject fp_name="/RGMII_TB/wARP_RGMII_TXC" type="logic">
+      <obj_property name="ElementShortName">wARP_RGMII_TXC</obj_property>
+      <obj_property name="ObjectShortName">wARP_RGMII_TXC</obj_property>
    </wvobject>
-   <wvobject type="divider" fp_name="divider31">
+   <wvobject fp_name="/RGMII_TB/wARP_RGMII_TX_CTL" type="logic">
+      <obj_property name="ElementShortName">wARP_RGMII_TX_CTL</obj_property>
+      <obj_property name="ObjectShortName">wARP_RGMII_TX_CTL</obj_property>
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Sink_CLK" type="logic">
-      <obj_property name="ElementShortName">Sink_CLK</obj_property>
-      <obj_property name="ObjectShortName">Sink_CLK</obj_property>
+   <wvobject fp_name="/RGMII_TB/wARP_RGMII_TXD" type="array">
+      <obj_property name="ElementShortName">wARP_RGMII_TXD[3:0]</obj_property>
+      <obj_property name="ObjectShortName">wARP_RGMII_TXD[3:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Sink_TRDY" type="logic">
-      <obj_property name="ElementShortName">Sink_TRDY</obj_property>
-      <obj_property name="ObjectShortName">Sink_TRDY</obj_property>
+   <wvobject type="divider" fp_name="divider250">
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Sink_TVALID" type="logic">
-      <obj_property name="ElementShortName">Sink_TVALID</obj_property>
-      <obj_property name="ObjectShortName">Sink_TVALID</obj_property>
+   <wvobject type="divider" fp_name="divider251">
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Sink_TLAST" type="logic">
-      <obj_property name="ElementShortName">Sink_TLAST</obj_property>
-      <obj_property name="ObjectShortName">Sink_TLAST</obj_property>
+   <wvobject type="divider" fp_name="divider361">
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Sink_TKEEP" type="array">
-      <obj_property name="ElementShortName">Sink_TKEEP[3:0]</obj_property>
-      <obj_property name="ObjectShortName">Sink_TKEEP[3:0]</obj_property>
+   <wvobject type="divider" fp_name="divider408">
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Sink_TDATA" type="array">
-      <obj_property name="ElementShortName">Sink_TDATA[31:0]</obj_property>
-      <obj_property name="ObjectShortName">Sink_TDATA[31:0]</obj_property>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_RX_dCLK" type="logic">
+      <obj_property name="ElementShortName">RGMII_RX_dCLK</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_dCLK</obj_property>
    </wvobject>
-   <wvobject type="divider" fp_name="divider29">
+   <wvobject type="divider" fp_name="divider878">
    </wvobject>
-   <wvobject type="divider" fp_name="divider30">
+   <wvobject type="divider" fp_name="divider879">
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Source_TRDY" type="array">
-      <obj_property name="ElementShortName">Source_TRDY[0:0]</obj_property>
-      <obj_property name="ObjectShortName">Source_TRDY[0:0]</obj_property>
+   <wvobject type="divider" fp_name="divider880">
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Source_TVALID" type="array">
-      <obj_property name="ElementShortName">Source_TVALID[0:0]</obj_property>
-      <obj_property name="ObjectShortName">Source_TVALID[0:0]</obj_property>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_Rx_ValFlag" type="logic">
+      <obj_property name="ElementShortName">RGMII_Rx_ValFlag</obj_property>
+      <obj_property name="ObjectShortName">RGMII_Rx_ValFlag</obj_property>
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Source_TDATA" type="array">
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_Rx_Reset" type="logic">
+      <obj_property name="ElementShortName">RGMII_Rx_Reset</obj_property>
+      <obj_property name="ObjectShortName">RGMII_Rx_Reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_RX_CTL_Q1" type="logic">
+      <obj_property name="ElementShortName">RGMII_RX_CTL_Q1</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_CTL_Q1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_RX_CTL_Q2" type="logic">
+      <obj_property name="ElementShortName">RGMII_RX_CTL_Q2</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_CTL_Q2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_RX_DATA_Q" type="array">
+      <obj_property name="ElementShortName">RGMII_RX_DATA_Q[7:0]</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_DATA_Q[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_SPEED" type="array">
+      <obj_property name="ElementShortName">RGMII_SPEED[1:0]</obj_property>
+      <obj_property name="ObjectShortName">RGMII_SPEED[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/InBandStatusCounter" type="array">
+      <obj_property name="ElementShortName">InBandStatusCounter[2:0]</obj_property>
+      <obj_property name="ObjectShortName">InBandStatusCounter[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/InBandStatusData" type="array">
+      <obj_property name="ElementShortName">InBandStatusData[3:0]</obj_property>
+      <obj_property name="ObjectShortName">InBandStatusData[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/NoRxDataState" type="array">
+      <obj_property name="ElementShortName">NoRxDataState[3:0]</obj_property>
+      <obj_property name="ObjectShortName">NoRxDataState[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider497">
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_CLK" type="logic">
+      <obj_property name="ElementShortName">Source_CLK</obj_property>
+      <obj_property name="ObjectShortName">Source_CLK</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TVALID" type="logic">
+      <obj_property name="ElementShortName">Source_TVALID</obj_property>
+      <obj_property name="ObjectShortName">Source_TVALID</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TERROR" type="logic">
+      <obj_property name="ElementShortName">Source_TERROR</obj_property>
+      <obj_property name="ObjectShortName">Source_TERROR</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TFIRST" type="logic">
+      <obj_property name="ElementShortName">Source_TFIRST</obj_property>
+      <obj_property name="ObjectShortName">Source_TFIRST</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TLAST" type="logic">
+      <obj_property name="ElementShortName">Source_TLAST</obj_property>
+      <obj_property name="ObjectShortName">Source_TLAST</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TDATA" type="array">
       <obj_property name="ElementShortName">Source_TDATA[7:0]</obj_property>
       <obj_property name="ObjectShortName">Source_TDATA[7:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Source_TLAST" type="array">
-      <obj_property name="ElementShortName">Source_TLAST[0:0]</obj_property>
-      <obj_property name="ObjectShortName">Source_TLAST[0:0]</obj_property>
+   <wvobject type="divider" fp_name="divider42">
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/Tx_MAC_FrameBody_ByteCounter" type="array">
-      <obj_property name="ElementShortName">Tx_MAC_FrameBody_ByteCounter[5:0]</obj_property>
-      <obj_property name="ObjectShortName">Tx_MAC_FrameBody_ByteCounter[5:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/Source_PHY_CLK" type="logic">
+      <obj_property name="ElementShortName">Source_PHY_CLK</obj_property>
+      <obj_property name="ObjectShortName">Source_PHY_CLK</obj_property>
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/DATA_TotalLength_Full" type="array">
-      <obj_property name="ElementShortName">DATA_TotalLength_Full[15:0]</obj_property>
-      <obj_property name="ObjectShortName">DATA_TotalLength_Full[15:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/Source_PHY_TVALID" type="logic">
+      <obj_property name="ElementShortName">Source_PHY_TVALID</obj_property>
+      <obj_property name="ObjectShortName">Source_PHY_TVALID</obj_property>
    </wvobject>
-   <wvobject fp_name="/RGMII_TB/AXISx8_UDP_Framing_AXISx32_Sink_inst/DATA_TotalLength" type="array">
-      <obj_property name="ElementShortName">DATA_TotalLength[13:0]</obj_property>
-      <obj_property name="ObjectShortName">DATA_TotalLength[13:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/Source_PHY_TERROR" type="logic">
+      <obj_property name="ElementShortName">Source_PHY_TERROR</obj_property>
+      <obj_property name="ObjectShortName">Source_PHY_TERROR</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/Source_PHY_TFIRST" type="logic">
+      <obj_property name="ElementShortName">Source_PHY_TFIRST</obj_property>
+      <obj_property name="ObjectShortName">Source_PHY_TFIRST</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/Source_PHY_TLAST" type="logic">
+      <obj_property name="ElementShortName">Source_PHY_TLAST</obj_property>
+      <obj_property name="ObjectShortName">Source_PHY_TLAST</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/Source_PHY_TDATA" type="array">
+      <obj_property name="ElementShortName">Source_PHY_TDATA[7:0]</obj_property>
+      <obj_property name="ObjectShortName">Source_PHY_TDATA[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider145">
+   </wvobject>
+   <wvobject type="divider" fp_name="divider146">
+   </wvobject>
+   <wvobject type="divider" fp_name="divider154">
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_CLK" type="logic">
+      <obj_property name="ElementShortName">Source_CLK</obj_property>
+      <obj_property name="ObjectShortName">Source_CLK</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TVALID" type="logic">
+      <obj_property name="ElementShortName">Source_TVALID</obj_property>
+      <obj_property name="ObjectShortName">Source_TVALID</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TERROR" type="logic">
+      <obj_property name="ElementShortName">Source_TERROR</obj_property>
+      <obj_property name="ObjectShortName">Source_TERROR</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TFIRST" type="logic">
+      <obj_property name="ElementShortName">Source_TFIRST</obj_property>
+      <obj_property name="ObjectShortName">Source_TFIRST</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TLAST" type="logic">
+      <obj_property name="ElementShortName">Source_TLAST</obj_property>
+      <obj_property name="ObjectShortName">Source_TLAST</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TDATA" type="array">
+      <obj_property name="ElementShortName">Source_TDATA[7:0]</obj_property>
+      <obj_property name="ObjectShortName">Source_TDATA[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider453">
+   </wvobject>
+   <wvobject type="divider" fp_name="divider457">
+   </wvobject>
+   <wvobject type="divider" fp_name="divider458">
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/CLK625MHZ" type="logic">
+      <obj_property name="ElementShortName">CLK625MHZ</obj_property>
+      <obj_property name="ObjectShortName">CLK625MHZ</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/\genblk1.RGMII_OverSampler_inst /RGMII_RXC" type="logic">
+      <obj_property name="ElementShortName">RGMII_RXC</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RXC</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/\genblk1.RGMII_OverSampler_inst /RGMII_RX_CTL" type="logic">
+      <obj_property name="ElementShortName">RGMII_RX_CTL</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_CTL</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/\genblk1.RGMII_OverSampler_inst /RGMII_RXD" type="array">
+      <obj_property name="ElementShortName">RGMII_RXD[3:0]</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RXD[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/\genblk1.RGMII_OverSampler_inst /RGMII_RX_CLK" type="logic">
+      <obj_property name="ElementShortName">RGMII_RX_CLK</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_CLK</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/\genblk1.RGMII_OverSampler_inst /RGMII_RX_CTL_Q1" type="logic">
+      <obj_property name="ElementShortName">RGMII_RX_CTL_Q1</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_CTL_Q1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/\genblk1.RGMII_OverSampler_inst /RGMII_RX_CTL_Q2" type="logic">
+      <obj_property name="ElementShortName">RGMII_RX_CTL_Q2</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_CTL_Q2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/\genblk1.RGMII_OverSampler_inst /RGMII_RX_DATA_Q" type="array">
+      <obj_property name="ElementShortName">RGMII_RX_DATA_Q[7:0]</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_DATA_Q[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_Rx_LS_DivFlag" type="logic">
+      <obj_property name="ElementShortName">RGMII_Rx_LS_DivFlag</obj_property>
+      <obj_property name="ObjectShortName">RGMII_Rx_LS_DivFlag</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider472">
+   </wvobject>
+   <wvobject type="divider" fp_name="divider555">
+   </wvobject>
+   <wvobject type="divider" fp_name="divider556">
+   </wvobject>
+   <wvobject type="divider" fp_name="divider557">
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_CLK" type="logic">
+      <obj_property name="ElementShortName">Source_CLK</obj_property>
+      <obj_property name="ObjectShortName">Source_CLK</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TVALID" type="logic">
+      <obj_property name="ElementShortName">Source_TVALID</obj_property>
+      <obj_property name="ObjectShortName">Source_TVALID</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TERROR" type="logic">
+      <obj_property name="ElementShortName">Source_TERROR</obj_property>
+      <obj_property name="ObjectShortName">Source_TERROR</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TFIRST" type="logic">
+      <obj_property name="ElementShortName">Source_TFIRST</obj_property>
+      <obj_property name="ObjectShortName">Source_TFIRST</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TLAST" type="logic">
+      <obj_property name="ElementShortName">Source_TLAST</obj_property>
+      <obj_property name="ObjectShortName">Source_TLAST</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TDATA" type="array">
+      <obj_property name="ElementShortName">Source_TDATA[7:0]</obj_property>
+      <obj_property name="ObjectShortName">Source_TDATA[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/wRGMII_RX_CLK_EN" type="logic">
+      <obj_property name="ElementShortName">wRGMII_RX_CLK_EN</obj_property>
+      <obj_property name="ObjectShortName">wRGMII_RX_CLK_EN</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider954">
+   </wvobject>
+   <wvobject type="divider" fp_name="divider955">
+   </wvobject>
+   <wvobject type="divider" fp_name="divider956">
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_RX_dCLK" type="logic">
+      <obj_property name="ElementShortName">RGMII_RX_dCLK</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_dCLK</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_Rx_ValFlag" type="logic">
+      <obj_property name="ElementShortName">RGMII_Rx_ValFlag</obj_property>
+      <obj_property name="ObjectShortName">RGMII_Rx_ValFlag</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_Rx_Reset" type="logic">
+      <obj_property name="ElementShortName">RGMII_Rx_Reset</obj_property>
+      <obj_property name="ObjectShortName">RGMII_Rx_Reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_RX_CLK_EN" type="logic">
+      <obj_property name="ElementShortName">RGMII_RX_CLK_EN</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_CLK_EN</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_RX_CTL_Q1" type="logic">
+      <obj_property name="ElementShortName">RGMII_RX_CTL_Q1</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_CTL_Q1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_RX_CTL_Q2" type="logic">
+      <obj_property name="ElementShortName">RGMII_RX_CTL_Q2</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_CTL_Q2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_RX_DATA_Q" type="array">
+      <obj_property name="ElementShortName">RGMII_RX_DATA_Q[7:0]</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_DATA_Q[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider964">
+   </wvobject>
+   <wvobject type="divider" fp_name="divider970">
+   </wvobject>
+   <wvobject type="divider" fp_name="divider971">
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/\genblk1.RGMII_OverSampler_inst /RGMII_RX_CLK" type="logic">
+      <obj_property name="ElementShortName">RGMII_RX_CLK</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_CLK</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/\genblk1.RGMII_OverSampler_inst /RGMII_RX_CLK_EN" type="logic">
+      <obj_property name="ElementShortName">RGMII_RX_CLK_EN</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_CLK_EN</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/\genblk1.RGMII_OverSampler_inst /RGMII_RX_CTL_Q1" type="logic">
+      <obj_property name="ElementShortName">RGMII_RX_CTL_Q1</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_CTL_Q1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/\genblk1.RGMII_OverSampler_inst /RGMII_RX_CTL_Q2" type="logic">
+      <obj_property name="ElementShortName">RGMII_RX_CTL_Q2</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_CTL_Q2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/\genblk1.RGMII_OverSampler_inst /RGMII_RX_DATA_Q" type="array">
+      <obj_property name="ElementShortName">RGMII_RX_DATA_Q[7:0]</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_DATA_Q[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider1072">
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_RX_dCLK" type="logic">
+      <obj_property name="ElementShortName">RGMII_RX_dCLK</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_dCLK</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_RX_CLK_EN" type="logic">
+      <obj_property name="ElementShortName">RGMII_RX_CLK_EN</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_CLK_EN</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_Rx_ValFlag" type="logic">
+      <obj_property name="ElementShortName">RGMII_Rx_ValFlag</obj_property>
+      <obj_property name="ObjectShortName">RGMII_Rx_ValFlag</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_Rx_Reset" type="logic">
+      <obj_property name="ElementShortName">RGMII_Rx_Reset</obj_property>
+      <obj_property name="ObjectShortName">RGMII_Rx_Reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_RX_CTL_Q1" type="logic">
+      <obj_property name="ElementShortName">RGMII_RX_CTL_Q1</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_CTL_Q1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_RX_CTL_Q2" type="logic">
+      <obj_property name="ElementShortName">RGMII_RX_CTL_Q2</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_CTL_Q2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/RGMII_RX_DATA_Q" type="array">
+      <obj_property name="ElementShortName">RGMII_RX_DATA_Q[7:0]</obj_property>
+      <obj_property name="ObjectShortName">RGMII_RX_DATA_Q[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider1080">
+   </wvobject>
+   <wvobject type="divider" fp_name="divider1081">
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/RGMII_RX_PHY_inst/NoRxDataState" type="array">
+      <obj_property name="ElementShortName">NoRxDataState[3:0]</obj_property>
+      <obj_property name="ObjectShortName">NoRxDataState[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider1650">
+   </wvobject>
+   <wvobject type="divider" fp_name="divider1651">
+   </wvobject>
+   <wvobject type="divider" fp_name="divider1652">
+   </wvobject>
+   <wvobject type="divider" fp_name="divider1653">
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_CLK" type="logic">
+      <obj_property name="ElementShortName">Source_CLK</obj_property>
+      <obj_property name="ObjectShortName">Source_CLK</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TVALID" type="logic">
+      <obj_property name="ElementShortName">Source_TVALID</obj_property>
+      <obj_property name="ObjectShortName">Source_TVALID</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TERROR" type="logic">
+      <obj_property name="ElementShortName">Source_TERROR</obj_property>
+      <obj_property name="ObjectShortName">Source_TERROR</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TFIRST" type="logic">
+      <obj_property name="ElementShortName">Source_TFIRST</obj_property>
+      <obj_property name="ObjectShortName">Source_TFIRST</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TLAST" type="logic">
+      <obj_property name="ElementShortName">Source_TLAST</obj_property>
+      <obj_property name="ObjectShortName">Source_TLAST</obj_property>
+   </wvobject>
+   <wvobject fp_name="/RGMII_TB/AXISx8_RGMII_BRIDGE_INST/RGMII_Rx_To_AXISx8_Inst/Source_TDATA" type="array">
+      <obj_property name="ElementShortName">Source_TDATA[7:0]</obj_property>
+      <obj_property name="ObjectShortName">Source_TDATA[7:0]</obj_property>
    </wvobject>
 </wave_config>

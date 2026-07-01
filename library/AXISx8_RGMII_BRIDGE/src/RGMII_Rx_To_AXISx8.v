@@ -50,6 +50,7 @@ output  reg  [8-1:0]    Source_TDATA  = 1'b0
 
 wire wRGMII_Rx_ValFlag;
 wire wRGMII_ResetPulse;
+wire wRGMII_RX_CLK_EN;
 
 reg [2:0] InBandStatusCounter=0;
 reg [3:0] InBandStatusData=1'b0;
@@ -85,6 +86,7 @@ RGMII_RX_PHY_inst
 .RGMII_RX_dCLK          (Source_CLK             ),
 .RGMII_Rx_ValFlag       (wRGMII_Rx_ValFlag      ),
 .RGMII_Rx_Reset         (wRGMII_ResetPulse      ),
+.RGMII_RX_CLK_EN        (wRGMII_RX_CLK_EN       ),
 .RGMII_RX_CTL_Q1        (wRGMII_RX_CTL_Q1       ),
 .RGMII_RX_CTL_Q2        (wRGMII_RX_CTL_Q2       ),
 .RGMII_RX_DATA_Q        (wRGMII_DATA            )
@@ -93,8 +95,20 @@ RGMII_RX_PHY_inst
 reg RGMII_START_Condition=0;
 reg RGMII_Rx_ValFlag=0;
 
+
+reg             Source_TVALID_Reg = 1'b0    ;
+reg             Source_TERROR_Reg = 1'b0    ;
+reg             Source_TFIRST_Reg = 1'b0    ;
+reg             Source_TLAST_Reg  = 1'b0    ;
+reg  [8-1:0]    Source_TDATA_Reg  = 1'b0    ;
+
+
 always @(posedge Source_CLK)
 begin
+
+if (wRGMII_RX_CLK_EN)
+begin
+
 RGMII_START_Condition <= wRGMII_ResetPulse;
 RGMII_Rx_ValFlag<=wRGMII_Rx_ValFlag;
 
@@ -106,7 +120,6 @@ begin
     if  (wRGMII_RX_CTL_Q1&&RGMII_START_Condition) RGMII_dSoF  <= 1'b1;
         else if (RGMII_Rx_ValFlag==1) RGMII_dSoF  <= 1'b0;
 end
-
 
 if (RGMII_SPEED[1]==1'b1) 
 begin
@@ -129,14 +142,49 @@ begin
     end
 end
 
-    Source_TLAST            <= RGMII_dVAL&&RGMII_Rx_ValFlag&&!wRGMII_RX_CTL_Q1;
-    Source_TFIRST           <= RGMII_dVAL&&RGMII_Rx_ValFlag&&RGMII_dSoF;
-    Source_TVALID           <= RGMII_dVAL&&RGMII_Rx_ValFlag;
-    if (RGMII_dVAL&&RGMII_Rx_ValFlag)   Source_TDATA <= RGMII_DATA;
-        else if (RGMII_dVAL)   Source_TDATA <= Source_TDATA;
-            else Source_TDATA <= 0;
-    if (wRGMII_ResetPulse)Source_TERROR <= 1'b0; else Source_TERROR <= (RGMII_dVAL^RGMII_dErr)&&RGMII_Rx_ValFlag||Source_TERROR;
+    Source_TLAST_Reg            <= RGMII_dVAL&&RGMII_Rx_ValFlag&&!wRGMII_RX_CTL_Q1;
+    Source_TFIRST_Reg           <= RGMII_dVAL&&RGMII_Rx_ValFlag&&RGMII_dSoF;
+    Source_TVALID_Reg           <= RGMII_dVAL&&RGMII_Rx_ValFlag;
+    if (RGMII_dVAL&&RGMII_Rx_ValFlag)   Source_TDATA_Reg <= RGMII_DATA;
+        else if (RGMII_dVAL)   Source_TDATA_Reg <= Source_TDATA_Reg;
+            else Source_TDATA_Reg <= 0;
+    if (wRGMII_ResetPulse)Source_TERROR_Reg <= 1'b0; else Source_TERROR_Reg <= (RGMII_dVAL^RGMII_dErr)&&RGMII_Rx_ValFlag||Source_TERROR_Reg;
+
 end
+end
+
+
+reg RGMII_RX_CLK_EN_Reg =0;
+
+
+generate
+if (OVER_SAMPLING == "YES") 
+begin
+    always @(posedge Source_CLK)
+    begin
+    RGMII_RX_CLK_EN_Reg <= wRGMII_RX_CLK_EN;
+
+    Source_TVALID <= Source_TVALID_Reg && RGMII_RX_CLK_EN_Reg;
+    Source_TERROR <= Source_TERROR_Reg && RGMII_RX_CLK_EN_Reg;
+    Source_TFIRST <= Source_TFIRST_Reg && RGMII_RX_CLK_EN_Reg;
+    Source_TLAST  <= Source_TLAST_Reg  && RGMII_RX_CLK_EN_Reg;
+    if (RGMII_RX_CLK_EN_Reg ) Source_TDATA  <= Source_TDATA_Reg;
+    end 
+end
+else 
+begin
+    always @(*)
+    begin
+    RGMII_RX_CLK_EN_Reg <= wRGMII_RX_CLK_EN;
+    
+    Source_TVALID <= Source_TVALID_Reg && RGMII_RX_CLK_EN_Reg;
+    Source_TERROR <= Source_TERROR_Reg && RGMII_RX_CLK_EN_Reg;
+    Source_TFIRST <= Source_TFIRST_Reg && RGMII_RX_CLK_EN_Reg;
+    Source_TLAST  <= Source_TLAST_Reg  && RGMII_RX_CLK_EN_Reg;
+    if (RGMII_RX_CLK_EN_Reg ) Source_TDATA  <= Source_TDATA_Reg;
+    end 
+end
+endgenerate
 
 endmodule
 

@@ -41,14 +41,16 @@ input   wire          RGMII_RX_CTL              ,
 input   wire [4-1:0]  RGMII_RXD                 ,
 
 output  wire          RGMII_RX_dCLK,
-output  reg           RGMII_Rx_ValFlag=1'b1     ,
+output  wire          RGMII_Rx_ValFlag          ,
 output  wire          RGMII_Rx_Reset            ,
+output  wire          RGMII_RX_CLK_EN           ,
 output  reg           RGMII_RX_CTL_Q1 = 1'b0    ,
 output  reg           RGMII_RX_CTL_Q2 = 1'b0    ,
 output  reg  [8-1:0]  RGMII_RX_DATA_Q = 1'b0
 );
 
 wire          wRGMII_RX_dCLK;
+wire          wRGMII_RX_CLK_EN;
 wire          wRGMII_RX_CTL_Q1;
 wire          wRGMII_RX_CTL_Q2;
 wire [8-1:0]  wRGMII_RX_DATA_Q;
@@ -73,6 +75,7 @@ RGMII_OverSampler
 .RGMII_RXD            (RGMII_RXD            ),
 
 .RGMII_RX_CLK         (wRGMII_RX_dCLK       ),
+.RGMII_RX_CLK_EN      (wRGMII_RX_CLK_EN     ),
 .RGMII_RX_CTL_Q1      (wRGMII_RX_CTL_Q1     ),
 .RGMII_RX_CTL_Q2      (wRGMII_RX_CTL_Q2     ),
 .RGMII_RX_DATA_Q      (wRGMII_RX_DATA_Q     )
@@ -101,6 +104,7 @@ RGMII_IDDR_WRAPPER
 .RGMII_RX_CTL_Q2      (wRGMII_RX_CTL_Q2    ),
 .RGMII_RX_DATA_Q      (wRGMII_RX_DATA_Q    )
 );
+assign wRGMII_RX_CLK_EN =1'b1;
 end
 endgenerate
 
@@ -110,9 +114,11 @@ reg [3:0] InBandStatusData=1'b0;
 // if there are no valid data 4 clock ticks  packet is finished 
 reg [3:0] NoRxDataState=0;
 
-
 always @(posedge wRGMII_RX_dCLK)
 begin
+if (wRGMII_RX_CLK_EN) 
+begin
+
 if (wRGMII_RX_CTL_Q1) InBandStatusCounter<=3'h7; 
     else InBandStatusCounter <= InBandStatusCounter-1'b1;
 
@@ -123,22 +129,34 @@ if (InBandStatusCounter==3'h0) RGMII_SPEED[0]<=InBandStatusData[1];
 if (InBandStatusCounter==3'h0) RGMII_SPEED[1]<=InBandStatusData[2];
 if (InBandStatusCounter==3'h0) RGMII_DUPLEX  <=InBandStatusData[3];
 end
+end
+
+reg RGMII_Rx_LS_DivFlag=1'b1;
+
 
 always @(posedge wRGMII_RX_dCLK)
 begin
+if (wRGMII_RX_CLK_EN) 
+begin
+
 NoRxDataState[3:0] <= {wRGMII_RX_CTL_Q1,NoRxDataState[3:1]};
 
-if (RGMII_SPEED[1]==1'b1) RGMII_Rx_ValFlag<=1;
-    else if ((NoRxDataState==0)&&wRGMII_RX_CTL_Q1) RGMII_Rx_ValFlag<=0;
-        else RGMII_Rx_ValFlag<=~RGMII_Rx_ValFlag;
+if (RGMII_SPEED[1]==1'b1) RGMII_Rx_LS_DivFlag<=1;
+    else if ((NoRxDataState==0)&&wRGMII_RX_CTL_Q1) RGMII_Rx_LS_DivFlag<=0;
+        else RGMII_Rx_LS_DivFlag<=~RGMII_Rx_LS_DivFlag;
+end        
 end
-assign RGMII_Rx_Reset = (NoRxDataState==0);        
+assign RGMII_Rx_Reset = (NoRxDataState==0);    
+
+assign  RGMII_Rx_ValFlag    = RGMII_Rx_LS_DivFlag ;// &&  wRGMII_RX_CLK_EN ;
 
 always @(posedge wRGMII_RX_dCLK)
 begin
-RGMII_RX_DATA_Q <= wRGMII_RX_DATA_Q;
-RGMII_RX_CTL_Q1 <= wRGMII_RX_CTL_Q1;
-RGMII_RX_CTL_Q2 <= wRGMII_RX_CTL_Q2;
+if (wRGMII_RX_CLK_EN)RGMII_RX_DATA_Q <= wRGMII_RX_DATA_Q;
+if (wRGMII_RX_CLK_EN)RGMII_RX_CTL_Q1 <= wRGMII_RX_CTL_Q1;
+if (wRGMII_RX_CLK_EN)RGMII_RX_CTL_Q2 <= wRGMII_RX_CTL_Q2;
 end
+
+assign RGMII_RX_CLK_EN = wRGMII_RX_CLK_EN;
 
 endmodule

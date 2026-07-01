@@ -38,6 +38,7 @@ input   wire          RGMII_RX_CTL,
 input   wire [4-1:0]  RGMII_RXD,
 
 output  wire           RGMII_RX_CLK,
+output  wire           RGMII_RX_CLK_EN,
 output  wire           RGMII_RX_CTL_Q1,
 output  wire           RGMII_RX_CTL_Q2,
 output  wire  [8-1:0]  RGMII_RX_DATA_Q
@@ -46,7 +47,7 @@ output  wire  [8-1:0]  RGMII_RX_DATA_Q
 
 wire wRGMII_RX_CLK;
 
-assign RGMII_RX_CLK = wRGMII_RX_CLK;
+//assign RGMII_RX_CLK = wRGMII_RX_CLK;
 
 wire        wRGMII_RX_CLK_Q1;
 wire        wRGMII_RX_CLK_Q2;
@@ -86,22 +87,18 @@ reg rRGMII_RX_CTL_Q2=0;
 
 reg [7:0] RGMII_RX_DATA_Q_D0;
 
-reg Hpulse0 =0;
-reg Hpulse1 =0;
-//reg Hpulse11 =0;
-
-reg Lpulse0 =0;
-reg Lpulse1 =0;
-
-//reg Lpulse00 =0;
-//reg Hpulse00 =0;
-
-reg Lpulse =0;
+reg RGMII_RXC_ReseEdge0 =0;
+reg RGMII_RXC_ReseEdge1 =0;
 
 
-reg [4:0] DataL1=0;
-reg [4:0] DataL=0;
+reg RGMII_RXC_FallEdge0 =0;
+reg RGMII_RXC_FallEdge1 =0;
+
+reg RGMII_RXD_LE =0;
+
+reg [4:0] DataLd=0;
 reg [4:0] DataH=0;
+reg [4:0] DataL=0;
 
 //reg [4:0] DataH=0;
 
@@ -120,53 +117,42 @@ begin
 
 RGMII_RX_DATA_Q_D0 <= wRGMII_RX_DATA_Q;
 
-Hpulse0 <= ~rRGMII_RX_CLK_Q1 && ~rRGMII_RX_CLK_Q2 &&  wRGMII_RX_CLK_Q1 &&  wRGMII_RX_CLK_Q2;
-Hpulse1 <= ~rRGMII_RX_CLK_Q1 &&  rRGMII_RX_CLK_Q2 &&  wRGMII_RX_CLK_Q1 &&  wRGMII_RX_CLK_Q2;
+RGMII_RXC_ReseEdge0 <= ~rRGMII_RX_CLK_Q1 && ~rRGMII_RX_CLK_Q2 &&  wRGMII_RX_CLK_Q1 &&  wRGMII_RX_CLK_Q2;
+RGMII_RXC_ReseEdge1 <= ~rRGMII_RX_CLK_Q1 && ~rRGMII_RX_CLK_Q2 && ~wRGMII_RX_CLK_Q1 &&  wRGMII_RX_CLK_Q2;
 
-
-Lpulse0 <=  rRGMII_RX_CLK_Q1 &&  rRGMII_RX_CLK_Q2 && ~wRGMII_RX_CLK_Q1 && ~wRGMII_RX_CLK_Q2;
-Lpulse1 <=  rRGMII_RX_CLK_Q1 && ~rRGMII_RX_CLK_Q2 && ~wRGMII_RX_CLK_Q1 && ~wRGMII_RX_CLK_Q2;
-
-
-
-//Hpulse00 <=Hpulse0;
-//Lpulse00 <=Lpulse0;
-
-//Hpulse11 <=Hpulse1;
+RGMII_RXC_FallEdge0 <=  rRGMII_RX_CLK_Q1 &&  rRGMII_RX_CLK_Q2 && ~wRGMII_RX_CLK_Q1 && ~wRGMII_RX_CLK_Q2;
+RGMII_RXC_FallEdge1 <=  rRGMII_RX_CLK_Q1 &&  rRGMII_RX_CLK_Q2 &&  wRGMII_RX_CLK_Q1 && ~wRGMII_RX_CLK_Q2;
 
 
 
 
-if (Hpulse0) DataL <= {rRGMII_RX_CTL_Q2 , RGMII_RX_DATA_Q_D0[7:4]};
-    else if (Hpulse1) DataL <= {rRGMII_RX_CTL_Q1 , RGMII_RX_DATA_Q_D0[3:0]};
+
+if (RGMII_RXC_ReseEdge1) DataLd <= {rRGMII_RX_CTL_Q2 , RGMII_RX_DATA_Q_D0[7:4]};
+    else if (RGMII_RXC_ReseEdge0) DataLd <= {rRGMII_RX_CTL_Q1 , RGMII_RX_DATA_Q_D0[3:0]};
+
+
+if (RGMII_RXC_FallEdge1) DataH <= {rRGMII_RX_CTL_Q2 , RGMII_RX_DATA_Q_D0[7:4]};
+    else if (RGMII_RXC_FallEdge0) DataH <= {rRGMII_RX_CTL_Q1 , RGMII_RX_DATA_Q_D0[3:0]};
     
-//if (Hpulse0) DataL <= {wRGMII_RX_CTL_Q1 , wRGMII_RX_DATA_Q[7:4]};
-//    else if (Hpulse1) DataL <= {wRGMII_RX_CTL_Q2 , wRGMII_RX_DATA_Q[7:4]};
+if (RGMII_RXC_FallEdge0||RGMII_RXC_FallEdge1) DataL <= DataLd;
 
-if (Lpulse0) DataH <= {rRGMII_RX_CTL_Q2 , RGMII_RX_DATA_Q_D0[7:4]};
-    else if (Lpulse1) DataH <= {rRGMII_RX_CTL_Q1 , RGMII_RX_DATA_Q_D0[3:0]};
-    
-//if (Lpulse0) DataH <= {wRGMII_RX_CTL_Q1 , wRGMII_RX_DATA_Q[7:4]};
-//    else if (Lpulse1) DataH <= {wRGMII_RX_CTL_Q2 , wRGMII_RX_DATA_Q[7:4]};
-    
-    
-    
-if (Lpulse0||Lpulse1) DataL1 <= DataL;
-   
-Lpulse <=  Lpulse0 || Lpulse1;  
+RGMII_RXD_LE <=  RGMII_RXC_FallEdge0 || RGMII_RXC_FallEdge1;  
+
+if (RGMII_RXC_FallEdge0 || RGMII_RXC_FallEdge1) Data        <= {DataH[3:0],DataL[3:0]}; 
+if (RGMII_RXC_FallEdge0 || RGMII_RXC_FallEdge1) Data_CTL    <= {DataH[4]  , DataL[4] };
+
+
+FIFO_Lpulse <= RGMII_RXD_LE   ;
+FIFO_LData  <= {Data_CTL,Data};
 
 
 
 
-if (Lpulse) Data        <= {DataH[3:0],DataL1[3:0]}; 
-if (Lpulse) Data_CTL    <= {DataH[4], DataL1[4]};
 
 Prog_full <= wProg_full;
 
-FIFO_Lpulse <= Lpulse && ((Prog_full != 1) || (Data_CTL != 0)  ) ;
-FIFO_LData  <= {Data_CTL,Data};
 
-SkipFlag    <= Lpulse && ((Prog_full == 1) && (Data_CTL == 0)  ) ;
+SkipFlag    <= RGMII_RXD_LE && ((Prog_full == 1) && (Data_CTL == 0)  ) ;
 end
 
 wire wProg_Empty;
@@ -180,18 +166,23 @@ always @(posedge wRGMII_RX_CLK) FIFO_rd_en <= !wProg_Empty || ({RGMII_RX_CTL_Q2,
 
 
 
-(* KEEP_HIERARCHY = "TRUE" *)
-RGMII_ELASTIC_FIFO RGMII_ELASTIC_FIFO_inst (
-  .wr_clk       (CLK625MHZ),         // input wire wr_clk
-  .rd_clk       (wRGMII_RX_CLK),         // input wire rd_clk
-  .din          (FIFO_LData),    // input wire [9 : 0] din
-  .wr_en        (FIFO_Lpulse),           // input wire wr_en
-  .rd_en        (FIFO_rd_en),       // input wire rd_en
-  .dout         ({RGMII_RX_CTL_Q2,RGMII_RX_CTL_Q1,RGMII_RX_DATA_Q}),              // output wire [9 : 0] dout
-  .full         (),                  // output wire full
-  .empty        (),           // output wire empty
-  .prog_empty   (wProg_Empty),    
-  .prog_full    (wProg_full)     // output wire prog_full
-);
+//(* KEEP_HIERARCHY = "TRUE" *)
+//RGMII_ELASTIC_FIFO RGMII_ELASTIC_FIFO_inst (
+//  .wr_clk       (CLK625MHZ),         // input wire wr_clk
+//  .rd_clk       (wRGMII_RX_CLK),         // input wire rd_clk
+//  .din          (FIFO_LData),    // input wire [9 : 0] din
+//  .wr_en        (FIFO_Lpulse),           // input wire wr_en
+//  .rd_en        (FIFO_rd_en),       // input wire rd_en
+//  .dout         ({RGMII_RX_CTL_Q2,RGMII_RX_CTL_Q1,RGMII_RX_DATA_Q}),              // output wire [9 : 0] dout
+//  .full         (),                  // output wire full
+//  .empty        (),           // output wire empty
+//  .prog_empty   (wProg_Empty),    
+//  .prog_full    (wProg_full)     // output wire prog_full
+//);
+
+assign RGMII_RX_CLK_EN = RGMII_RXD_LE;
+//assign RGMII_RX_CLK_EN = FIFO_Lpulse;
+assign {RGMII_RX_CTL_Q2,RGMII_RX_CTL_Q1,RGMII_RX_DATA_Q} = {Data_CTL,Data};
+assign RGMII_RX_CLK = CLK625MHZ;
 
 endmodule
