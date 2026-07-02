@@ -16,6 +16,21 @@ Valid values:
 This feature was tested with Xilinx Spartan 7 and Artix 7 Devices with speed grade of -2. The solution posibly works at a resampling frequency below 625 MHz,
 but it has not yet been tested.
 
+
+# Operating principle.
+
+The module analyzes the RXC signal, attempting to detect rising and falling edges.
+Since RXC is completely asynchronous with respect to the local 625 MHz clock, several scenarios are possible when detecting edges.
+
+**Case A:** 
+The rising and falling edges of the 625 MHz clock signal coincide with the high level of the RXC signal.
+
 ![RGMII_RX_OverSampler_CaseA](../../../docs/WaveDrom/generated/RGMII_RX_OverSampler_CaseA.svg)
 
+**Case B:** 
+The rising edge of the 625 MHz clock signal coincides with the low level of the RXC signal, and the falling edge coincides with the high level.
+
 ![RGMII_RX_OverSampler_CaseB](../../../docs/WaveDrom/generated/RGMII_RX_OverSampler_CaseB.svg)
+
+
+Depending on the situation, the module's logic determines the optimal point in time from which to retrieve the latched data.
