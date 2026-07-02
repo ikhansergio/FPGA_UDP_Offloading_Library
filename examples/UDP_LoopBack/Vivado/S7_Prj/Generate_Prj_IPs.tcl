@@ -34,7 +34,7 @@ if { $list_projs eq "" } {
 set bCheckIPs 1
 set bCheckIPsPassed 1
 if { $bCheckIPs == 1 } {
-  set list_check_ips { xilinx.com:ip:axis_data_fifo:2.0 xilinx.com:ip:fifo_generator:13.2 xilinx.com:ip:clk_wiz:6.0 xilinx.com:ip:blk_mem_gen:8.4 xilinx.com:ip:dist_mem_gen:8.0 }
+  set list_check_ips { xilinx.com:ip:axis_data_fifo:2.0 xilinx.com:ip:clk_wiz:6.0 xilinx.com:ip:fifo_generator:13.2 xilinx.com:ip:blk_mem_gen:8.4 xilinx.com:ip:dist_mem_gen:8.0 }
   set list_ips_missing ""
   common::send_msg_id "IPS_TCL-1001" "INFO" "Checking if the following IPs exist in the project's IP catalog: $list_check_ips ."
 
@@ -76,42 +76,6 @@ set_property -dict [list \
 set_property -dict { 
   GENERATE_SYNTH_CHECKPOINT {1}
 } $AXISx8_Clock_Crossing_FIFO
-
-##################################################################
-
-##################################################################
-# CREATE IP RGMII_ELASTIC_FIFO
-##################################################################
-
-set RGMII_ELASTIC_FIFO [create_ip -name fifo_generator -vendor xilinx.com -library ip -version 13.2 -module_name RGMII_ELASTIC_FIFO]
-
-# User Parameters
-set_property -dict [list \
-  CONFIG.Data_Count_Width {5} \
-  CONFIG.Empty_Threshold_Assert_Value {8} \
-  CONFIG.Empty_Threshold_Negate_Value {9} \
-  CONFIG.Fifo_Implementation {Independent_Clocks_Distributed_RAM} \
-  CONFIG.Full_Threshold_Assert_Value {24} \
-  CONFIG.Full_Threshold_Negate_Value {23} \
-  CONFIG.Input_Data_Width {10} \
-  CONFIG.Input_Depth {32} \
-  CONFIG.Output_Data_Width {10} \
-  CONFIG.Output_Depth {32} \
-  CONFIG.Programmable_Empty_Type {Single_Programmable_Empty_Threshold_Constant} \
-  CONFIG.Programmable_Full_Type {Single_Programmable_Full_Threshold_Constant} \
-  CONFIG.Read_Data_Count_Width {5} \
-  CONFIG.Reset_Pin {false} \
-  CONFIG.Reset_Type {Asynchronous_Reset} \
-  CONFIG.Use_Dout_Reset {false} \
-  CONFIG.Use_Embedded_Registers {false} \
-  CONFIG.Write_Data_Count_Width {5} \
-  CONFIG.synchronization_stages {4} \
-] [get_ips RGMII_ELASTIC_FIFO]
-
-# Runtime Parameters
-set_property -dict { 
-  GENERATE_SYNTH_CHECKPOINT {1}
-} $RGMII_ELASTIC_FIFO
 
 ##################################################################
 
