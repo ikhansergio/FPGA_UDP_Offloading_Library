@@ -16,4 +16,6 @@ Valid values:
 This feature was tested with Xilinx Spartan 7 and Artix 7 Devices with speed grade of -2. The solution posibly works at a resampling frequency below 625 MHz,
 but it has not yet been tested.
 
-![RGMII](../../../docs/WaveDrom/generated/RGMII_RX_OverSampler_CaseA.svg)
+![RGMII_RX_OverSampler_CaseA](../../../docs/WaveDrom/generated/RGMII_RX_OverSampler_CaseA.svg)
+
+![RGMII_RX_OverSampler_CaseB](../../../docs/WaveDrom/generated/RGMII_RX_OverSampler_CaseA.svg)
