@@ -30,6 +30,8 @@ Valid values:
 Valid values:
 *      "YES" or "NO"
 
+# [[...]](docs/KSZ9031_Def_Constraint.md) -> OVER_SAMPLING mode description.
+
 **RX_CLK_BUFF_SCH_TYPE** - Possible methods for connecting clock buffers.
 	For XLX_SERIES7 devices, there are several ways to connect the clock to the IDDR primitive.
 	The IDDR primitive can be connected via BUFIO, BUFR, or BUFG.
