@@ -3,7 +3,7 @@ name: Render WaveDrom Diagrams
 on:
   push:
     paths:
-      - 'docs/WaveDrom/*.wavedrom'
+      - 'docs/WaveDrom/*.json'
 
 permissions:
   contents: write
@@ -31,8 +31,8 @@ jobs:
 
       - name: Generate SVG
         run: |
-          for f in docs/WaveDrom/*.wavedrom; do
-            base=$(basename "$f" .wavedrom)
+          for f in docs/WaveDrom/*.json; do
+            base=$(basename "$f" .json)
 
             wavedrom-cli \
               -i "$f" \
