@@ -10,6 +10,9 @@
 	The optimal eye diagram position is determined by the RGMII_RXC signal's edge positions.
 	Received data is fed into an Elastic FIFO, from which the data stream can be read by a local clock.
 
+
+**The module assumes that the input data has an edge-aligned structure with respect to RXC. If the data is not edge-aligned with respect to RXC, it must be aligned using delays within the PHY or within the FPGA.**
+
 Valid values:
 *      "YES" or "NO"
 
