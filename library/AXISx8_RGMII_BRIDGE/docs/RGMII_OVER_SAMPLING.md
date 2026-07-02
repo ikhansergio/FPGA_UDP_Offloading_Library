@@ -18,4 +18,4 @@ but it has not yet been tested.
 
 ![RGMII_RX_OverSampler_CaseA](../../../docs/WaveDrom/generated/RGMII_RX_OverSampler_CaseA.svg)
 
-![RGMII_RX_OverSampler_CaseB](../../../docs/WaveDrom/generated/RGMII_RX_OverSampler_CaseA.svg)
+![RGMII_RX_OverSampler_CaseB](../../../docs/WaveDrom/generated/RGMII_RX_OverSampler_CaseB.svg)
