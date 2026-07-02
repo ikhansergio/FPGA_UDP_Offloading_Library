@@ -1,0 +1,27 @@
+{signal: 
+	[
+
+  { name: "REF_CLK_50Mhz",
+    wave:"lHlHlHlHlHlHlHlHlHlHlHlHlHlH"
+  },
+      
+  {node:'.A.BC.......D.......E.......F' , "phase": 0.15},
+
+  {},
+  
+  { name: "RMII_TX_EN",
+    wave: "0...1......................."
+  },
+  
+  {name:'RMII_TXD',
+   wave:'x...=.=.=.=.=.=.=.=.=.=.=.=.',
+   data:['TXD0[1:0]','TXD0[3:2]','TXD0[5:4]','TXD0[7:6]','TXD1[1:0]','TXD1[3:2]','TXD1[5:4]','TXD1[7:6]','TXD2[1:0]','TXD2[3:2]','TXD2[5:4]','TXD2[7:6]' ]},
+  
+	] ,
+      
+edge: [
+
+  'A<->B 20ns', 'C<->D 80ns', 'D<->E 80ns', 'E<->F 80ns'
+]
+ 
+}
