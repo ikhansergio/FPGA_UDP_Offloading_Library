@@ -23,7 +23,7 @@
 //SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-module DataBuffer_Fabric_x36
+module DataBuffer_Fabric_REG_x36
 #(
 parameter RAM_DEPTH = 256
 )
@@ -33,6 +33,7 @@ input  wire                                     WrEna       ,
 input  wire                                     WrWea       ,
 input  wire [RAM_AddrBitWidth(RAM_DEPTH)-1:0]   WrAddress   ,
 input  wire [35:0]                              WrData      ,
+
 
 input  wire                                     RdClk       ,
 input  wire                                     RdEna       ,

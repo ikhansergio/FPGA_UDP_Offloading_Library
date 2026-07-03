@@ -272,8 +272,8 @@ UDP_CommandFIFOx36          UDP_CommandFIFOx36_inst
 (* KEEP_HIERARCHY = "TRUE" *)
 UDP_RAM_DataBuffer_x36 
 #(
-.ARCH ("XLX_ULTRASCALE" ),
-.BUFFER_COUNT_1K(BUFFER_COUNT_1K)
+.ARCH               (ARCH           ),
+.BUFFER_COUNT_1K    (BUFFER_COUNT_1K)
 ) UDP_RAM_DataBuffer_x36_inst
 (
 . WrClk       (Sink_CLK     ),

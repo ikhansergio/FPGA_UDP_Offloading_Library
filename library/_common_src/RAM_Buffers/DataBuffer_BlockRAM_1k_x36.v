@@ -36,9 +36,8 @@ input  wire          RdClk       ,
 input  wire          RdEna       ,
 input  wire [ 7:0]   RdAddress   ,
 output wire [35:0]   RdData     
-
 );
-
+generate
     if (ARCH == "XLX_SERIES7")
     begin
         (* KEEP_HIERARCHY = "TRUE" *)
@@ -71,6 +70,22 @@ output wire [35:0]   RdData
         .addrb             (RdAddress       ),
         .doutb             (RdData          )
         );
+    end else if (ARCH == "ALT_Cyclone10LP")
+        begin
+        (* KEEP_HIERARCHY = "TRUE" *)
+        ALT_x36_1k_BLK      ALT_x36_1k_BLK_inst   
+        (
+        .wrclock            (WrClk           ),
+        .wrclocken          (WrEna           ),
+        .wren               (WrWea           ),
+        .wraddress          (WrAddress       ),
+        .data               (WrData          ),
+
+        .rdclock            (RdClk           ),
+        .rdclocken          (RdEna           ),
+        .rdaddress          (RdAddress       ),
+        .q                  (RdData          )
+        );
     end else  // if (ARCH == "DEFAULT_LOGIC")
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
@@ -91,6 +106,6 @@ output wire [35:0]   RdData
     .RdData             (RdData)   
     );
     end
-
+endgenerate
 
 endmodule
