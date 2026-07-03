@@ -50,5 +50,22 @@ module UDP_CommandFIFOx36
     .prog_full      (RdPgF),
     .empty          (RdEpt)
   );
+  
+  
+  /*
+  ALT_BLK_FIFO_36x256	ALT_BLK_FIFO_36x256_inst (
+	.aclr ( aclr_sig ),
+	.data ( data_sig ),
+	.rdclk ( rdclk_sig ),
+	.rdreq ( rdreq_sig ),
+	.wrclk ( wrclk_sig ),
+	.wrreq ( wrreq_sig ),
+	.q ( q_sig ),
+	.rdempty ( rdempty_sig ),
+	.rdusedw ( rdusedw_sig ),
+	.wrfull ( wrfull_sig )
+	);
+	
+	*/
 
 endmodule
