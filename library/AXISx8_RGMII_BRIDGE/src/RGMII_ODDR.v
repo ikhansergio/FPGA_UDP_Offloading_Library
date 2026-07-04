@@ -80,6 +80,26 @@ generate for (i = 0; i < 6; i = i + 1) begin: pins
         .D2(wRGMII_D2[i]), // 1-bit input: Parallel data input 2
         .SR(1'b0)  // 1-bit input: Active-High Async Reset
         );
+    end else if (ARCH == "ALT_Cyclone10LP")  
+    begin
+	 
+	 altddio_out
+	 #(.width(1))
+	 ODDR_inst 
+	 (
+    .datain_h	(wRGMII_D1[i]),
+    .datain_l	(wRGMII_D2[i]),
+    .outclock	(wRGMII_C [i]),
+//    .oe			(1'b1),
+//    .outclocken(1'b1),
+//    .aset		(1'b0),
+//    .aclr		(1'b0),
+//    .sset		(1'b0),
+//    .sclr		(1'b0),
+    .dataout	(wRGMII_Q [i]),
+    .oe_out		()
+	 );
+	 
     end else  // if (ARCH == "DEFAULT_LOGIC")
     begin
         ODDR_LOGIC   ODDR_LOGIC_inst
@@ -95,3 +115,5 @@ end
 endgenerate
 
 endmodule
+
+

@@ -253,7 +253,10 @@ end
 reg ReadDonePulse = 0 ;
 
 (* KEEP_HIERARCHY = "TRUE" *)
-UDP_CommandFIFOx36          UDP_CommandFIFOx36_inst
+UDP_CommandFIFOx36  
+#(
+.ARCH(ARCH)
+) UDP_CommandFIFOx36_inst
 (
 .WrClk      (Sink_CLK),
 .WrRst      (1'b0),

@@ -90,10 +90,10 @@ generate
     end else  // if (ARCH == "DEFAULT_LOGIC")
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_Fabric_X36   
+    DataBuffer_Fabric_REG_x36   
     #(
     . RAM_DEPTH ( 1024 )
-    )DataBuffer_Fabric_X36_inst
+    )DataBuffer_Fabric_REG_x36_inst
     (
     .WrClk              (WrClk),
     .WrEna              (WrEna),

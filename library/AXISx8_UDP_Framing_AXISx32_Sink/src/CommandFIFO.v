@@ -24,6 +24,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 module UDP_CommandFIFOx36
+#(
+    parameter ARCH = "XLX_ULTRASCALE"     
+) 
 (
     input  wire                    WrClk,
     input  wire                    WrRst,
@@ -37,8 +40,12 @@ module UDP_CommandFIFOx36
     output wire [36-1:0]           RdDat
 
 );
-   
-    XLX_LUT_FIFO_36x64 XLX_LUT_FIFO_36x64_inst (
+
+
+ generate
+if (ARCH == "XLX_SERIES7")
+ begin
+     XLX_LUT_FIFO_36x64 XLX_LUT_FIFO_36x64_inst (
     .rst            (WrRst),
     .wr_clk         (WrClk),
     .rd_clk         (RdClk),
@@ -50,22 +57,46 @@ module UDP_CommandFIFOx36
     .prog_full      (RdPgF),
     .empty          (RdEpt)
   );
-  
-  
-  /*
-  ALT_BLK_FIFO_36x256	ALT_BLK_FIFO_36x256_inst (
-	.aclr ( aclr_sig ),
-	.data ( data_sig ),
-	.rdclk ( rdclk_sig ),
-	.rdreq ( rdreq_sig ),
-	.wrclk ( wrclk_sig ),
-	.wrreq ( wrreq_sig ),
-	.q ( q_sig ),
-	.rdempty ( rdempty_sig ),
-	.rdusedw ( rdusedw_sig ),
-	.wrfull ( wrfull_sig )
-	);
-	
-	*/
+ end else if (ARCH == "XLX_ULTRASCALE")  
+ begin
+     XLX_LUT_FIFO_36x64 XLX_LUT_FIFO_36x64_inst (
+    .rst            (WrRst),
+    .wr_clk         (WrClk),
+    .rd_clk         (RdClk),
+    .din            (WrDat),
+    .wr_en          (WrEna),
+    .rd_en          (RdEna),
+    .dout           (RdDat),
+    .full           (),
+    .prog_full      (RdPgF),
+    .empty          (RdEpt)
+  );   
+ end else if (ARCH == "ALT_Cyclone10LP")  
+ begin
+ wire [7:0] wRdUsedw;
+ reg RdPgFull =0;
+ 
+ always @(posedge RdClk)
+ begin
+ if (wRdUsedw>250) RdPgFull<=1'b1;
+    else if (wRdUsedw<250) RdPgFull<=1'b0;
+ end
+ assign RdPgF = RdPgFull;
+ 
+   ALT_BLK_FIFO_36x256	ALT_BLK_FIFO_36x256_inst (
+	.aclr              ( WrRst     ),
+	.data              ( WrDat     ),
+	.rdclk             ( RdClk     ),
+	.rdreq             ( RdEna     ),
+	.wrclk             ( WrClk     ),
+	.wrreq             ( WrEna     ),
+	.q                 ( RdDat     ),
+	.rdempty           ( RdEpt     ),
+	.rdusedw           ( wRdUsedw  ),
+	.wrfull            (           )
+	);   
+ end
+ endgenerate  
+
 
 endmodule
