@@ -40,19 +40,10 @@ Valid values:
 	For example: Working with the [Microchip KSZ9031RNX](https://www.microchip.com/en-us/product/KSZ9031) PHY, which has a default RXC signal delay of 1.2n after reset,
 	experimentation revealed the following:
 
-		On Spartan 7 devices in pair with Microchip KSZ9031RNX PHY, connected to the HR port by the RGMII interface,
-		schemes 1, 2, 3, 4 proved to be optimal in terms of timing.
-		These schemes use BUFIO and BUFR to connect the clock to the IDDR primitive.
-		No manipulation of the MDIO registers in the PHY was required.
-		IDELAYE2 primitives were also not used.
-		Timing constraints were met by default settings.
-	
-		On Zynq 7000 and Artix 7 devices in pair with Microchip KSZ9031RNX PHY, connected to the HR port by the RGMII interface,
-		only schemes 3, 4 proved to be optimal in terms of timing.
-		This scheme uses BUFR to connect the clock to the IDDR primitive.
-		Also, no manipulation of the MDIO registers in the PHY was required.
-		IDELAYE2 primitives were also not used.
-		Timing constraints were met by default settings.
+>[!NOTE]
+>On Spartan 7 devices in pair with Microchip KSZ9031RNX PHY, connected to the HR port by the RGMII interface, schemes 1, 2, 3, 4 proved to be optimal in terms of timing. These schemes use BUFIO and BUFR to connect the clock to the IDDR primitive.No manipulation of the MDIO registers in the PHY was required. IDELAYE2 primitives were also not used. Timing constraints were met by default settings.
+>
+>On Zynq 7000 and Artix 7 devices in pair with Microchip KSZ9031RNX PHY, connected to the HR port by the RGMII interface, only schemes 3, 4 proved to be optimal in terms of timing. This scheme uses BUFR to connect the clock to the IDDR primitive. Also, no manipulation of the MDIO registers in the PHY was required. IDELAYE2 primitives were also not used. Timing constraints were met by default settings.
 
 Valid values:
 *      0, 1, 2, 3, 4, 5, 6
