@@ -28,12 +28,12 @@ Since RXC is completely asynchronous with respect to the local 625 MHz clock, se
 **Case A:** 
 The rising and falling edges of the 625 MHz clock signal coincide with the high level of the RXC signal.
 
-![RGMII_RX_OverSampler_CaseA](../../../docs/WaveDrom/generated/RGMII_RX_OverSampler_CaseA.svg)
+![RGMII_RX_OverSampler_CaseA](/docs/WaveDrom/generated/RGMII_RX_OverSampler_CaseA.svg)
 
 **Case B:** 
 The rising edge of the 625 MHz clock signal coincides with the low level of the RXC signal, and the falling edge coincides with the high level.
 
-![RGMII_RX_OverSampler_CaseB](../../../docs/WaveDrom/generated/RGMII_RX_OverSampler_CaseB.svg)
+![RGMII_RX_OverSampler_CaseB](/docs/WaveDrom/generated/RGMII_RX_OverSampler_CaseB.svg)
 
 
 Depending on the situation, the module's logic determines the optimal point in time from which to retrieve the latched data.
