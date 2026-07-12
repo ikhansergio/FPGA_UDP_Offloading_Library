@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 OPR/131.0.0.0">
   <diagram name="Page-1" id="g0-s9DwC3oRhXUgsUFM5">
-    <mxGraphModel dx="685" dy="400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="978" dy="572" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -171,6 +171,12 @@
         </mxCell>
         <mxCell id="wT9U8shtDK8veMdne7O4-20" parent="1" style="shape=waypoint;sketch=0;fillStyle=solid;size=6;pointerEvents=1;points=[];fillColor=none;resizable=0;rotatable=0;perimeter=centerPerimeter;snapToPoint=1;" value="" vertex="1">
           <mxGeometry height="20" width="20" x="550" y="990" as="geometry" />
+        </mxCell>
+        <mxCell id="v1DrpxyldP5X3QPbAQ5r-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;strokeColor=#006EAF;rotation=0;fontColor=#ffffff;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;PING&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="30" x="425" y="1050" as="geometry" />
+        </mxCell>
+        <mxCell id="v1DrpxyldP5X3QPbAQ5r-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;strokeColor=#006EAF;rotation=0;fontColor=#ffffff;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;ARP&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="30" x="385" y="1050" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
