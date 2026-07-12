@@ -21,3 +21,7 @@ Valid values:
 
 Valid values:
 *      "YES" or "NO"
+
+Block diagram :
+
+<div align="center" > <img src="/docs/Drawio/generated/AXISx8_UDP_Offloading_Engine.svg" width="100%"/> </div>
