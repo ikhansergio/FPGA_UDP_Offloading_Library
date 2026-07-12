@@ -1,2 +1,4 @@
-# [[...]](./library/README.md) -> FPGA_UDP_Offloading_Library 
-# [[...]](./examples/README.md) -> Simple examples of working with the library
+
+[**FPGA_UDP_Offloading_Library**](./library/README.md)
+
+[**Simple examples of working with the library**](./examples/README.md)
