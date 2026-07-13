@@ -28,3 +28,10 @@ set_false_path -rise_from [get_clocks CLK_125MHZ] -fall_to [get_clocks RGMII_TX_
 set_false_path -fall_from [get_clocks CLK_125MHZ] -rise_to [get_clocks RGMII_TX_CLK_90] -setup
 set_false_path -rise_from [get_clocks CLK_125MHZ] -rise_to [get_clocks RGMII_TX_CLK_90] -hold
 set_false_path -fall_from [get_clocks CLK_125MHZ] -fall_to [get_clocks RGMII_TX_CLK_90] -hold
+
+set_property SLEW FAST [get_ports {RGMII_TXD[3]}]
+set_property SLEW FAST [get_ports {RGMII_TXD[2]}]
+set_property SLEW FAST [get_ports {RGMII_TXD[1]}]
+set_property SLEW FAST [get_ports {RGMII_TXD[0]}]
+set_property SLEW FAST [get_ports RGMII_TXC_CTL]
+set_property SLEW FAST [get_ports RGMII_TXC]
