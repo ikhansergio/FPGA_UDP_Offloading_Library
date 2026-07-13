@@ -1,4 +1,4 @@
-name: Render WaveDrom Diagrams
+name: Rendering WaveDrom diagrams
 
 on:
   push:
