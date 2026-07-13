@@ -9,7 +9,7 @@ input  wire          RGMII_RX_CTL   ,
 input  wire [4-1:0]  RGMII_RXD      ,
 
 output wire          RGMII_TXC      ,
-output wire          RGMII_TXC_CTL  ,
+output wire          RGMII_TX_CTL   ,
 output wire [4-1:0]  RGMII_TXD      ,
 
 output reg EtheReset =0             // Inverted on PCB. EtheReset == 1 -> PHY is reseted
@@ -69,7 +69,7 @@ wire wRGMII_RXC;
 .RGMII_RXC                  (RGMII_RXC),
 .RGMII_RX_CTL               (RGMII_RX_CTL),
 .RGMII_RXD                  (RGMII_RXD),
-.RGMII_TXC_CTL              (RGMII_TXC_CTL),
+.RGMII_TX_CTL               (RGMII_TX_CTL),
 .RGMII_TXC                  (RGMII_TXC),
 .RGMII_TXD                  (RGMII_TXD),
 

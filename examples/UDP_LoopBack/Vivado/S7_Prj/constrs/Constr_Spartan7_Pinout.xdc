@@ -9,14 +9,14 @@ set_property PACKAGE_PIN K13 [get_ports {RGMII_TXD[0]}]
 set_property PACKAGE_PIN J15 [get_ports {RGMII_TXD[1]}]
 set_property PACKAGE_PIN K14 [get_ports {RGMII_TXD[2]}]
 set_property PACKAGE_PIN K15 [get_ports {RGMII_TXD[3]}]
-set_property PACKAGE_PIN L15 [get_ports RGMII_TXC_CTL]
+set_property PACKAGE_PIN L15 [get_ports RGMII_TX_CTL]
 set_property PACKAGE_PIN L13 [get_ports RGMII_TXC]
 
 set_property IOSTANDARD LVCMOS33 [get_ports {RGMII_TXD[0]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {RGMII_TXD[1]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {RGMII_TXD[2]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {RGMII_TXD[3]}]
-set_property IOSTANDARD LVCMOS33 [get_ports RGMII_TXC_CTL]
+set_property IOSTANDARD LVCMOS33 [get_ports RGMII_TX_CTL]
 set_property IOSTANDARD LVCMOS33 [get_ports RGMII_TXC]
 
 

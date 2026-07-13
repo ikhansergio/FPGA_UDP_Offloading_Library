@@ -19,10 +19,10 @@ create_generated_clock -name CLK_125MHZ_90 -source [get_pins Sys_Clk_PLL_inst/in
 
 create_generated_clock -name RGMII_TX_CLK_90 -source [get_pins Sys_Clk_PLL_inst/inst/clk_out2] -multiply_by 1 [get_ports RGMII_TXC]
 
-set_output_delay -clock RGMII_TX_CLK_90 -min -1.0 [get_ports {RGMII_TXD[0] RGMII_TXD[1] RGMII_TXD[2] RGMII_TXD[3] RGMII_TXC_CTL}] -add_delay
-set_output_delay -clock RGMII_TX_CLK_90 -max 1.00 [get_ports {RGMII_TXD[0] RGMII_TXD[1] RGMII_TXD[2] RGMII_TXD[3] RGMII_TXC_CTL}] -add_delay
-set_output_delay -clock RGMII_TX_CLK_90 -clock_fall -min -1.0 [get_ports {RGMII_TXD[0] RGMII_TXD[1] RGMII_TXD[2] RGMII_TXD[3] RGMII_TXC_CTL}] -add_delay
-set_output_delay -clock RGMII_TX_CLK_90 -clock_fall -max 1.00 [get_ports {RGMII_TXD[0] RGMII_TXD[1] RGMII_TXD[2] RGMII_TXD[3] RGMII_TXC_CTL}] -add_delay
+set_output_delay -clock RGMII_TX_CLK_90 -min -1.0 [get_ports {RGMII_TXD[0] RGMII_TXD[1] RGMII_TXD[2] RGMII_TXD[3] RGMII_TX_CTL}] -add_delay
+set_output_delay -clock RGMII_TX_CLK_90 -max 1.00 [get_ports {RGMII_TXD[0] RGMII_TXD[1] RGMII_TXD[2] RGMII_TXD[3] RGMII_TX_CTL}] -add_delay
+set_output_delay -clock RGMII_TX_CLK_90 -clock_fall -min -1.0 [get_ports {RGMII_TXD[0] RGMII_TXD[1] RGMII_TXD[2] RGMII_TXD[3] RGMII_TX_CTL}] -add_delay
+set_output_delay -clock RGMII_TX_CLK_90 -clock_fall -max 1.00 [get_ports {RGMII_TXD[0] RGMII_TXD[1] RGMII_TXD[2] RGMII_TXD[3] RGMII_TX_CTL}] -add_delay
 
 set_false_path -rise_from [get_clocks CLK_125MHZ] -fall_to [get_clocks RGMII_TX_CLK_90] -setup
 set_false_path -fall_from [get_clocks CLK_125MHZ] -rise_to [get_clocks RGMII_TX_CLK_90] -setup
@@ -33,5 +33,5 @@ set_property SLEW FAST [get_ports {RGMII_TXD[3]}]
 set_property SLEW FAST [get_ports {RGMII_TXD[2]}]
 set_property SLEW FAST [get_ports {RGMII_TXD[1]}]
 set_property SLEW FAST [get_ports {RGMII_TXD[0]}]
-set_property SLEW FAST [get_ports RGMII_TXC_CTL]
+set_property SLEW FAST [get_ports RGMII_TX_CTL]
 set_property SLEW FAST [get_ports RGMII_TXC]
