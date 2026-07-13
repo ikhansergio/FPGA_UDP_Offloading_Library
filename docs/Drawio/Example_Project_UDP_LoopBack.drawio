@@ -80,11 +80,11 @@
         <mxCell id="l-Vy5mzzBIYiazb95XEs-63" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#000000;rotation=-90;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;AXISx8 Source&lt;/span&gt;" vertex="1">
           <mxGeometry height="20" width="80" x="149.44" y="950" as="geometry" />
         </mxCell>
-        <mxCell id="l-Vy5mzzBIYiazb95XEs-64" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#000000;rotation=-90;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;AXISx8&lt;/span&gt;&lt;span style=&quot;font-size: 8px;&quot;&gt; Sink&lt;/span&gt;" vertex="1">
-          <mxGeometry height="10" width="80" x="325" y="955" as="geometry" />
+        <mxCell id="l-Vy5mzzBIYiazb95XEs-64" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#000000;rotation=-90;verticalAlign=middle;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;AXISx8&lt;/span&gt;&lt;span style=&quot;font-size: 8px;&quot;&gt; Sink&lt;/span&gt;" vertex="1">
+          <mxGeometry height="10" width="65" x="332.5" y="947.5" as="geometry" />
         </mxCell>
         <mxCell id="l-Vy5mzzBIYiazb95XEs-65" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#000000;rotation=-90;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;AXISx8 Source&lt;/span&gt;" vertex="1">
-          <mxGeometry height="10" width="80" x="325" y="1035" as="geometry" />
+          <mxGeometry height="10" width="65" x="332.5" y="1042.5" as="geometry" />
         </mxCell>
         <mxCell id="l-Vy5mzzBIYiazb95XEs-66" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#000000;rotation=-90;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;AXISx8 Source&lt;/span&gt;" vertex="1">
           <mxGeometry height="10" width="62.5" x="443.75" y="946.25" as="geometry" />
