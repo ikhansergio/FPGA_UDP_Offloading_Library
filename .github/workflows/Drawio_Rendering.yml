@@ -1,4 +1,4 @@
-name: Generate Draw.io SVGs
+name: Rendering Draw.io SVGs
 on:
 
   workflow_dispatch:
