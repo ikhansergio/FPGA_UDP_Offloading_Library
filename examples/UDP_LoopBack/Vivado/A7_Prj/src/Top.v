@@ -111,7 +111,7 @@ AXIS_Width_Up_Converter
 ) AXISx8_To_AXISx32_Width_Up_Converter_inst
 (
             
-. CLK                       (Sink_CLK                       ),
+. CLK                       (wRGMII_RXC                     ),
 . TFIRST                    (wUDP_Data_TFIRST               ),            
 . TDATA                     (wUDP_Data_TDATA                ),
 . TVALID                    (wUDP_Data_TVALID               ),
