@@ -36,7 +36,7 @@ Valid values:
 # [[...]](docs/RGMII_OVER_SAMPLING.md) -> OVER_SAMPLING mode description.
 
 **RX_CLK_BUFF_SCH_TYPE** - Possible methods for connecting clock buffers.
-	For XLX_SERIES7 devices, there are several ways to connect the clock to the IDDR primitive.
+	For **XLX_SERIES7** devices, there are several ways to connect the clock to the IDDR primitive.
 	The IDDR primitive can be connected via BUFIO, BUFR, or BUFG.
 	Each method has its pros and cons.
 	Each connection type has its own differences in the length of the clock signal path from the pin to the IDDR register.
@@ -61,7 +61,8 @@ Valid values:
 	| 5 | BUFG | BUFR |
 	| 6 | BUFG | BUFG |
 
-	Xilinx Ultrascale devices do not have BUFIO and BUFR primitives, so this parameter has no meaning for these devices.
+>[!IMPORTANT]
+> Xilinx Ultrascale devices do not have BUFIO and BUFR primitives, so this parameter has no meaning for these devices, use **RX_CLK_BUFF_SCH_TYPE = 0** in this case.
 
 **RGMII_TXC_FRONT_POSITION** - The position of the TXC clock signal edge relative to the TX_Data eye diagram.
 This parameter is needed only for control purposes, to exclude conflicting parameters. The user must specify how the TXC edge should be formed in relation to the eye diagram.
