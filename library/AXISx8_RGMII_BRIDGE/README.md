@@ -86,7 +86,10 @@ Valid values:
 > <div align="center" > <img src="/docs/Drawio/generated/Block_Diagram_CLK_REFERENCE_PHY_RXC_No_Clock_Crossing.svg" width="100%"/> </div>
 >
 > If the **REFERENCE_125MHz** parameter is used, it is assumed that the user is using a local frequency of 125 MHz obtained from a crystal oscillator or PLL. Depending on the PHY speed, AXISx8_RGMII_BRIDGE automatically calculates the frequency division factors and controls the Sink_PHY_TREADY signal.
-
+>
+>**A block diagram** of a simple example where data received from the PHY passes through a clock-crossing FIFO. The rest of the project operates on a 125 MHz clock:
+> <div align="center" > <img src="/docs/Drawio/generated/Block_Diagram_CLK_REFERENCE_125MHz_Clock_Crossing.svg" width="100%"/> </div>
+>
 
 **Valid combinations:**
 
