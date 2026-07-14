@@ -19,7 +19,6 @@ Valid values:
 >[!IMPORTANT]
 >Typically, the **RX_ARCH** and **TX_ARCH** parameters should be set to the same value for the selected FPGA family, however, the library allows for the implementation of the receiver or transmitter using fabric logic rather than dedicated I/O flip-flops. This is achieved using the **DEFAULT_LOGIC** parameter, which specifies that the DDR elements are to be implemented using fabric logic. The **DEFAULT_LOGIC** parameter can be applied independently to either the receiver or the transmitter.
 
-
 **OVER_SAMPLING** - Experimental feature.
 	This feature was introduced due to rare but fatal design errors 
 	that occur in process of developing the RGMII interface.
@@ -81,9 +80,13 @@ Valid values:
 *      "REFERENCE_PHY_RXC", "REFERENCE_125MHz", "REFERENCE_125MHz_90"
 
 > [!IMPORTANT]
-> If the REFERENCE_PHY_RXC parameter is used, it is assumed that the user uses the PHY's RXC clock output to generate TXD data and the TXC clock. Depending on the PHY speed, the PHY automatically switches frequencies between 125 MHz, 25 MHz, and 2.5 MHz. With this configuration, the RGMII_TXC_FRONT_POSITION parameter must be set to "EDGE_ALIGNED." 
+> If the **REFERENCE_PHY_RXC** parameter is used, it is assumed that the user uses the PHY's RXC clock output to generate TXD data and the TXC clock. Depending on the PHY speed, the PHY automatically switches frequencies between 125 MHz, 25 MHz, and 2.5 MHz. With this configuration, the **RGMII_TXC_FRONT_POSITION** parameter must be set to **EDGE_ALIGNED**. 
 >
-> If the REFERENCE_125MHz parameter is used, it is assumed that the user is using a local frequency of 125 MHz obtained from a crystal oscillator or PLL. Depending on the PHY speed, AXISx8_RGMII_BRIDGE automatically calculates the frequency division factors and controls the Sink_PHY_TREADY signal.
+>**A block diagram** of a simple example where the RXC clock from the PHY is used as the system clock:
+> <div align="center" > <img src="/docs/Drawio/generated/Block_Diagram_CLK_REFERENCE_PHY_RXC_No_Clock_Crossing.svg" width="100%"/> </div>
+>
+> If the **REFERENCE_125MHz** parameter is used, it is assumed that the user is using a local frequency of 125 MHz obtained from a crystal oscillator or PLL. Depending on the PHY speed, AXISx8_RGMII_BRIDGE automatically calculates the frequency division factors and controls the Sink_PHY_TREADY signal.
+
 
 **Valid combinations:**
 
