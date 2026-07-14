@@ -81,7 +81,7 @@ Valid values:
 *      "REFERENCE_PHY_RXC", "REFERENCE_125MHz", "REFERENCE_125MHz_90"
 
 > [!IMPORTANT]
-> If the **REFERENCE_PHY_RXC** parameter is used, it is assumed that the user uses the PHY's RXC clock output to generate TXD data and the TXC clock. Depending on the PHY speed, the PHY automatically switches frequencies between 125 MHz, 25 MHz, and 2.5 MHz. With this configuration, the **RGMII_TXC_FRONT_POSITION** parameter must be set to **EDGE_ALIGNED**. 
+> If the **REFERENCE_PHY_RXC** parameter is used, it is assumed that the user uses the PHY's RXC clock output to generate TXD data and the TXC clock. Depending on the PHY speed, the PHY automatically switches frequencies between **125 MHz, 25 MHz, and 2.5 MHz**. With this configuration, the **RGMII_TXC_FRONT_POSITION** parameter must be set to **EDGE_ALIGNED**. 
 >
 >**A block diagram** of a simple example where the RXC clock from the PHY is used as the system clock:
 > <div align="center" > <img src="/docs/Drawio/generated/Block_Diagram_CLK_REFERENCE_PHY_RXC_No_Clock_Crossing.svg" width="100%"/> </div>
