@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 OPR/131.0.0.0">
   <diagram name="Page-1" id="g0-s9DwC3oRhXUgsUFM5">
-    <mxGraphModel dx="975" dy="586" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1414" dy="849" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -80,7 +80,7 @@
         <mxCell id="l-Vy5mzzBIYiazb95XEs-133" parent="1" style="shape=waypoint;sketch=0;fillStyle=solid;size=6;pointerEvents=1;points=[];fillColor=none;resizable=0;rotatable=0;perimeter=centerPerimeter;snapToPoint=1;" value="" vertex="1">
           <mxGeometry height="20" width="20" x="210" y="970" as="geometry" />
         </mxCell>
-        <mxCell id="KEg-0OEKTg1LhKuI-4BB-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fad7ac;strokeColor=#000000;rotation=-90;" value="&lt;span style=&quot;font-size: 18px;&quot;&gt;RGMII&lt;/span&gt;" vertex="1">
+        <mxCell id="KEg-0OEKTg1LhKuI-4BB-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d0cee2;strokeColor=#56517e;rotation=-90;" value="&lt;span style=&quot;font-size: 18px;&quot;&gt;RGMII&lt;/span&gt;" vertex="1">
           <mxGeometry height="40" width="240" x="-59.99999999999999" y="980" as="geometry" />
         </mxCell>
         <mxCell id="RrWpHngyIq7_UeNYNdi2-9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fad7ac;strokeColor=#b46504;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;AXISx8_UDP&amp;nbsp;&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-size: 8px;&quot;&gt;Offloading_Engine&lt;/span&gt;&lt;/div&gt;" vertex="1">
