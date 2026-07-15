@@ -5,17 +5,18 @@ AXISx8_RGMII_BRIDGE - Verilog library implementing 1000Base-T Ethernet PHY inter
 **RX_ARCH** - Supported architectures for RX path.
 
 Valid values:
-*     "XLX_ULTRASCALE", - Xilinx ULTRASCALE FPGAs
-      "XLX_SERIES7", - Xilinx 7 Series FPGAs
-	  "ALT_Cyclone10LP",  - Altera Cyclone10LP Series FPGAs
-      "DEFAULT_LOGIC",  - implementation on FPGA fabric
+*     "XLX_ULTRASCALE",	- Xilinx ULTRASCALE FPGAs
+      "XLX_SERIES7",	-  Xilinx 7 Series FPGAs
+	  "ALT_Cyclone10LP",	- Altera Cyclone10LP Series FPGAs
+      "DEFAULT_LOGIC",	- implementation on FPGA fabric
 
 **TX_ARCH** - Supported architectures for TX path.
 
 Valid values:
-*     "XLX_ULTRASCALE", - Xilinx ULTRASCALE FPGAs
-      "XLX_SERIES7", - Xilinx 7 Series FPGAs
-      "DEFAULT_LOGIC",  - implementation on FPGA fabric
+*     "XLX_ULTRASCALE",	- Xilinx ULTRASCALE FPGAs
+      "XLX_SERIES7",	- Xilinx 7 Series FPGAs
+      "ALT_Cyclone10LP",	- Altera Cyclone10LP Series FPGAs
+      "DEFAULT_LOGIC",	- implementation on FPGA fabric
 
 >[!IMPORTANT]
 >Typically, the **RX_ARCH** and **TX_ARCH** parameters should be set to the same value for the selected FPGA family, however, the library allows for the implementation of the receiver or transmitter using fabric logic rather than dedicated I/O flip-flops. This is achieved using the **DEFAULT_LOGIC** parameter, which specifies that the DDR elements are to be implemented using fabric logic. The **DEFAULT_LOGIC** parameter can be applied independently to either the receiver or the transmitter.
