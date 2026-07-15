@@ -7,6 +7,7 @@ AXISx8_RGMII_BRIDGE - Verilog library implementing 1000Base-T Ethernet PHY inter
 Valid values:
 *     "XLX_ULTRASCALE", - Xilinx ULTRASCALE FPGAs
       "XLX_SERIES7", - Xilinx 7 Series FPGAs
+	  "ALT_Cyclone10LP",  - Altera Cyclone10LP Series FPGAs
       "DEFAULT_LOGIC",  - implementation on FPGA fabric
 
 **TX_ARCH** - Supported architectures for TX path.

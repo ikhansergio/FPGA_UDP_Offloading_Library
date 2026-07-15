@@ -28,6 +28,12 @@
 // RGMII_SPEED==2'b10   1000 Mhz
 // RGMII_SPEED==2'b11   Reserved
 
+// ARCH - Supported architectures:
+// "XLX_ULTRASCALE",   - Xilinx ULTRASCALE FPGAs
+// "XLX_SERIES7",      - Xilinx 7 Series FPGAs
+// "ALT_Cyclone10LP",  - Altera Cyclone10LP Series FPGAs
+// "DEFAULT_LOGIC",    - implementation on FPGA fabric
+
 module AXISx8_RGMII_BRIDGE
 #(
 parameter RX_ARCH = "DEFAULT_LOGIC" ,                       // "XLX_SERIES7", XLX_ULTRASCALE, "DEFAULT_LOGIC"
