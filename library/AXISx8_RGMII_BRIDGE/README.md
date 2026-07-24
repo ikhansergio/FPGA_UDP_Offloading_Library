@@ -35,7 +35,7 @@ Valid values:
 Valid values:
 *      "YES" or "NO"
 
-# [[...]](docs/RGMII_OVER_SAMPLING.md) -> OVER_SAMPLING mode description.
+# [OVER_SAMPLING](docs/RGMII_OVER_SAMPLING.md) mode description.
 
 **RX_CLK_BUFF_SCH_TYPE** - Possible methods for connecting clock buffers.
 	For **XLX_SERIES7** devices, there are several ways to connect the clock to the IDDR primitive.
@@ -103,4 +103,4 @@ Valid values:
 | Local 125 MHz for TXD and 125 MHz 90 degrees shifted for TXC | "REFERENCE_125MHz" | "REFERENCE_125MHz_90" | "CENTER_ALIGNED" |
 
 	
-# [[...]](docs/KSZ9031_Def_Constraint.md) -> SDC constraint example for the KSZ9031 in default mode.
+# [SDC constraint](docs/KSZ9031_Def_Constraint.md) example for the KSZ9031 in default mode.
