@@ -26,7 +26,7 @@
 module RGMII_OverSampler
 #(
 parameter ARCH = "DEFAULT_LOGIC"        ,
-parameter SERIES7_Clk_Buff_Type=0		,
+parameter RX_CLK_BUFF_SCH_TYPE=0		,
 parameter OVER_SAMPLING = "NO"          ,
 parameter OPPOSITE_EDGE_LATCH_MODE = "NO"
 )
@@ -48,6 +48,12 @@ output  wire  [8-1:0]  RGMII_RX_DATA_Q
 wire wRGMII_RX_CLK;
 
 //assign RGMII_RX_CLK = wRGMII_RX_CLK;
+
+wire        wRGMII_RX_CLK_Q1_D;
+wire        wRGMII_RX_CLK_Q2_D;
+wire        wRGMII_RX_CTL_Q1_D;
+wire        wRGMII_RX_CTL_Q2_D;
+wire [7:0]  wRGMII_RX_DATA_Q_D;
 
 wire        wRGMII_RX_CLK_Q1;
 wire        wRGMII_RX_CLK_Q2;
@@ -72,11 +78,31 @@ RGMII_IDDR_WRAPPER
 .RGMII_RXD          (RGMII_RXD      ),
 
 .RGMII_RX_CLK         (wRGMII_RX_CLK       ),
-.RGMII_RX_CLK_Q1      (wRGMII_RX_CLK_Q1    ),
-.RGMII_RX_CLK_Q2      (wRGMII_RX_CLK_Q2    ),
-.RGMII_RX_CTL_Q1      (wRGMII_RX_CTL_Q1    ),
-.RGMII_RX_CTL_Q2      (wRGMII_RX_CTL_Q2    ),
-.RGMII_RX_DATA_Q      (wRGMII_RX_DATA_Q    )
+.RGMII_RX_CLK_Q1      (wRGMII_RX_CLK_Q1_D  ),
+.RGMII_RX_CLK_Q2      (wRGMII_RX_CLK_Q2_D  ),
+.RGMII_RX_CTL_Q1      (wRGMII_RX_CTL_Q1_D  ),
+.RGMII_RX_CTL_Q2      (wRGMII_RX_CTL_Q2_D  ),
+.RGMII_RX_DATA_Q      (wRGMII_RX_DATA_Q_D  )
+);
+
+(* KEEP_HIERARCHY = "TRUE" *)
+RGMII_OverSampler_ClockShift
+#(.OVER_SAMPLING_SHIFT (0))   
+RGMII_OverSampler_ClockShift_inst
+(
+.CLK625MHZ              (CLK625MHZ         ),
+
+.IN_RGMII_RX_CLK_Q1     (wRGMII_RX_CLK_Q1_D),
+.IN_RGMII_RX_CLK_Q2     (wRGMII_RX_CLK_Q2_D),
+.IN_RGMII_RX_CTL_Q1     (wRGMII_RX_CTL_Q1_D),
+.IN_RGMII_RX_CTL_Q2     (wRGMII_RX_CTL_Q2_D),
+.IN_RGMII_RX_DATA_Q     (wRGMII_RX_DATA_Q_D),
+
+.OUT_RGMII_RX_CLK_Q1     (wRGMII_RX_CLK_Q1 ),
+.OUT_RGMII_RX_CLK_Q2     (wRGMII_RX_CLK_Q2 ),
+.OUT_RGMII_RX_CTL_Q1     (wRGMII_RX_CTL_Q1 ),
+.OUT_RGMII_RX_CTL_Q2     (wRGMII_RX_CTL_Q2 ),
+.OUT_RGMII_RX_DATA_Q     (wRGMII_RX_DATA_Q )
 );
 
 reg rRGMII_RX_CLK_Q1=0;
@@ -155,13 +181,13 @@ Prog_full <= wProg_full;
 SkipFlag    <= RGMII_RXD_LE && ((Prog_full == 1) && (Data_CTL == 0)  ) ;
 end
 
-wire wProg_Empty;
-reg  FIFO_rd_en =0;
+//wire wProg_Empty;
+//reg  FIFO_rd_en =0;
 
 
 //reg WriteBlock =0;
 
-always @(posedge wRGMII_RX_CLK) FIFO_rd_en <= !wProg_Empty || ({RGMII_RX_CTL_Q2,RGMII_RX_CTL_Q1} !=0) ;
+//always @(posedge wRGMII_RX_CLK) FIFO_rd_en <= !wProg_Empty || ({RGMII_RX_CTL_Q2,RGMII_RX_CTL_Q1} !=0) ;
 
 
 
