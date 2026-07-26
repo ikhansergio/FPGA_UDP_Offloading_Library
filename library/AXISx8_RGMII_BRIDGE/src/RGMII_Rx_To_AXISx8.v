@@ -27,7 +27,8 @@ module RGMII_Rx_To_AXISx8
 #(
 parameter ARCH = "DEFAULT_LOGIC"                ,
 parameter RX_CLK_BUFF_SCH_TYPE=1		        ,
-parameter OVER_SAMPLING = "NO"
+parameter OVER_SAMPLING = "NO"                  ,
+parameter OVER_SAMPLING_SHIFT = 0       
 )
 (
 input   wire            CLK625MHZ               ,
@@ -69,6 +70,7 @@ RGMII_RX_PHY
 #(
 .ARCH(ARCH),
 .OVER_SAMPLING(OVER_SAMPLING),
+.OVER_SAMPLING_SHIFT(OVER_SAMPLING_SHIFT),
 .RX_CLK_BUFF_SCH_TYPE(RX_CLK_BUFF_SCH_TYPE)
 ) 
 RGMII_RX_PHY_inst

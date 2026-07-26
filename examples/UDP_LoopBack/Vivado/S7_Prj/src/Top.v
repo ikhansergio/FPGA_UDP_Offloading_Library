@@ -64,6 +64,7 @@ wire wRGMII_RXC;
 .RX_CLK_BUFF_SCH_TYPE(3)
 )UDP_Offloading_Engine_Wrapper_inst
 (
+.CLK625MHZ                  (0),
 .EthClk125                  (wEthClk125),
 .EthClk125_90               (wEthClk125_90),
 

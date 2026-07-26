@@ -28,6 +28,7 @@ module RGMII_OverSampler
 parameter ARCH = "DEFAULT_LOGIC"        ,
 parameter RX_CLK_BUFF_SCH_TYPE=0		,
 parameter OVER_SAMPLING = "NO"          ,
+parameter OVER_SAMPLING_SHIFT = 0       ,
 parameter OPPOSITE_EDGE_LATCH_MODE = "NO"
 )
 (
@@ -87,7 +88,7 @@ RGMII_IDDR_WRAPPER
 
 (* KEEP_HIERARCHY = "TRUE" *)
 RGMII_OverSampler_ClockShift
-#(.OVER_SAMPLING_SHIFT (0))   
+#(.OVER_SAMPLING_SHIFT (OVER_SAMPLING_SHIFT))   
 RGMII_OverSampler_ClockShift_inst
 (
 .CLK625MHZ              (CLK625MHZ         ),

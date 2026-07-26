@@ -27,7 +27,8 @@ module RGMII_RX_PHY
 #(
 parameter ARCH = "DEFAULT_LOGIC"                ,
 parameter RX_CLK_BUFF_SCH_TYPE=1		        ,
-parameter OVER_SAMPLING = "NO"
+parameter OVER_SAMPLING = "NO"                  ,
+parameter OVER_SAMPLING_SHIFT = 0       
 )
 (
 input   wire          CLK625MHZ                 ,
@@ -65,6 +66,7 @@ RGMII_OverSampler
 .ARCH(ARCH),
 .OVER_SAMPLING(OVER_SAMPLING),
 .RX_CLK_BUFF_SCH_TYPE(0),
+.OVER_SAMPLING_SHIFT(OVER_SAMPLING_SHIFT),
 .OPPOSITE_EDGE_LATCH_MODE("NO")
 )RGMII_OverSampler_inst
 (

@@ -28,6 +28,7 @@ module UDP_Offloading_Engine_Wrapper
 parameter RX_CLK_BUFF_SCH_TYPE  = 3 
 )
 (
+input  wire          CLK625MHZ,
 input  wire          EthClk125,
 input  wire          EthClk125_90,
 
@@ -104,8 +105,8 @@ wire [8*1-1:0]          wMAC_TxFrameBody_TDATA;
 AXISx8_RGMII_BRIDGE 
 #(
 .RX_ARCH                    ("XLX_SERIES7"),             // "XLX_SERIES7", "DEFAULT_LOGIC"
-//.RX_ARCH("DEFAULT_LOGIC"),  
-.OVER_SAMPLING              ("NO"),                        
+//.RX_ARCH("DEFAULT_LOGIC"),                             // "XLX_SERIES7", "DEFAULT_LOGIC"
+.OVER_SAMPLING              ("NO"),     
 .TX_ARCH                    ("XLX_SERIES7"),
 .RX_CLK_BUFF_SCH_TYPE       (RX_CLK_BUFF_SCH_TYPE),
 .RGMII_TXC_FRONT_POSITION   ("CENTER_ALIGNED"),           // EDGE_ALIGNED , CENTER_ALIGNED
@@ -117,6 +118,7 @@ AXISx8_RGMII_BRIDGE
 .RGMII_DUPLEX               (),
 .RGMII_SPEED                (),
 
+.CLK625MHZ                  (CLK625MHZ),
 .RGMII_RXC                  (RGMII_RXC),
 .RGMII_RX_CTL               (RGMII_RX_CTL),
 .RGMII_RXD                  (RGMII_RXD),
