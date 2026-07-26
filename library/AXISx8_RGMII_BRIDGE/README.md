@@ -103,4 +103,4 @@ Valid values:
 | Local 125 MHz for TXD and 125 MHz 90 degrees shifted for TXC | "REFERENCE_125MHz" | "REFERENCE_125MHz_90" | "CENTER_ALIGNED" |
 
 	
-# [SDC constraint](docs/KSZ9031_Def_Constraint.md) example for the KSZ9031 in default mode.
+# [SDC constraint example](docs/KSZ9031_Def_Constraint.md) for the KSZ9031 in default mode.
