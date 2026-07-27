@@ -25,9 +25,10 @@
 
 module AXISx8_Network_Layer_Core
 #(
-    parameter TxPortCount = 2     ,    //  Number of UDP Tx Masters + ARP
-    parameter Has_ARP_Proc = "YES",
-    parameter HasICMP_PING = "YES"
+    parameter TxPortCount 				= 2     					,    //  Number of UDP Tx Masters + ARP
+	 parameter ARCH 						= "XLX_ULTRASCALE"	,
+    parameter Has_ARP_Proc 			= "YES"					,
+    parameter HasICMP_PING 			= "YES"
 )
 (
 /////////////////////////////////////////////////////////////////////////////////////
@@ -39,16 +40,16 @@ input wire 	                          Sink_PHY_RX_TERROR           ,
 input wire 	                          Sink_PHY_RX_TLAST            ,
 input wire [ 8-1:0]                   Sink_PHY_RX_TDATA            ,
 
-output wire			                  Source_TVALID                ,
-output wire			                  Source_TERROR                ,
-output wire			                  Source_TLAST                 ,
+output wire			                    Source_TVALID                ,
+output wire			                    Source_TERROR                ,
+output wire			                    Source_TLAST                 ,
 output wire [ 8-1:0]                  Source_TDATA                 ,
 	
 /////////////////////////////////////////////////////////////////////////////////////
 //  Tx Interface                                                                  ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-input  wire 	                      Source_PHY_TX_CLK      ,	
+input  wire 	                       Source_PHY_TX_CLK      ,	
 input  wire                           Source_PHY_TX_TRDY     ,
 output wire                           Source_PHY_TX_TVALID   ,
 output wire                           Source_PHY_TX_TERROR   ,
@@ -59,7 +60,7 @@ output wire [1*TxPortCount-1:0]	      Sink_TRDY   ,
 input  wire [1*TxPortCount-1:0]	      Sink_TVALID ,
 input  wire [1*TxPortCount-1:0]	      Sink_TERROR ,
 input  wire [1*TxPortCount-1:0]	      Sink_TLAST  ,
-input  wire [8*TxPortCount-1:0]       Sink_TDATA  ,
+input  wire [8*TxPortCount-1:0]        Sink_TDATA  ,
 
 /////////////////////////////////////////////////////////////////////////////////////
 //  MACs,IPv4s,Ports                                                              ///
@@ -98,7 +99,7 @@ wire [48-1:0]   wMAC_REMOTE_ADDR;
 (*KEEP_HIERARCHY = "TRUE"*)
 AXISx8_Ethernet_II_MAC_Core  
 #(
-.TxPortCount(TxPortCount+2)
+.TxPortCount		(TxPortCount+2)
 ) AXISx8_Ethernet_II_MAC_Core_inst
 (
 /////////////////////////////////////////////////////////////////////////////////////
@@ -217,7 +218,11 @@ generate
 if (HasICMP_PING == "YES") 
 begin
     (*KEEP_HIERARCHY = "TRUE"*)
-    ICMP_PING_Offloading_Engine_x8  ICMP_PING_Offloading_Engine_x8_inst
+    ICMP_PING_Offloading_Engine_x8  
+	 #(
+	 .ARCH 				(ARCH )
+	 )
+	 ICMP_PING_Offloading_Engine_x8_inst
     (
     .Sink_CLK                   (Sink_PHY_RX_CLK                    ),
     .Sink_TVALID                (Source_TVALID                      ),
