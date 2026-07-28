@@ -11,7 +11,15 @@ Valid values:
 
 Valid values:
 *      1, 2, 3, 4, 5 .. 15, 16
- 
+
+**MB_ARCH** - Supported architectures for memory blocks.
+
+Valid values:
+*     "XLX_ULTRASCALE",	- Xilinx ULTRASCALE FPGAs
+      "XLX_SERIES7",	- Xilinx 7 Series FPGAs
+      "ALT_Cyclone10LP",	- Altera Cyclone10LP Series FPGAs
+      "DEFAULT_LOGIC",	- implementation on FPGA fabric
+  
 **Has_ARP_Proc** - support for processing ARP requests.
 
 Valid values:
