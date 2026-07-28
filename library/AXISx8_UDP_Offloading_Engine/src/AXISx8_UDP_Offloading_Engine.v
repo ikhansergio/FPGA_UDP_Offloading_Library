@@ -27,7 +27,7 @@ module AXISx8_UDP_Offloading_Engine
 #(
 parameter TxPortCount  				= 3    			,  //  Number of  Tx Masters
 parameter NumberOf_RX_UDP_Ports  = 1    			,  //  Number of  RX UDP Chanels
-parameter ARCH                   = "XLX_SERIES7", 
+parameter MB_ARCH                = "XLX_SERIES7", 
 parameter Has_ARP_Proc           = "YES"        ,
 parameter HasICMP_PING           = "YES"
 )
@@ -91,7 +91,7 @@ wire [48-1:0]   wDataLinkLayer_Remote_MAC_ADDR;
 AXISx8_Network_Layer_Core
 #(
 .TxPortCount    (TxPortCount ),
-.ARCH				 (ARCH        ),
+.MB_ARCH	    (MB_ARCH     ),
 .Has_ARP_Proc   (Has_ARP_Proc),
 .HasICMP_PING   (HasICMP_PING)
 ) AXISx8_Network_Layer_Core_inst

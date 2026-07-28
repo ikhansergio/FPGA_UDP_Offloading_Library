@@ -24,7 +24,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 module DataBuffer_DistRAM_512_x36
-#(parameter ARCH = "XLX_ULTRASCALE")
+#(parameter MB_ARCH = "XLX_ULTRASCALE")
 (
 input  wire          WrClk       ,
 input  wire          WrEna       ,
@@ -41,7 +41,7 @@ output wire [35:0]   RdData
 
 generate
 
-    if (ARCH == "XLX_SERIES7")
+    if (MB_ARCH == "XLX_SERIES7")
     begin
         (* KEEP_HIERARCHY = "TRUE" *)
 		
@@ -57,7 +57,7 @@ generate
 		.qdpo					(RdData			)   // output wire [35 : 0] qdpo
 		);
 
-    end else if (ARCH == "XLX_ULTRASCALE")
+    end else if (MB_ARCH == "XLX_ULTRASCALE")
         begin
         (* KEEP_HIERARCHY = "TRUE" *)
 		XLX_x36_512_DIST XLX_x36_512_DIST_inst (

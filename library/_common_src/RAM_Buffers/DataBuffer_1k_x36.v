@@ -24,7 +24,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 module DataBuffer_1k_x36
-#(parameter ARCH = "XLX_ULTRASCALE")
+#(parameter MB_ARCH = "XLX_ULTRASCALE")
 (
 input  wire                                 WrClk       ,
 input  wire                                 WrEna       ,
@@ -56,7 +56,7 @@ always @(posedge RdClk) if (RdEna) RdData <= wRdData;
 (* KEEP_HIERARCHY = "TRUE" *)
 DataBuffer_BlockRAM_1k_x36 
 #(
-.ARCH(ARCH)
+.MB_ARCH(MB_ARCH)
 ) DataBuffer_BlockRAM_1k_x36_inst  
 (
 .WrClk             (WrClk           ),

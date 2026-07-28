@@ -25,8 +25,8 @@
 
 module AXISx8_Network_Layer_Core
 #(
-    parameter TxPortCount 				= 2     					,    //  Number of UDP Tx Masters + ARP
-	 parameter ARCH 						= "XLX_ULTRASCALE"	,
+    parameter TxPortCount 		    = 2     					,    //  Number of UDP Tx Masters + ARP
+	parameter MB_ARCH 				= "XLX_ULTRASCALE"	,
     parameter Has_ARP_Proc 			= "YES"					,
     parameter HasICMP_PING 			= "YES"
 )
@@ -220,7 +220,7 @@ begin
     (*KEEP_HIERARCHY = "TRUE"*)
     ICMP_PING_Offloading_Engine_x8  
 	 #(
-	 .ARCH 				(ARCH )
+	 .MB_ARCH 				(MB_ARCH )
 	 )
 	 ICMP_PING_Offloading_Engine_x8_inst
     (

@@ -24,7 +24,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 module DataBuffer_BlockRAM_4k_x36
-#(parameter ARCH = "XLX_ULTRASCALE")
+#(parameter MB_ARCH = "XLX_ULTRASCALE")
 (
 input  wire          WrClk       ,
 input  wire          WrEna       ,
@@ -39,7 +39,7 @@ output wire [35:0]   RdData
 );
 
 generate
-    if (ARCH == "XLX_SERIES7")
+    if (MB_ARCH == "XLX_SERIES7")
     begin
         (* KEEP_HIERARCHY = "TRUE" *)
         XLX_x36_4k_BLK      XLX_x36_4k_BLK_inst  
@@ -55,7 +55,7 @@ generate
         .addrb             (RdAddress       ),
         .doutb             (RdData          )
         );
-    end else if (ARCH == "XLX_ULTRASCALE")
+    end else if (MB_ARCH == "XLX_ULTRASCALE")
         begin
         (* KEEP_HIERARCHY = "TRUE" *)
         XLX_x36_4k_BLK      XLX_x36_4k_BLK_inst   
@@ -71,7 +71,7 @@ generate
         .addrb             (RdAddress       ),
         .doutb             (RdData          )
         );
-    end else if (ARCH == "ALT_Cyclone10LP")
+    end else if (MB_ARCH == "ALT_Cyclone10LP")
         begin
         (* KEEP_HIERARCHY = "TRUE" *)
         ALT_x36_4k_BLK      ALT_x36_4k_BLK_inst   
@@ -87,7 +87,7 @@ generate
         .rdaddress          (RdAddress       ),
         .q                  (RdData          )
         );
-    end else  // if (ARCH == "DEFAULT_LOGIC")
+    end else  // if (MB_ARCH == "DEFAULT_LOGIC")
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
     DataBuffer_Fabric_REG_x36   

@@ -24,7 +24,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 module DataBuffer_16k_x36
-#(parameter ARCH = "XLX_ULTRASCALE")
+#(parameter MB_ARCH = "XLX_ULTRASCALE")
 (
 input  wire                                 WrClk       ,
 input  wire                                 WrEna       ,
@@ -78,7 +78,7 @@ end
 (* KEEP_HIERARCHY = "TRUE" *)
 DataBuffer_BlockRAM_8k_x36 
 #(
-.ARCH(ARCH)
+.MB_ARCH(MB_ARCH)
 ) DataBuffer_BlockRAM_8k_x36_inst0  
 (
 .WrClk                  (WrClk               ),
@@ -96,7 +96,7 @@ DataBuffer_BlockRAM_8k_x36
 (* KEEP_HIERARCHY = "TRUE" *)
 DataBuffer_BlockRAM_8k_x36 
 #(
-.ARCH(ARCH)
+.MB_ARCH(MB_ARCH)
 ) DataBuffer_BlockRAM_8k_x36_inst1  
 (
 .WrClk                  (WrClk               ),

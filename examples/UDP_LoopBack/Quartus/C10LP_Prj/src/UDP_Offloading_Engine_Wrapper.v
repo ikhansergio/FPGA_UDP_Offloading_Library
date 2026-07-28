@@ -23,8 +23,19 @@
 //SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
+
+// ARCH - Supported architectures:
+// "XLX_ULTRASCALE",   - Xilinx ULTRASCALE FPGAs
+// "XLX_SERIES7",      - Xilinx 7 Series FPGAs
+// "ALT_Cyclone10LP",  - Altera Cyclone10LP Series FPGAs
+// "DEFAULT_LOGIC",    - implementation on FPGA fabric
+
+
 module UDP_Offloading_Engine_Wrapper
 #(
+parameter RX_ARCH = "ALT_Cyclone10LP" ,
+parameter TX_ARCH = "ALT_Cyclone10LP" ,
+parameter MB_ARCH = "ALT_Cyclone10LP" ,
 parameter RX_CLK_BUFF_SCH_TYPE  = 0 
 )
 (
@@ -90,9 +101,9 @@ wire                    wRGMII_TX_dERR;
 wire                    wRGMII_TX_dEoF;
 wire [7:0]              wRGMII_TX_DATA;
 
-wire [1*1-1:0]	        wMAC_TxFrameBody_TRDY;
-wire [1*1-1:0]	        wMAC_TxFrameBody_TVALID;
-wire [1*1-1:0]	        wMAC_TxFrameBody_TLAST;
+wire [1*1-1:0]	         wMAC_TxFrameBody_TRDY;
+wire [1*1-1:0]	         wMAC_TxFrameBody_TVALID;
+wire [1*1-1:0]	         wMAC_TxFrameBody_TLAST;
 wire [8*1-1:0]          wMAC_TxFrameBody_TDATA;
 
 
@@ -104,14 +115,13 @@ wire [8*1-1:0]          wMAC_TxFrameBody_TDATA;
 (* KEEP_HIERARCHY = "TRUE" *)
 AXISx8_RGMII_BRIDGE 
 #(
-.RX_ARCH                    ("XLX_SERIES7"),             // "XLX_SERIES7", "DEFAULT_LOGIC"
-//.RX_ARCH("DEFAULT_LOGIC"),                             // "XLX_SERIES7", "DEFAULT_LOGIC"
-.OVER_SAMPLING              ("NO"),     
-.TX_ARCH                    ("XLX_SERIES7"),
-.RX_CLK_BUFF_SCH_TYPE       (RX_CLK_BUFF_SCH_TYPE),
-.RGMII_TXC_FRONT_POSITION   ("CENTER_ALIGNED"),           // EDGE_ALIGNED , CENTER_ALIGNED
-.RGMII_TXD_REFERENCE_CLK    ("REFERENCE_125MHz"),         // REFERENCE_PHY_RXC, REFERENCE_125MHz,     
-.RGMII_TXC_REFERENCE_CLK    ("REFERENCE_125MHz_90")       // REFERENCE_PHY_RXC, REFERENCE_125MHz, REFERENCE_125MHz_90, REFERENCE_250MHz,
+.RX_ARCH                    (RX_ARCH					),             
+.OVER_SAMPLING              ("NO"						),     
+.TX_ARCH                    (TX_ARCH					),
+.RX_CLK_BUFF_SCH_TYPE       (RX_CLK_BUFF_SCH_TYPE	),
+.RGMII_TXC_FRONT_POSITION   ("CENTER_ALIGNED"		),      // EDGE_ALIGNED , CENTER_ALIGNED
+.RGMII_TXD_REFERENCE_CLK    ("REFERENCE_125MHz"		),      // REFERENCE_PHY_RXC, REFERENCE_125MHz,     
+.RGMII_TXC_REFERENCE_CLK    ("REFERENCE_125MHz_90"	)       // REFERENCE_PHY_RXC, REFERENCE_125MHz, REFERENCE_125MHz_90, REFERENCE_250MHz,
 ) AXISx8_RGMII_BRIDGE_INST
 (
 .RGMII_LINK_UP              (),
@@ -168,9 +178,10 @@ AXISx8_Clock_Crossing_FIFO AXISx8_Clock_Crossing_FIFO_INST
 (* KEEP_HIERARCHY = "TRUE" *)
 AXISx8_UDP_Offloading_Engine   
 #(
-.TxPortCount    (  1  ),
-.Has_ARP_Proc   ("YES"),                        // "YES" or "NO"   
-.HasICMP_PING   ("YES")                         // "YES" or "NO"
+.MB_ARCH			 ( MB_ARCH ),
+.TxPortCount    (    1    ),
+.Has_ARP_Proc   (  "YES"  ),                        // "YES" or "NO"   
+.HasICMP_PING   (  "YES"   )                         // "YES" or "NO"
 )
  AXISx8_UDP_Offloading_Engine_inst
  (
@@ -216,10 +227,10 @@ assign UDP_Data_Source_CLK =  EthClk125;
 (* KEEP_HIERARCHY = "TRUE" *)
 AXISx8_UDP_Framing_AXISx32_Sink    
 #(
-    .ARCH     ( "XLX_ULTRASCALE" ),
-    .DROP_IF_OVERFLOW   ( "YES"  ), // "YES" or "NO"
-    .ETHERNET_MTU       ( 1500   ),
-    .BUFFER_COUNT_1K    ( 4      )  
+    .MB_ARCH  				( MB_ARCH ),
+    .DROP_IF_OVERFLOW   ( "YES"   ),
+    .ETHERNET_MTU       ( 1500    ),
+    .BUFFER_COUNT_1K    ( 4       )  
 ) 
 AXISx8_UDP_Framing_AXISx32_Sink_inst
 (      

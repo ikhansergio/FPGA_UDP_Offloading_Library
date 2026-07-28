@@ -25,7 +25,7 @@
 
 module UDP_CommandFIFOx36
 #(
-    parameter ARCH = "XLX_ULTRASCALE"     
+    parameter MB_ARCH = "XLX_ULTRASCALE"     
 ) 
 (
     input  wire                    WrClk,
@@ -43,7 +43,7 @@ module UDP_CommandFIFOx36
 
 
  generate
-if (ARCH == "XLX_SERIES7")
+if (MB_ARCH == "XLX_SERIES7")
  begin
      XLX_LUT_FIFO_36x64 XLX_LUT_FIFO_36x64_inst (
     .rst            (WrRst),
@@ -57,7 +57,7 @@ if (ARCH == "XLX_SERIES7")
     .prog_full      (RdPgF),
     .empty          (RdEpt)
   );
- end else if (ARCH == "XLX_ULTRASCALE")  
+ end else if (MB_ARCH == "XLX_ULTRASCALE")  
  begin
      XLX_LUT_FIFO_36x64 XLX_LUT_FIFO_36x64_inst (
     .rst            (WrRst),
@@ -71,7 +71,7 @@ if (ARCH == "XLX_SERIES7")
     .prog_full      (RdPgF),
     .empty          (RdEpt)
   );   
- end else if (ARCH == "ALT_Cyclone10LP")  
+ end else if (MB_ARCH == "ALT_Cyclone10LP")  
  begin
  wire [7:0] wRdUsedw;
  reg RdPgFull =0;

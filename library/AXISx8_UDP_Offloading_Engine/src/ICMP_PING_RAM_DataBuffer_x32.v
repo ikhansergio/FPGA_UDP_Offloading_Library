@@ -25,7 +25,7 @@
 
 module ICMP_PING_RAM_DataBuffer_x32
 #(  
-    parameter ARCH = "XLX_ULTRASCALE",
+    parameter MB_ARCH = "XLX_ULTRASCALE",
     parameter BUFFER_COUNT_1K = 4  
  )  
 (
@@ -58,7 +58,7 @@ generate
 if (BUFFER_COUNT_1K == 0 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_512_x36  #(.ARCH(ARCH)) PING_DataBuffer_512_x36_inst
+    DataBuffer_512_x36  #(.MB_ARCH(MB_ARCH)) PING_DataBuffer_512_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -75,7 +75,7 @@ if (BUFFER_COUNT_1K == 0 )
 else if (BUFFER_COUNT_1K == 1 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_1k_x36  #(.ARCH(ARCH)) PING_DataBuffer_1k_x36_inst
+    DataBuffer_1k_x36  #(.MB_ARCH(MB_ARCH)) PING_DataBuffer_1k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -92,7 +92,7 @@ else if (BUFFER_COUNT_1K == 1 )
 else if (BUFFER_COUNT_1K == 2 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_2k_x36  #(.ARCH(ARCH)) PING_DataBuffer_2k_x36_inst
+    DataBuffer_2k_x36  #(.MB_ARCH(MB_ARCH)) PING_DataBuffer_2k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -109,7 +109,7 @@ else if (BUFFER_COUNT_1K == 2 )
 else if (BUFFER_COUNT_1K == 3 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_3k_x36  #(.ARCH(ARCH)) PING_DataBuffer_3k_x36_inst
+    DataBuffer_3k_x36  #(.MB_ARCH(MB_ARCH)) PING_DataBuffer_3k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -126,7 +126,7 @@ else if (BUFFER_COUNT_1K == 3 )
 else if (BUFFER_COUNT_1K == 4 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_4k_x36  #(.ARCH(ARCH)) PING_DataBuffer_4k_x36_inst
+    DataBuffer_4k_x36  #(.MB_ARCH(MB_ARCH)) PING_DataBuffer_4k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -143,7 +143,7 @@ else if (BUFFER_COUNT_1K == 4 )
 else if (BUFFER_COUNT_1K == 8 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_8k_x36  #(.ARCH(ARCH)) PING_DataBuffer_8k_x36_inst
+    DataBuffer_8k_x36  #(.MB_ARCH(MB_ARCH)) PING_DataBuffer_8k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -160,7 +160,7 @@ else if (BUFFER_COUNT_1K == 8 )
 else if (BUFFER_COUNT_1K == 16 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_16k_x36  #(.ARCH(ARCH)) PING_DataBuffer_16k_x36_inst
+    DataBuffer_16k_x36  #(.MB_ARCH(MB_ARCH)) PING_DataBuffer_16k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),

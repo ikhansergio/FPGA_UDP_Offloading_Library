@@ -25,7 +25,7 @@
 
 module AXISx8_UDP_Framing_AXISx32_Sink
 #(
-    parameter ARCH = "XLX_ULTRASCALE"   ,
+    parameter MB_ARCH			= "XLX_ULTRASCALE",
     parameter PADDING_INSERTION = "YES" ,  // "YES" or "NO"
     parameter DROP_IF_OVERFLOW  = "YES" ,  // "YES" or "NO"
     parameter UDP_CHECKSUM_CALK = "YES" ,  // "YES" or "NO"
@@ -255,7 +255,7 @@ reg ReadDonePulse = 0 ;
 (* KEEP_HIERARCHY = "TRUE" *)
 UDP_CommandFIFOx36  
 #(
-.ARCH(ARCH)
+.MB_ARCH(MB_ARCH)
 ) UDP_CommandFIFOx36_inst
 (
 .WrClk      (Sink_CLK),
@@ -275,7 +275,7 @@ UDP_CommandFIFOx36
 (* KEEP_HIERARCHY = "TRUE" *)
 UDP_RAM_DataBuffer_x36 
 #(
-.ARCH               (ARCH           ),
+.MB_ARCH               (MB_ARCH           ),
 .BUFFER_COUNT_1K    (BUFFER_COUNT_1K)
 ) UDP_RAM_DataBuffer_x36_inst
 (

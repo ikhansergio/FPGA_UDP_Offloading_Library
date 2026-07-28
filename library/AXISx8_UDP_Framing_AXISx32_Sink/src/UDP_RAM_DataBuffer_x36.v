@@ -25,7 +25,7 @@
 
 module UDP_RAM_DataBuffer_x36
 #(  
-    parameter ARCH = "XLX_ULTRASCALE",
+    parameter MB_ARCH = "XLX_ULTRASCALE",
     parameter BUFFER_COUNT_1K = 3  
  )  
 (
@@ -58,7 +58,7 @@ generate
 if (BUFFER_COUNT_1K == 0 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_512_x36  #(.ARCH(ARCH)) UDP_DataBuffer_512_x36_inst
+    DataBuffer_512_x36  #(.MB_ARCH(MB_ARCH)) UDP_DataBuffer_512_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -75,7 +75,7 @@ if (BUFFER_COUNT_1K == 0 )
 else if (BUFFER_COUNT_1K == 1 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_1k_x36  #(.ARCH(ARCH)) UDP_DataBuffer_1k_x36_inst
+    DataBuffer_1k_x36  #(.MB_ARCH(MB_ARCH)) UDP_DataBuffer_1k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -92,7 +92,7 @@ else if (BUFFER_COUNT_1K == 1 )
 else if (BUFFER_COUNT_1K == 2 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_2k_x36  #(.ARCH(ARCH)) UDP_DataBuffer_2k_x36_inst
+    DataBuffer_2k_x36  #(.MB_ARCH(MB_ARCH)) UDP_DataBuffer_2k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -109,7 +109,7 @@ else if (BUFFER_COUNT_1K == 2 )
 else if (BUFFER_COUNT_1K == 3 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_3k_x36  #(.ARCH(ARCH)) UDP_DataBuffer_3k_x36_inst
+    DataBuffer_3k_x36  #(.MB_ARCH(MB_ARCH)) UDP_DataBuffer_3k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -126,7 +126,7 @@ else if (BUFFER_COUNT_1K == 3 )
 else if (BUFFER_COUNT_1K == 4 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_4k_x36  #(.ARCH(ARCH)) UDP_DataBuffer_4k_x36_inst
+    DataBuffer_4k_x36  #(.MB_ARCH(MB_ARCH)) UDP_DataBuffer_4k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -143,7 +143,7 @@ else if (BUFFER_COUNT_1K == 4 )
 else if (BUFFER_COUNT_1K == 5 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_5k_x36  #(.ARCH(ARCH)) UDP_DataBuffer_5k_x36_inst
+    DataBuffer_5k_x36  #(.MB_ARCH(MB_ARCH)) UDP_DataBuffer_5k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -160,7 +160,7 @@ else if (BUFFER_COUNT_1K == 5 )
 else if (BUFFER_COUNT_1K == 6 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_6k_x36  #(.ARCH(ARCH)) UDP_DataBuffer_6k_x36_inst
+    DataBuffer_6k_x36  #(.MB_ARCH(MB_ARCH)) UDP_DataBuffer_6k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -177,7 +177,7 @@ else if (BUFFER_COUNT_1K == 6 )
 else if (BUFFER_COUNT_1K == 7 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_7k_x36  #(.ARCH(ARCH)) UDP_DataBuffer_7k_x36_inst
+    DataBuffer_7k_x36  #(.MB_ARCH(MB_ARCH)) UDP_DataBuffer_7k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -194,7 +194,7 @@ else if (BUFFER_COUNT_1K == 7 )
 else if (BUFFER_COUNT_1K == 8 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_8k_x36  #(.ARCH(ARCH)) UDP_DataBuffer_8k_x36_inst
+    DataBuffer_8k_x36  #(.MB_ARCH(MB_ARCH)) UDP_DataBuffer_8k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -211,7 +211,7 @@ else if (BUFFER_COUNT_1K == 8 )
 else if (BUFFER_COUNT_1K == 9 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_9k_x36  #(.ARCH(ARCH)) UDP_DataBuffer_9k_x36_inst
+    DataBuffer_9k_x36  #(.MB_ARCH(MB_ARCH)) UDP_DataBuffer_9k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -228,7 +228,7 @@ else if (BUFFER_COUNT_1K == 9 )
 else if (BUFFER_COUNT_1K == 10 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_10k_x36  #(.ARCH(ARCH)) UDP_DataBuffer_10k_x36_inst
+    DataBuffer_10k_x36  #(.MB_ARCH(MB_ARCH)) UDP_DataBuffer_10k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -245,7 +245,7 @@ else if (BUFFER_COUNT_1K == 10 )
 else if (BUFFER_COUNT_1K == 11 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_11k_x36  #(.ARCH(ARCH)) UDP_DataBuffer_11k_x36_inst
+    DataBuffer_11k_x36  #(.MB_ARCH(MB_ARCH)) UDP_DataBuffer_11k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -262,7 +262,7 @@ else if (BUFFER_COUNT_1K == 11 )
 else if (BUFFER_COUNT_1K == 12 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_12k_x36  #(.ARCH(ARCH)) UDP_DataBuffer_12k_x36_inst
+    DataBuffer_12k_x36  #(.MB_ARCH(MB_ARCH)) UDP_DataBuffer_12k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -279,7 +279,7 @@ else if (BUFFER_COUNT_1K == 12 )
 else if (BUFFER_COUNT_1K == 13 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_13k_x36  #(.ARCH(ARCH)) UDP_DataBuffer_13k_x36_inst
+    DataBuffer_13k_x36  #(.MB_ARCH(MB_ARCH)) UDP_DataBuffer_13k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -296,7 +296,7 @@ else if (BUFFER_COUNT_1K == 13 )
 else if (BUFFER_COUNT_1K == 14 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_14k_x36  #(.ARCH(ARCH)) UDP_DataBuffer_14k_x36_inst
+    DataBuffer_14k_x36  #(.MB_ARCH(MB_ARCH)) UDP_DataBuffer_14k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -313,7 +313,7 @@ else if (BUFFER_COUNT_1K == 14 )
 else if (BUFFER_COUNT_1K == 15 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_15k_x36  #(.ARCH(ARCH)) UDP_DataBuffer_15k_x36_inst
+    DataBuffer_15k_x36  #(.MB_ARCH(MB_ARCH)) UDP_DataBuffer_15k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),
@@ -330,7 +330,7 @@ else if (BUFFER_COUNT_1K == 15 )
 else if (BUFFER_COUNT_1K == 16 )        
     begin
     (* KEEP_HIERARCHY = "TRUE" *)
-    DataBuffer_16k_x36  #(.ARCH(ARCH)) UDP_DataBuffer_16k_x36_inst
+    DataBuffer_16k_x36  #(.MB_ARCH(MB_ARCH)) UDP_DataBuffer_16k_x36_inst
     (
     .WrClk       (WrClk),
     .WrEna       (WrEna),

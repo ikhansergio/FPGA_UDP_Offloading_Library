@@ -27,8 +27,8 @@ module ICMP_PING_Offloading_Engine_x8
 #(
     parameter BUFFER_COUNT_1K 			= 1       				 , 
     parameter ETHERNET_MTU 				= 1*1024     			 , 
-	 parameter ARCH 							= "XLX_ULTRASCALE"	 , 
-    parameter PADDING_INSERTION 			= "YES"   				  // "YES" or "NO"
+	parameter MB_ARCH 					= "XLX_ULTRASCALE"	 , 
+    parameter PADDING_INSERTION 		= "YES"   				  // "YES" or "NO"
 ) 
 (
 	input  wire	                   Sink_CLK                ,
@@ -418,7 +418,7 @@ ICMP_UDP_Frame_Header_Multiplexer   ICMP_Frame_Header_Multiplexer_inst
 (* KEEP_HIERARCHY = "TRUE" *)
 ICMP_PING_RAM_DataBuffer_x32 
 #(
-.ARCH 				(ARCH ),
+.MB_ARCH 			 (MB_ARCH ),
 .BUFFER_COUNT_1K	(BUFFER_COUNT_1K)
 ) 
 ICMP_PING_RAM_DataBuffer_x32_inst
