@@ -3,13 +3,14 @@
 AXISx8_UDP_Framing_AXISx32_Sink - Verilog library that implements UDP datagram generation from an AXISx32 stream. IP automatically adds the MAC header, IP4 header, and UDP header, and calculates all necessary checksums.
 
 # Parameters:
-**ARCH** - Supported architectures.
+**MB_ARCH** - Supported architectures for memory blocks.
 
 Valid values:
-*     "XLX_ULTRASCALE", - Xilinx ULTRASCALE FPGAs
-      "XLX_SERIES7", - Xilinx 7 Series FPGAs
-      "DEFAULT_LOGIC",  - implementation on FPGA fabric
-
+*     "XLX_ULTRASCALE",	- Xilinx ULTRASCALE FPGAs
+      "XLX_SERIES7",	- Xilinx 7 Series FPGAs
+      "ALT_Cyclone10LP",	- Altera Cyclone10LP Series FPGAs
+      "DEFAULT_LOGIC",	- implementation on FPGA fabric
+  
 **PADDING_INSERTION** -  Inserts padding for frames shorter than 64 bytes.
 
 Valid values:
