@@ -15,7 +15,7 @@
 
 # Quartus Prime: Generate Tcl File for Project
 # File: qii_Cyclone10LP_Prj.tcl
-# Generated on: Tue Jul 28 19:30:12 2026
+# Generated on: Thu Jul 30 11:13:28 2026
 
 # Load Quartus Prime Tcl Project package
 package require ::quartus::project
@@ -57,6 +57,91 @@ if {$make_assignments} {
 	set_global_assignment -name MAX_CORE_JUNCTION_TEMP 100
 	set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 	set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+	set_global_assignment -name VHDL_INPUT_VERSION VHDL_2008
+	set_global_assignment -name VHDL_SHOW_LMF_MAPPING_MESSAGES OFF
+	set_global_assignment -name VERILOG_INPUT_VERSION SYSTEMVERILOG_2005
+	set_global_assignment -name VERILOG_SHOW_LMF_MAPPING_MESSAGES OFF
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_x36_8k_BLK/ALT_x36_8k_BLK.v
+	set_global_assignment -name QIP_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_x36_8k_BLK/ALT_x36_8k_BLK.qip
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_x36_4k_BLK/ALT_x36_4k_BLK.v
+	set_global_assignment -name QIP_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_x36_4k_BLK/ALT_x36_4k_BLK.qip
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_x36_2k_BLK/ALT_x36_2k_BLK.v
+	set_global_assignment -name QIP_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_x36_2k_BLK/ALT_x36_2k_BLK.qip
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_x36_1k_BLK/ALT_x36_1k_BLK.v
+	set_global_assignment -name QIP_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_x36_1k_BLK/ALT_x36_1k_BLK.qip
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_BLK_FIFO_36x256/ALT_BLK_FIFO_36x256.v
+	set_global_assignment -name QIP_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_BLK_FIFO_36x256/ALT_BLK_FIFO_36x256.qip
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/UDP_RxDatagramProcessing_Core_x8.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/nextCRC32_D8_fcs.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/MAC_FrameBody2EthernetPhysicalFrameConverter_x8.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/IPv4_Rx_Packet_Processing_Core_x8.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/ICMP_PING_RAM_DataBuffer_x32.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/ICMP_PING_Offloading_Engine_x8.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/ICMP_PING_IPv4_Header_Generator_x8.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/ICMP_PING_CheckSum.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/EthTxSchedulerRequestEncoder.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/EthTxScheduler.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/EthernetTxFramePreambleInsertion_x8.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/EthernetTxFrameFCSinsertion_x8.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/EthernetRxFrameFCS_Remover_x8.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/EthernetRxFrameFCS_Check_x8.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/Ethernet_II_FrameProcessing_x8.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/Ethernet_II_FrameDecoder_x8.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/AXISx8_UDP_Offloading_Engine.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/AXISx8_Network_Layer_Core.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/AXISx8_Ethernet_II_MAC_Core.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/ARP_Offloading_Engine_x8.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Framing_AXISx32_Sink/src/UDP_RAM_DataBuffer_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Framing_AXISx32_Sink/src/UDP_CheckSumCalc.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Framing_AXISx32_Sink/src/Gray2BinRegisteredInOut.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Framing_AXISx32_Sink/src/Bin2GrayRegisteredOut.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Framing_AXISx32_Sink/src/AXISx32_InputChecker.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Framing_AXISx32_Sink/src/AXISx8_UDP_Framing_AXISx32_Sink.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_RGMII_BRIDGE/src/XLX_SERIES7_Clk_Buff_Schematic_Type.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_RGMII_BRIDGE/src/RGMII_TXC_FORMING_CLK_REFERENCE_PHY_RXC.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_RGMII_BRIDGE/src/RGMII_TXC_FORMING_CLK_REFERENCE_250MHz.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_RGMII_BRIDGE/src/RGMII_TXC_FORMING_CLK_REFERENCE_125MHz.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_RGMII_BRIDGE/src/RGMII_TX_PHY.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_RGMII_BRIDGE/src/RGMII_Rx_To_AXISx8.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_RGMII_BRIDGE/src/RGMII_RX_PHY.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_RGMII_BRIDGE/src/RGMII_OverSampler_ClockShift.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_RGMII_BRIDGE/src/RGMII_OverSampler.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_RGMII_BRIDGE/src/RGMII_ODDR.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_RGMII_BRIDGE/src/RGMII_IDDR_WRAPPER.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_RGMII_BRIDGE/src/RGMII_IDDR.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_RGMII_BRIDGE/src/ODDR_LOGIC.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_RGMII_BRIDGE/src/IDDR_LOGIC.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_RGMII_BRIDGE/src/AXISx8_RGMII_BRIDGE.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_Fabric_REG_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_DistRAM_512_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_BlockRAM_8k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_BlockRAM_4k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_BlockRAM_2k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_BlockRAM_1k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_512_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_16k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_15k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_14k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_13k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_12k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_11k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_10k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_9k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_8k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_7k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_6k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_5k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_4k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_3k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_2k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/RAM_Buffers/DataBuffer_1k_x36.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/UDP_Header_Generator.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/PacketTypeValidation.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/IPv4_Header_Generator.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/ICMP_UDP_Frame_Header_Multiplexer.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/Ethernet_II_MAC_Header_Generator.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/AXIS32_PayloadCheckSum.v
+	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/AXIS_Width_Up_Converter.v
 	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Framing_AXISx32_Sink/src/CommandFIFO.v
 	set_global_assignment -name VERILOG_FILE ../src/UDP_Offloading_Engine_Wrapper.v
 	set_global_assignment -name VERILOG_FILE ../src/Top.v
