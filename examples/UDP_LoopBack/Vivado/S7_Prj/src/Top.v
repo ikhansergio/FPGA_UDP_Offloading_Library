@@ -61,6 +61,9 @@ wire wRGMII_RXC;
  (* KEEP_HIERARCHY = "TRUE" *)
  UDP_Offloading_Engine_Wrapper
 #(
+.RX_ARCH ("XLX_SERIES7"),
+.TX_ARCH ("XLX_SERIES7"),
+.MB_ARCH ("XLX_SERIES7"),
 .RX_CLK_BUFF_SCH_TYPE(3)
 )UDP_Offloading_Engine_Wrapper_inst
 (

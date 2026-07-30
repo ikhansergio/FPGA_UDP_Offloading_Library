@@ -61,6 +61,9 @@ wire wRGMII_RXC;
  (* KEEP_HIERARCHY = "TRUE" *)
  UDP_Offloading_Engine_Wrapper
 #(
+.RX_ARCH ("ALT_Cyclone10LP"),
+.TX_ARCH ("ALT_Cyclone10LP"),
+.MB_ARCH ("ALT_Cyclone10LP"),
 .RX_CLK_BUFF_SCH_TYPE(0)
 )UDP_Offloading_Engine_Wrapper_inst
 (
