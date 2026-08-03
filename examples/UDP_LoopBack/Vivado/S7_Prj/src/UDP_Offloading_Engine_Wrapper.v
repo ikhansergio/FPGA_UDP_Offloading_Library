@@ -225,6 +225,12 @@ AXISx8_UDP_Offloading_Engine
 
 assign UDP_Data_Source_CLK =  EthClk125;
 
+assign MAC_REMOTE_ADDR_OUT      =  wMAC_REMOTE_ADDR;
+assign IP4_REMOTE_ADDR_OUT     =   wIP4_REMOTE_ADDR;
+assign UDP_REMOTE_PORT_OUT      =  wUDP_REMOTE_PORT;
+
+
+
 (* KEEP_HIERARCHY = "TRUE" *)
 AXISx8_UDP_Framing_AXISx32_Sink    
 #(
@@ -259,9 +265,31 @@ AXISx8_UDP_Framing_AXISx32_Sink_inst
 );
 
 
-assign MAC_REMOTE_ADDR_OUT      =  wMAC_REMOTE_ADDR;
-assign IP4_REMOTE_ADDR_OUT     =   wIP4_REMOTE_ADDR;
-assign UDP_REMOTE_PORT_OUT      =  wUDP_REMOTE_PORT;
+//(* KEEP_HIERARCHY = "TRUE" *)
+//AXISx8_UDP_TG AXISx8_UDP_TG_inst
+//(     
+
+//. UDP_LOCAL_PORT_IN     (UDP_LOCAL_PORT_IN          ),
+//. UDP_REMOTE_PORT_IN    (UDP_REMOTE_PORT_IN         ),
+
+//. IP4_LOCAL_ADDR_IN     (IP4_LOCAL_ADDR_IN          ),
+//. IP4_REMOTE_ADDR_IN    (IP4_REMOTE_ADDR_IN         ),
+
+//. MAC_LOCAL_ADDR_IN     (MAC_LOCAL_ADDR_IN          ),  
+//. MAC_REMOTE_ADDR_IN    (MAC_REMOTE_ADDR_IN         ),
+    
+//.TG_START_PULSE             (),
+//.TG_PacketCount             (),
+//.TG_PacketSize              (),    
+
+//.Source_CLK                 (),
+//.Source_TRDY                (),
+//.Source_TVALID              (),
+//.Source_TLAST               (),
+//.Source_TDATA               ()
+//);
+
+
 
 endmodule
 
