@@ -46,7 +46,7 @@ UDP_LoopBack_Wrapper
 .RX_ARCH("XLX_SERIES7"),
 .TX_ARCH("XLX_SERIES7"),
 .MB_ARCH("XLX_SERIES7"),
-.RX_CLK_BUFF_SCH_TYPE(1)
+.RX_CLK_BUFF_SCH_TYPE(3)
 )UDP_LoopBack_Wrapper_inst
 (
 .CLK625MHZ      (0),
