@@ -58,3 +58,4 @@ set_property IOSTANDARD LVCMOS33 [get_ports RGMII_RXC]
 #set_property BITSTREAM.GENERAL.COMPRESS False [current_design]
 #set_property BITSTREAM.CONFIG.PROGPIN PULLUP [current_design]
 
+
