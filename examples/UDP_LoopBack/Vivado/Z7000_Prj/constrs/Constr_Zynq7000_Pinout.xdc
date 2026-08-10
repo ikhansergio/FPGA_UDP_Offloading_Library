@@ -1,0 +1,60 @@
+
+set_property IOSTANDARD LVCMOS33 [get_ports EtheReset]
+set_property PACKAGE_PIN U14 [get_ports EtheReset]
+
+set_property IOSTANDARD LVCMOS33 [get_ports CLK_50MHZ]
+set_property PACKAGE_PIN Y9 [get_ports CLK_50MHZ]
+
+set_property PACKAGE_PIN AB19 [get_ports {RGMII_TXD[0]}]
+set_property PACKAGE_PIN AB20 [get_ports {RGMII_TXD[1]}]
+set_property PACKAGE_PIN V22 [get_ports {RGMII_TXD[2]}]
+set_property PACKAGE_PIN W20 [get_ports {RGMII_TXD[3]}]
+set_property PACKAGE_PIN U22 [get_ports RGMII_TX_CTL]
+set_property PACKAGE_PIN T22 [get_ports RGMII_TXC]
+
+set_property IOSTANDARD LVCMOS33 [get_ports {RGMII_TXD[0]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {RGMII_TXD[1]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {RGMII_TXD[2]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {RGMII_TXD[3]}]
+set_property IOSTANDARD LVCMOS33 [get_ports RGMII_TX_CTL]
+set_property IOSTANDARD LVCMOS33 [get_ports RGMII_TXC]
+
+
+set_property PACKAGE_PIN U20 [get_ports {RGMII_RXD[0]}]
+set_property PACKAGE_PIN AA19 [get_ports {RGMII_RXD[1]}]
+set_property PACKAGE_PIN W22 [get_ports {RGMII_RXD[2]}]
+set_property PACKAGE_PIN W21 [get_ports {RGMII_RXD[3]}]
+set_property PACKAGE_PIN V20 [get_ports RGMII_RX_CTL]
+set_property PACKAGE_PIN Y19 [get_ports RGMII_RXC]
+
+set_property IOSTANDARD LVCMOS33 [get_ports {RGMII_RXD[0]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {RGMII_RXD[1]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {RGMII_RXD[2]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {RGMII_RXD[3]}]
+set_property IOSTANDARD LVCMOS33 [get_ports RGMII_RX_CTL]
+set_property IOSTANDARD LVCMOS33 [get_ports RGMII_RXC]
+
+
+#set_property CONFIG_VOLTAGE 3.3 [current_design]
+#set_property CFGBVS VCCO [current_design]
+#set_property CONFIG_MODE SPIx1 [current_design]
+
+#set_property BITSTREAM.CONFIG.SPI_32BIT_ADDR no [current_design]
+#set_property BITSTREAM.CONFIG.SPI_BUSWIDTH 1 [current_design]
+#set_property BITSTREAM.CONFIG.M1PIN PULLDOWN [current_design]
+#set_property BITSTREAM.CONFIG.M2PIN PULLDOWN [current_design]
+#set_property BITSTREAM.CONFIG.M0PIN PULLUP [current_design]
+
+#set_property BITSTREAM.CONFIG.USR_ACCESS TIMESTAMP [current_design]
+
+#set_property BITSTREAM.CONFIG.UNUSEDPIN PULLUP [current_design]
+
+##set_property BITSTREAM.CONFIG.SPI_FALL_EDGE no [current_design]
+
+
+##set_property BITSTREAM.CONFIG.PERSIST yes [current_design]
+#set_property BITSTREAM.CONFIG.CCLKPIN PULLUP [current_design]
+#set_property BITSTREAM.CONFIG.CONFIGRATE 3 [current_design]
+#set_property BITSTREAM.GENERAL.COMPRESS False [current_design]
+#set_property BITSTREAM.CONFIG.PROGPIN PULLUP [current_design]
+
