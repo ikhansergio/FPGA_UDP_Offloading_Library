@@ -244,10 +244,7 @@ end
 
 (* KEEP = "TRUE" *) wire [16-1:0]    wDataLength_Rd   ;
 (* KEEP = "TRUE" *) wire [16-1:0]    wUDP_Checksum_Rd ;
-
-
 (* KEEP = "TRUE" *) wire             wCommandFOFO_Empty;
-
 (* KEEP = "TRUE" *) wire [32-1:0]    wRdData;
 
 reg ReadDonePulse = 0 ;
@@ -269,8 +266,6 @@ UDP_CommandFIFOx36
 .RdPgF      (wCommandFIFO_Full),
 .RdDat      ({ wUDP_Checksum_Rd, wDataLength_Rd })
 );
-
-
 
 (* KEEP_HIERARCHY = "TRUE" *)
 UDP_RAM_DataBuffer_x36 

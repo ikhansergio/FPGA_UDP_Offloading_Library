@@ -25,23 +25,14 @@
 
 module AXISx8_UDP_TG
 #(
-    parameter MB_ARCH			= "XLX_ULTRASCALE",
+//    parameter MB_ARCH			= "XLX_ULTRASCALE",
     parameter PADDING_INSERTION = "YES" ,  // "YES" or "NO"
-    parameter DROP_IF_OVERFLOW  = "YES" ,  // "YES" or "NO"
-    parameter UDP_CHECKSUM_CALK = "YES" ,  // "YES" or "NO"
-    parameter BUFFER_COUNT_1K   = 3     ,
+//    parameter DROP_IF_OVERFLOW  = "YES" ,  // "YES" or "NO"
+//    parameter UDP_CHECKSUM_CALK = "YES" ,  // "YES" or "NO"
+//    parameter BUFFER_COUNT_1K   = 3     ,
     parameter ETHERNET_MTU      = 1*1024      
 ) 
 (     
-    input  wire                     Sink_CLK                   ,
-    output wire                     Sink_TRDY                  ,
-    input  wire                     Sink_TVALID                ,
-    input  wire                     Sink_TLAST                 ,
-    input  wire [ 4-1:0]            Sink_TKEEP                 ,
-    input  wire [32-1:0]            Sink_TDATA                 ,
-    
-    output reg  [32-1:0]            DATA_DROP_Cnt = 0          ,
- 
  	input  wire [16-1:0]   			UDP_LOCAL_PORT_IN          ,
 	input  wire [16-1:0]   			UDP_REMOTE_PORT_IN         ,
 
@@ -51,10 +42,11 @@ module AXISx8_UDP_TG
 	input  wire [48-1:0]   			MAC_LOCAL_ADDR_IN          ,  
     input  wire [48-1:0]   			MAC_REMOTE_ADDR_IN         ,
     
-    input  wire                     TG_START_PULSE             ,
-    input  wire [32-1:0]            TG_PacketCount           ,
-    input  wire [16-1:0]            TG_PacketSize            ,    
-
+    input  wire                     TG_Start_Pulse             ,
+    input  wire [32-1:0]            TG_PacketCount             ,
+    input  wire [16-1:0]            TG_PacketSize              ,    
+    input  wire [16-1:0]            TG_PacketGap               ,
+    
     input   wire                   	Source_CLK                 ,
     input   wire [1-1:0]	       	Source_TRDY                ,
     output  wire [1-1:0]	       	Source_TVALID              ,
@@ -77,236 +69,22 @@ localparam MAX_Eth_PayloadSize = ETHERNET_MTU - 0;
 localparam MAX_IP4_PayloadSize = ETHERNET_MTU - 20;
 localparam MAX_UDP_PayloadSize = ETHERNET_MTU - 28;
 
-localparam BufferSize = (BUFFER_COUNT_1K==0) ? 128 : BUFFER_COUNT_1K * (1024/4); 
+//localparam BufferSize = (BUFFER_COUNT_1K==0) ? 128 : BUFFER_COUNT_1K * (1024/4); 
 
 generate if ( ETHERNET_MTU <= 28                         )             begin AXISx32_UDP_Tx_Offload_Engine_Error MTU_Erorr ( );           end	endgenerate
 //if ((BufferSize*4) < MAX_UDP_PayloadSize        )             begin AXISx32_UDP_Tx_Offload_Engine_Error BufferSize_Erorr ( );    end
-generate if ((BUFFER_COUNT_1K>16)                        )             begin AXISx32_UDP_Tx_Offload_Engine_Error BufferCount_Erorr ( );   end	endgenerate
-        
-//////////////////////////////////////////////////////////////////////////////////////
-// find the beginning of a package 
-reg  TLAST_DONE_FLAG=1;
-wire DATA_TFIRST;
-always @(posedge Sink_CLK) begin if (Sink_TVALID&&Sink_TLAST) TLAST_DONE_FLAG<=1; else if (Sink_TVALID) TLAST_DONE_FLAG<=0; end
-assign DATA_TFIRST =  TLAST_DONE_FLAG && Sink_TVALID ;
-//////////////////////////////////////////////////////////////////////////////////////
-
-wire [ 4-1:0]           wSink_TKEEP;
-wire [ 4-1:0]           wDATA_COUNT;
-wire [32-1:0]           wSink_TDATA;
-
-(* KEEP_HIERARCHY = "TRUE" *)
-AXISx32_InputChecker    AXISx32_InputChecker_inst
-(
-.Sink_TLAST             (Sink_TLAST),
-.Sink_TKEEP             (Sink_TKEEP),
-.Sink_TDATA             (Sink_TDATA),
-
-.Source_TKEEP           (wSink_TKEEP),
-.Source_COUNT           (wDATA_COUNT),
-.Source_TDATA           (wSink_TDATA)
-);
-
-(* KEEP = "TRUE" *) wire wCommandFIFO_Full;
- 
-(* KEEP = "TRUE" *) reg          TVALID_Reg0=0;
-(* KEEP = "TRUE" *) reg          TVALID_Reg1=0;
-
-(* KEEP = "TRUE" *) reg          TFIRST_Reg0=0;
-(* KEEP = "TRUE" *) reg          TFIRST_Reg1=0;
-
-(* KEEP = "TRUE" *) reg          TLAST_Reg0=0;
-(* KEEP = "TRUE" *) reg          TLAST_Reg1=0;
-                                                            
-(* KEEP = "TRUE" *) reg [ 4-1:0] TKEEP_Reg0=0;  
-(* KEEP = "TRUE" *) reg [ 4-1:0] TKEEP_Reg1=0;       
-
-(* KEEP = "TRUE" *) reg [32-1:0] TDATA_Reg0=0;  
-(* KEEP = "TRUE" *) reg [32-1:0] TDATA_Reg1=0;       
-    
-(* KEEP = "TRUE" *) reg [16-1:0] RxDataLengthCounter=0;
-(* KEEP = "TRUE" *) reg [16-1:0] RxDataLengthCounter_D1=0;
-(* KEEP = "TRUE" *) reg [16-1:0] RxDataLengthCounter_D2=0;
-
-//(* keep = "true" *) wire [32-1:0] wUDP_CheckSUM_Data;
-
-(* KEEP = "TRUE" *) reg   PacketDropFlag=0; 
-(* KEEP = "TRUE" *) wire  wPacketDropFlag; 
-(* KEEP = "TRUE" *) reg   PacketWasDropedFlag=0; 
-
-(* KEEP = "TRUE" *) reg                                 WrCommandToFIFO =0;
-
-(* KEEP = "TRUE" *) reg                                 WrOverflow_n    =0;
-(* KEEP = "TRUE" *) reg                                 WrWea           =0;
-(* KEEP = "TRUE" *) reg     [32-1: 0]                   WrData          =0;
-(* KEEP = "TRUE" *) reg     [BitWidth(BufferSize)-1:0]  WrPointer       =0;
-(* KEEP = "TRUE" *) reg     [BitWidth(BufferSize)-1:0]  WrPointerReserve=0;
-
-(* KEEP = "TRUE" *) reg     [BitWidth(BufferSize)  :0]  WrBufferElements=0;
-
-(* KEEP = "TRUE" *) reg     [BitWidth(BufferSize)-1:0]  RdPointer       =0;
-(* KEEP = "TRUE" *) wire    [BitWidth(BufferSize)-1:0] wRdPointerGray;
-(* KEEP = "TRUE" *) wire    [BitWidth(BufferSize)-1:0] wRdPointer;  
-
-(* KEEP = "TRUE" *) reg RxPacketValid=0;
+//generate if ((BUFFER_COUNT_1K>16)                        )             begin AXISx32_UDP_Tx_Offload_Engine_Error BufferCount_Erorr ( );   end	endgenerate
 
 
-assign wPacketDropFlag = (RxDataLengthCounter>MAX_UDP_PayloadSize) || (  (DROP_IF_OVERFLOW == "YES" ) && (( WrBufferElements > (BufferSize- 8))||wCommandFIFO_Full)); 
-
-wire 	wWrDataRDY;
-generate if (DROP_IF_OVERFLOW == "YES" ) assign 	wWrDataRDY = 1; else  assign 	wWrDataRDY = WrOverflow_n;	endgenerate
-assign 	Sink_TRDY = wWrDataRDY;
-
-(* KEEP_HIERARCHY = "TRUE" *)
-Gray2BinRegisteredInOut #( .WIDTH(BitWidth(BufferSize)) ) Gray2BinRegisteredInOut_inst
-(
-.Clk                (Sink_CLK),
-.GrayIn             (wRdPointerGray),
-.BinOut             (wRdPointer)
- ); 
- 
- generate
- 
- (* keep = "true" *) wire[16-1:0]wCheckSUM_UDP;
- if (UDP_CHECKSUM_CALK=="YES")
- begin
- (* KEEP_HIERARCHY = "TRUE" *)
- UDP_CheckSumCalc            UDP_CheckSumCalc_inst
-(
-.CLK                         ( Sink_CLK             ),
-.TFIRST                      ( DATA_TFIRST          ),
-.TVALID                      ( Sink_TVALID          ),
-.TDATA                       (wSink_TDATA           ),
-.IP4_DataLength_IN           ( RxDataLengthCounter  ),
-.UDP_LOCAL_PORT_IN           ( UDP_LOCAL_PORT_IN    ),
-.UDP_REMOTE_PORT_IN          ( UDP_REMOTE_PORT_IN   ),
-.IP4_LOCAL_ADDR_IN           ( IP4_LOCAL_ADDR_IN    ),
-.IP4_REMOTE_ADDR_IN          ( IP4_REMOTE_ADDR_IN   ),
-.CheckSUM_UDP                (wCheckSUM_UDP         )
-);
-end else
-begin
-assign wCheckSUM_UDP = 16'h0;
-end
-endgenerate
- 
-always @(posedge Sink_CLK) WrOverflow_n  <= !(( WrBufferElements > (BufferSize- 8))||wCommandFIFO_Full);  
-
-always @(posedge Sink_CLK)
-begin
-if (WrPointer>=wRdPointer) WrBufferElements <= WrPointer - wRdPointer;
-    else WrBufferElements <= WrPointer - wRdPointer + BufferSize;
-
-if (wWrDataRDY)
-    begin
-
-    if (TVALID_Reg0 && wPacketDropFlag) RxPacketValid<=1'b0;
-	   else if (TFIRST_Reg0 ) RxPacketValid<=1'b1;	   
-
-    TVALID_Reg0 <= Sink_TVALID;
-    TVALID_Reg1 <= TVALID_Reg0;
-    
-    TFIRST_Reg0 <= DATA_TFIRST;
-    TFIRST_Reg1 <= TFIRST_Reg0;
-
-    TLAST_Reg0  <= Sink_TLAST ;
-    TLAST_Reg1  <= TLAST_Reg0 ;
-    
-    TKEEP_Reg0  <= wSink_TKEEP ;
-    TKEEP_Reg1  <= TKEEP_Reg0 ;
-    
-    TDATA_Reg0  <= wSink_TDATA;
-    TDATA_Reg1  <= TDATA_Reg0 ;
-
-	/////////////////////////////////////////////////////////////////////////////////////////////
-
-	if (Sink_TVALID&&DATA_TFIRST) RxDataLengthCounter <= wDATA_COUNT;  
-		else if (Sink_TVALID&&(RxDataLengthCounter>MAX_UDP_PayloadSize)) RxDataLengthCounter <= RxDataLengthCounter;  
-			else if (Sink_TVALID) RxDataLengthCounter <= RxDataLengthCounter + wDATA_COUNT;  
-
-
-	RxDataLengthCounter_D1 <= RxDataLengthCounter;
-	RxDataLengthCounter_D2 <= RxDataLengthCounter_D1;
-	
-    if (TVALID_Reg1 && TLAST_Reg1 && !RxPacketValid) PacketWasDropedFlag <=1'b1;
-        else if (TVALID_Reg1 && TFIRST_Reg1 ) PacketWasDropedFlag <=1'b0;
-        
-    if (TVALID_Reg1 && TLAST_Reg1 && !RxPacketValid)  DATA_DROP_Cnt <= DATA_DROP_Cnt + 1'b1;    
-	
-	if (TVALID_Reg1 && TFIRST_Reg1 && ! PacketWasDropedFlag) WrPointerReserve <= WrPointer+1 ;
-
-	if (TVALID_Reg1 && TFIRST_Reg1 &&  PacketWasDropedFlag && RxPacketValid) WrPointer <= WrPointerReserve;
-		else if (TVALID_Reg1 && (WrPointer==(BufferSize-1))&& RxPacketValid) WrPointer <=0;
-			else if (TVALID_Reg1 && RxPacketValid && RxPacketValid) WrPointer<= WrPointer+1;
-	
-	WrData  <= TDATA_Reg1;
-	WrWea   <= TVALID_Reg1 && RxPacketValid;  
-    end 
-    
-WrCommandToFIFO <= (TVALID_Reg1 && TLAST_Reg1 && RxPacketValid && wWrDataRDY );     
-end
 
 (* KEEP = "TRUE" *) wire [16-1:0]    wDataLength_Rd   ;
 (* KEEP = "TRUE" *) wire [16-1:0]    wUDP_Checksum_Rd ;
 
 
-(* KEEP = "TRUE" *) wire             wCommandFOFO_Empty;
-
-(* KEEP = "TRUE" *) wire [32-1:0]    wRdData;
-
-reg ReadDonePulse = 0 ;
-
-(* KEEP_HIERARCHY = "TRUE" *)
-UDP_CommandFIFOx36  
-#(
-.MB_ARCH(MB_ARCH)
-) UDP_CommandFIFOx36_inst
-(
-.WrClk      (Sink_CLK),
-.WrRst      (1'b0),
-.WrEna      (WrCommandToFIFO),
-.WrDat      ({4'b0000,wCheckSUM_UDP,RxDataLengthCounter_D2}),
-
-.RdClk      (Source_CLK),
-.RdEna      (ReadDonePulse),
-.RdEpt      (wCommandFOFO_Empty),
-.RdPgF      (wCommandFIFO_Full)
-//.RdDat      ({ wUDP_Checksum_Rd, wDataLength_Rd })
-);
-
-
-
-(* KEEP_HIERARCHY = "TRUE" *)
-UDP_RAM_DataBuffer_x36 
-#(
-.MB_ARCH               (MB_ARCH           ),
-.BUFFER_COUNT_1K    (BUFFER_COUNT_1K)
-) UDP_RAM_DataBuffer_x36_inst
-(
-. WrClk       (Sink_CLK     ),
-. WrEna       (wWrDataRDY   ),
-. WrWea       (WrWea        ),
-. WrAddress   (WrPointer    ),
-. WrData      (WrData       ),
-
-. RdClk       (Source_CLK),
-. RdEna       (1'b1),
-. RdAddress   (RdPointer),
-. RdData      (wRdData)
-);
-
-(* KEEP_HIERARCHY = "TRUE" *)
-Bin2GrayRegisteredOut #( .WIDTH(BitWidth(BufferSize)) ) Bin2GrayRegisteredOut_inst
-(
-.Clk                 (Source_CLK),
-.BinIn               (RdPointer),
-.GrayOut             (wRdPointerGray)
- ); 
 
 (* KEEP = "TRUE" *) reg  [16-1:0]    DATA_TotalLength_Full                     =   0;
 
 (* KEEP = "TRUE" *) reg  [14-1:0]    DATA_TotalLength                          =   0;
-(* KEEP = "TRUE" *) reg  [ 4-1:0]    DATA_LastPosition                         =   0;
 
 (* KEEP = "TRUE" *) reg [16-1:0]    UDP_TotalLength                           =   0;
 (* KEEP = "TRUE" *) reg [16-1:0]    UDP_Checksum                              =   0;
@@ -320,6 +98,11 @@ Bin2GrayRegisteredOut #( .WIDTH(BitWidth(BufferSize)) ) Bin2GrayRegisteredOut_in
 //reg [8-1:0]     Tx_MAC_FrameBody_TDATA                    =   0;
 (* KEEP = "TRUE" *) wire[8-1:0]    wTx_MAC_FrameBody_TDATA;
 
+
+
+(* KEEP = "TRUE" *) reg ReadDonePulse = 0 ;
+
+
 (* KEEP = "TRUE" *) reg [6-1:0]     Tx_MAC_FrameBody_ByteCounter              =   63;
 
 (* KEEP = "TRUE" *) reg [3-1:0]     TX_SwitchREG_Decoder                      =   0;
@@ -327,7 +110,6 @@ Bin2GrayRegisteredOut #( .WIDTH(BitWidth(BufferSize)) ) Bin2GrayRegisteredOut_in
 (* KEEP = "TRUE" *) wire[8-1:0]    wTX_SwitchREG_Ethernet_II_MAC;
 (* KEEP = "TRUE" *) wire[8-1:0]    wTX_SwitchREG_Ethernet_II_IP4;
 (* KEEP = "TRUE" *) wire[8-1:0]    wTX_SwitchREG_Ethernet_II_UDP;
-
 
 (* KEEP = "TRUE" *) reg [2-1:0]     RdPointerDivider  = 0;
 (* KEEP = "TRUE" *) reg             RdPointerIncPulse = 0;
@@ -342,48 +124,40 @@ Bin2GrayRegisteredOut #( .WIDTH(BitWidth(BufferSize)) ) Bin2GrayRegisteredOut_in
 (* KEEP = "TRUE" *) reg [8-1:0]     ShiftRegD2 = 0;
 (* KEEP = "TRUE" *) reg [8-1:0]     ShiftRegD3 = 0;
 
-(* KEEP = "TRUE" *) reg [8-1:0]     FinishPulse = 0;
+(* KEEP = "TRUE" *) wire             wCommandFOFO_Empty;
+(* KEEP = "TRUE" *) wire [32-1:0]    wRdData;
 
 
+(* KEEP = "TRUE" *) reg  [16-1:0]    TG_PacketSizeReg =0;
 
+(* KEEP = "TRUE" *) reg  [16-1:0]    TG_GapCounter =0;
+(* KEEP = "TRUE" *) reg  [16-1:0]    TG_GapThreshold =0;
 
+(* KEEP = "TRUE" *) reg  [32-1:0]    TG_PacketCounter =0;
+(* KEEP = "TRUE" *) reg  [32-1:0]    TG_PacketCountThreshold =0;
 
-
-
-
-
-
-
-
-
-
-
-
-(* KEEP = "TRUE" *) reg  [16-1:0]    TG_PackSize =0;
-(* KEEP = "TRUE" *) reg  [32-1:0]    TG_PackCounter =0;
-(* KEEP = "TRUE" *) reg  [32-1:0]    TG_PackCountThreshold =0;
-
-assign Sink_PacketSize = TG_PackSize;
+assign wDataLength_Rd = TG_PacketSizeReg;
 
 
 (* KEEP = "TRUE" *) reg [2-1:0]  READ_STATE=0;
 always @(posedge Source_CLK)
 begin 
-if (TG_START_PULSE) TG_PackCountThreshold <= TG_PacketCount;
-if (TG_START_PULSE) TG_PackCounter <= 0;
-    else if (ReadDonePulse) TG_PackCounter <= TG_PackCounter +1;
+if (TG_Start_Pulse) TG_PacketCountThreshold <= TG_PacketCount;
+if (TG_Start_Pulse) TG_PacketCounter <= 0;
+    else if (ReadDonePulse) TG_PacketCounter <= TG_PacketCounter +1;
     
-if (TG_START_PULSE)
+if (TG_Start_Pulse)
     begin
-    if (Sink_PacketSize<4) TG_PackSize <=  4; 
-        else TG_PackSize <=  {TG_PacketSize[15:2],2'b00}; 
+    TG_GapThreshold <=  TG_PacketGap[15:0]; 
+    if (TG_PacketSize[15:0]<4) TG_PacketSizeReg <=  4; 
+        else TG_PacketSizeReg <=  TG_PacketSize[15:0]; 
     end    
     
 
 
 if ((READ_STATE==0) ) 
     begin
-    if (TG_PackCounter<TG_PackCountThreshold) READ_STATE<=READ_STATE+1;
+    if (TG_PacketCounter<TG_PacketCountThreshold) READ_STATE<=READ_STATE+1;
     end else 
     if ((READ_STATE==1) ) 
         begin
@@ -391,11 +165,16 @@ if ((READ_STATE==0) )
         end else 
         if ((READ_STATE==2))
             begin
-            if (ReadDonePulse) READ_STATE <= READ_STATE+1;
+            if (ReadDonePulse) 
+                begin
+                READ_STATE <= READ_STATE+1;
+                TG_GapCounter <=0;
+                end
             end else 
             if ((READ_STATE==3 ))
                 begin
-                READ_STATE <= READ_STATE+1;
+                TG_GapCounter <= TG_GapCounter+1;
+                if (TG_GapCounter == TG_GapThreshold) READ_STATE <= READ_STATE+1;
                 end 
         
 Tx_MAC_FrameBody_StartReadPulse <=   (READ_STATE==1);
@@ -425,7 +204,7 @@ UDP_Checksum    <= 0;
         else if (Source_TRDY)
             begin
             LoadDataPulse[3:0] <=  {RdPointerIncPulse, LoadDataPulse[3:1]};
-            if (LoadDataPulse[0])  {ShiftRegD3,ShiftRegD2,ShiftRegD1,ShiftRegD0} <=  TG_PackCounter;
+            if (LoadDataPulse[0])  {ShiftRegD3,ShiftRegD2,ShiftRegD1,ShiftRegD0} <=  TG_PacketCounter;
                 else  
                 begin
                 ShiftRegD0<=ShiftRegD1;
@@ -464,11 +243,6 @@ UDP_Checksum    <= 0;
             if (ReadDataState ) RdPointerDivider <= RdPointerDivider +1 ;  else RdPointerDivider <= 0;
                 
             RdPointerIncPulse <= ( RdPointerDivider == 3 );
-            
-            if (RdPointerIncPulse) 
-                begin
-                    if (RdPointer==(BufferSize-1)) RdPointer <=0;  else RdPointer <= RdPointer + 1'b1;
-                end
 
             if (Tx_MAC_FrameBody_ByteCounter!=63) Tx_MAC_FrameBody_ByteCounter   <= Tx_MAC_FrameBody_ByteCounter +1'b1;
 

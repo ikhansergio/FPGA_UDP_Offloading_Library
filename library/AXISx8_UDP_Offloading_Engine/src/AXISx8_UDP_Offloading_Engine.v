@@ -25,8 +25,8 @@
 
 module AXISx8_UDP_Offloading_Engine
 #(
-parameter TxPortCount  				= 3    			,  //  Number of  Tx Masters
-parameter NumberOf_RX_UDP_Ports  = 1    			,  //  Number of  RX UDP Chanels
+parameter TxPortCount  			 = 3    			,  //  Number of  Tx Masters
+parameter RX_UDP_Ports_Count     = 1    			,  //  Number of  RX UDP Chanels
 parameter MB_ARCH                = "XLX_SERIES7", 
 parameter Has_ARP_Proc           = "YES"        ,
 parameter HasICMP_PING           = "YES"
@@ -35,40 +35,40 @@ parameter HasICMP_PING           = "YES"
 /////////////////////////////////////////////////////////////////////////////////////
 // Rx Interface                                                                   ///
 /////////////////////////////////////////////////////////////////////////////////////
-input  wire 	                             Sink_PHY_RX_CLK,
-input  wire 	                             Sink_PHY_RX_TLAST,
-input  wire 	                             Sink_PHY_RX_TVALID,
-input  wire 	                             Sink_PHY_RX_TERROR,
-input  wire [ 8-1:0]                        Sink_PHY_RX_TDATA,
+input  wire 	                         Sink_PHY_RX_CLK,
+input  wire 	                         Sink_PHY_RX_TLAST,
+input  wire 	                         Sink_PHY_RX_TVALID,
+input  wire 	                         Sink_PHY_RX_TERROR,
+input  wire [ 8-1:0]                     Sink_PHY_RX_TDATA,
 
-input  wire [48-1:0]                        MAC_LOCAL_ADDR_IN,
-input  wire [32-1:0]                        IP4_LOCAL_ADDR_IN,
-input  wire [ NumberOf_RX_UDP_Ports*16-1:0] UDP_LOCAL_PORT_IN,
+input  wire [48-1:0]                     MAC_LOCAL_ADDR_IN,
+input  wire [32-1:0]                     IP4_LOCAL_ADDR_IN,
+input  wire [ RX_UDP_Ports_Count*16-1:0] UDP_LOCAL_PORT_IN,
 
-output wire [ NumberOf_RX_UDP_Ports*48-1:0] MAC_REMOTE_ADDR_OUT,
-output wire [ NumberOf_RX_UDP_Ports*32-1:0] IP4_REMOTE_ADDR_OUT,
-output wire [ NumberOf_RX_UDP_Ports*16-1:0] UDP_REMOTE_PORT_OUT,
+output wire [ RX_UDP_Ports_Count*48-1:0] MAC_REMOTE_ADDR_OUT,
+output wire [ RX_UDP_Ports_Count*32-1:0] IP4_REMOTE_ADDR_OUT,
+output wire [ RX_UDP_Ports_Count*16-1:0] UDP_REMOTE_PORT_OUT,
 
-output wire [ NumberOf_RX_UDP_Ports*1-1:0 ] Source_TFIRST,
-output wire [ NumberOf_RX_UDP_Ports*1-1:0 ] Source_TVALID,
-output wire [ NumberOf_RX_UDP_Ports*1-1:0 ] Source_TERROR,
-output wire [ NumberOf_RX_UDP_Ports*1-1:0 ] Source_TLAST ,
-output wire [ NumberOf_RX_UDP_Ports*8-1:0 ] Source_TDATA ,
+output wire [ RX_UDP_Ports_Count*1-1:0 ] Source_TFIRST,
+output wire [ RX_UDP_Ports_Count*1-1:0 ] Source_TVALID,
+output wire [ RX_UDP_Ports_Count*1-1:0 ] Source_TERROR,
+output wire [ RX_UDP_Ports_Count*1-1:0 ] Source_TLAST ,
+output wire [ RX_UDP_Ports_Count*8-1:0 ] Source_TDATA ,
 /////////////////////////////////////////////////////////////////////////////////////
 //  Tx Interface                                                                  ///
 /////////////////////////////////////////////////////////////////////////////////////
-output wire [1*TxPortCount-1:0]	            Sink_TRDY,
-input  wire [1*TxPortCount-1:0]	            Sink_TVALID,
-input  wire [1*TxPortCount-1:0]	            Sink_TERROR,
-input  wire [1*TxPortCount-1:0]	            Sink_TLAST,
-input  wire [8*TxPortCount-1:0]              Sink_TDATA,
+output wire [1*TxPortCount-1:0]	         Sink_TRDY,
+input  wire [1*TxPortCount-1:0]	         Sink_TVALID,
+input  wire [1*TxPortCount-1:0]	         Sink_TERROR,
+input  wire [1*TxPortCount-1:0]	         Sink_TLAST,
+input  wire [8*TxPortCount-1:0]          Sink_TDATA,
 
-input  wire 	                             Source_PHY_TX_CLK,	
-input  wire                                 Source_PHY_TX_TRDY,
-output wire                                 Source_PHY_TX_TVALID,
-output wire                                 Source_PHY_TX_TERROR,
-output wire                                 Source_PHY_TX_TLAST,
-output wire [8-1:0]                         Source_PHY_TX_TDATA
+input  wire 	                         Source_PHY_TX_CLK,	
+input  wire                              Source_PHY_TX_TRDY,
+output wire                              Source_PHY_TX_TVALID,
+output wire                              Source_PHY_TX_TERROR,
+output wire                              Source_PHY_TX_TLAST,
+output wire [8-1:0]                      Source_PHY_TX_TDATA
 );
 
 wire            wNetworkLayerCore_TLAST;
@@ -141,7 +141,7 @@ AXISx8_Network_Layer_Core
 /////////////////////////////////////////////////////////////////////////////////////   
 genvar i;
 generate
-for (i = 0; i < NumberOf_RX_UDP_Ports; i = i+1)  
+for (i = 0; i < RX_UDP_Ports_Count; i = i+1)  
 begin : UDP_RX
 
 (* KEEP_HIERARCHY = "TRUE" *)
