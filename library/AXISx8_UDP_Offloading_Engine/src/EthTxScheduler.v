@@ -72,24 +72,24 @@ reg [1*TxPortCount-1:0]     Sink_RDY_REG=0;
 
 reg                         Sink_RDY_Flag=0;
 
-wire wHasValidRequest;
-wire wHasAnyRequest;
-reg [1:0] CurrentSearchState=GAP_STATE;
+(* KEEP = "TRUE" *) wire wHasValidRequest;
+(* KEEP = "TRUE" *) wire wHasAnyRequest;
+(* KEEP = "TRUE" *) reg [1:0] CurrentSearchState=GAP_STATE;
 
-reg LastDone =0;
+(* KEEP = "TRUE" *) reg LastDone =0;
 
-reg  GapBlock=0;
-reg  [4:0]              GapCounter=23;
-reg                     GapDoneFlag=0;
-reg  [INDEX_WIDTH-1:0]  CurrentCheckIndex=0;
-wire [INDEX_WIDTH-1:0]  wConfirmedIndex;
-reg  [INDEX_WIDTH-1:0]  ConfirmedIndex=0;
+(* KEEP = "TRUE" *) reg  GapBlock=0;
+(* KEEP = "TRUE" *) reg  [4:0]              GapCounter=23;
+(* KEEP = "TRUE" *) reg                     GapDoneFlag=0;
+(* KEEP = "TRUE" *) reg  [INDEX_WIDTH-1:0]  CurrentCheckIndex=0;
+(* KEEP = "TRUE" *) wire [INDEX_WIDTH-1:0]  wConfirmedIndex;
+(* KEEP = "TRUE" *) reg  [INDEX_WIDTH-1:0]  ConfirmedIndex=0;
 
-reg [16-1: 0] WatchdogTimer =0;
-reg WatchdogIvent=0;
-reg WatchdogResetPulse=0;
+(* KEEP = "TRUE" *) reg [16-1: 0] WatchdogTimer =0;
+(* KEEP = "TRUE" *) reg WatchdogIvent=0;
+(* KEEP = "TRUE" *) reg WatchdogResetPulse=0;
 
-reg [MAX_TxPortCount-1:0] wSink_Val =0;
+(* KEEP = "TRUE" *) reg [MAX_TxPortCount-1:0] wSink_Val =0;
 integer k=0; 
 always @(*)
 begin
@@ -113,10 +113,10 @@ EthTxSchedulerRequestEncoder #(.INDEX_WIDTH(INDEX_WIDTH))EthTxSchedulerRequestEn
 . CurrentValidIndex                     (wConfirmedIndex    )       // Index of first ValidRequest greater than or equal to CurrentCheckIndex
 );
 
-reg   [1-1:0]                 wSource_Val =1'b0;
-reg   [1-1:0]                 wSource_Err =1'b0;
-reg   [1-1:0]                 wSource_EoF =1'b0;
-reg   [8-1:0]                 wSource_DAT =8'b0;
+(* KEEP = "TRUE" *) reg   [1-1:0]                 wSource_Val =1'b0;
+(* KEEP = "TRUE" *) reg   [1-1:0]                 wSource_Err =1'b0;
+(* KEEP = "TRUE" *) reg   [1-1:0]                 wSource_EoF =1'b0;
+(* KEEP = "TRUE" *) reg   [8-1:0]                 wSource_DAT =8'b0;
 
 integer i=0; 
 always @(*)
@@ -213,7 +213,7 @@ if (Source_RDY)
 	                                                   end 
 	                                               else if (GapDoneFlag&&!wHasValidRequest) 
 	                                                   begin
-	                                                   if (wHasAnyRequest) ConfirmedIndex<=0;
+	                                                   if (wHasAnyRequest) CurrentCheckIndex <=0;
 	                                                   end 
 	                                               end 
 	               WAIT_FINISH                 :   if (wSource_Val&&wSource_EoF)

@@ -43,8 +43,8 @@ endfunction
 localparam MAX_TxPortCount  = REQUEST_COUNT(INDEX_WIDTH);
  
 integer i=0; 
-reg    [REQUEST_COUNT(INDEX_WIDTH)-1:0]    wValidRequest=0;
-reg    [REQUEST_COUNT(INDEX_WIDTH)-1:0]    wValidMask=0;
+(* KEEP = "TRUE" *) reg    [REQUEST_COUNT(INDEX_WIDTH)-1:0]    wValidRequest=0;
+(* KEEP = "TRUE" *) reg    [REQUEST_COUNT(INDEX_WIDTH)-1:0]    wValidMask=0;
 
 generate
 always @(*) begin
