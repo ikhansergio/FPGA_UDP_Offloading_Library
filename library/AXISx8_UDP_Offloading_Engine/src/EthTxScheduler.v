@@ -73,6 +73,7 @@ reg [1*TxPortCount-1:0]     Sink_RDY_REG=0;
 reg                         Sink_RDY_Flag=0;
 
 wire wHasValidRequest;
+wire wHasAnyRequest;
 reg [1:0] CurrentSearchState=GAP_STATE;
 
 reg LastDone =0;
@@ -108,6 +109,7 @@ EthTxSchedulerRequestEncoder #(.INDEX_WIDTH(INDEX_WIDTH))EthTxSchedulerRequestEn
 . CurrentCheckIndex                     (CurrentCheckIndex  ),
  
 . HasValidRequest                       (wHasValidRequest   ),      // Set to 1, if has any Valid Request
+. HasAnyRequest                         (wHasAnyRequest     ),
 . CurrentValidIndex                     (wConfirmedIndex    )       // Index of first ValidRequest greater than or equal to CurrentCheckIndex
 );
 
@@ -204,11 +206,15 @@ if (Source_RDY)
             else begin  
                 case (CurrentSearchState)
 	               IDLE                        :   begin
-	                                               if (wHasValidRequest&&GapDoneFlag) 
+	                                               if (GapDoneFlag&&wHasValidRequest) 
 	                                                   begin 
 	                                                   ConfirmedIndex<=wConfirmedIndex;
 	                                                   CurrentSearchState<= WAIT_FINISH  ;
-	                                                   end
+	                                                   end 
+	                                               else if (GapDoneFlag&&!wHasValidRequest) 
+	                                                   begin
+	                                                   if (wHasAnyRequest) ConfirmedIndex<=0;
+	                                                   end 
 	                                               end 
 	               WAIT_FINISH                 :   if (wSource_Val&&wSource_EoF)
 	                                               begin

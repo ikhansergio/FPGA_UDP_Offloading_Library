@@ -32,6 +32,7 @@ parameter INDEX_WIDTH = 4
  input  wire    [REQUEST_COUNT(INDEX_WIDTH)-1:0]    ValidRequest,
  input  wire    [INDEX_WIDTH-1:0]                   CurrentCheckIndex,
  
+ output reg                                         HasAnyRequest       =0,        // 
  output reg                                         HasValidRequest     =0,        // Set to 1, if has any Valid Request
  output reg     [INDEX_WIDTH-1:0]                   CurrentValidIndex   =0      // Index of first ValidRequest greater than or equal to CurrentCheckIndex
  );
@@ -66,7 +67,8 @@ integer j=0;
 generate  
 always @(posedge Clk)
 begin
-HasValidRequest<=|wValidRequest;
+HasValidRequest <=|wValidRequest;
+HasAnyRequest   <=|ValidRequest; 
 
     for (j = 0; j <= MAX_TxPortCount-1; j = j + 1) 
     begin
