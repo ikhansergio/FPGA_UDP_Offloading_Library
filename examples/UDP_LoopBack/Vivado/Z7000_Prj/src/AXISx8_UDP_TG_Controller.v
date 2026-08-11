@@ -24,6 +24,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 module AXISx8_UDP_TG_Controller
+#(
+    parameter PROTOCOL_MAGIC_CONSTANT = 32'hDEADBEAF
+) 
 (
     input                           CLK ,
     
@@ -140,7 +143,7 @@ end
 always @(posedge CLK)
 begin
 if (wTVALID2 && wTFIRSTD2       )  CommandCodeFlag        <=(wTDATA2[ 7:0] ==  8'h01);
-if (wTVALID2 && (Position == 1) )  MagicNumberFlag        <=(wTDATA2[31:0] == 32'hDEADBEAF);
+if (wTVALID2 && (Position == 1) )  MagicNumberFlag        <=(wTDATA2[31:0] == PROTOCOL_MAGIC_CONSTANT );
 if (wTVALID2 && (Position == 2) )  {PacketGap,PacketSize} <= wTDATA2[31:0];
 if (wTVALID2 && (Position == 3) )  PacketCount            <= wTDATA2[31:0];
 
