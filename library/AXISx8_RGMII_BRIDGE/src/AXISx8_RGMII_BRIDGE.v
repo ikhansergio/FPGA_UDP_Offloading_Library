@@ -38,7 +38,7 @@ module AXISx8_RGMII_BRIDGE
 #(
 parameter RX_ARCH = "DEFAULT_LOGIC" ,                       // "XLX_SERIES7", XLX_ULTRASCALE, "DEFAULT_LOGIC"
 parameter TX_ARCH = "DEFAULT_LOGIC" ,                       // "XLX_SERIES7", XLX_ULTRASCALE, "DEFAULT_LOGIC"
-parameter OVER_SAMPLING = "NO"     ,                        // "YES" or "NO"
+parameter OVER_SAMPLING = "NO"      ,                       // "YES" or "NO"
 parameter OVER_SAMPLING_SHIFT  = 0  ,  
 parameter RX_CLK_BUFF_SCH_TYPE = 1  ,  
 parameter RGMII_TXC_FRONT_POSITION = "EDGE_ALIGNED",        // EDGE_ALIGNED , CENTER_ALIGNED
