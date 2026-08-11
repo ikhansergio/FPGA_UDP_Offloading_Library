@@ -15,7 +15,7 @@
 
 # Quartus Prime: Generate Tcl File for Project
 # File: qii_Cyclone10LP_Prj.tcl
-# Generated on: Thu Jul 30 11:13:28 2026
+# Generated on: Tue Aug 11 13:31:43 2026
 
 # Load Quartus Prime Tcl Project package
 package require ::quartus::project
@@ -61,6 +61,9 @@ if {$make_assignments} {
 	set_global_assignment -name VHDL_SHOW_LMF_MAPPING_MESSAGES OFF
 	set_global_assignment -name VERILOG_INPUT_VERSION SYSTEMVERILOG_2005
 	set_global_assignment -name VERILOG_SHOW_LMF_MAPPING_MESSAGES OFF
+	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_TG/src/AXISx8_UDP_TG.v
+	set_global_assignment -name VERILOG_FILE ../src/UDP_LoopBack_Wrapper.v
+	set_global_assignment -name VERILOG_FILE ../src/AXISx8_UDP_TG_Controller.v
 	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_x36_8k_BLK/ALT_x36_8k_BLK.v
 	set_global_assignment -name QIP_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_x36_8k_BLK/ALT_x36_8k_BLK.qip
 	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_x36_4k_BLK/ALT_x36_4k_BLK.v

@@ -30,18 +30,26 @@
 // "ALT_Cyclone10LP",  - Altera Cyclone10LP Series FPGAs
 // "DEFAULT_LOGIC",    - implementation on FPGA fabric
 
-
 module UDP_Offloading_Engine_Wrapper
 #(
-parameter RX_ARCH = "ALT_Cyclone10LP" ,
-parameter TX_ARCH = "ALT_Cyclone10LP" ,
-parameter MB_ARCH = "ALT_Cyclone10LP" ,
+parameter RX_ARCH = "DEFAULT_LOGIC" ,
+parameter TX_ARCH = "DEFAULT_LOGIC" ,
+parameter MB_ARCH = "DEFAULT_LOGIC" ,
+parameter OVER_SAMPLING = "NO"      ,                       // "YES" or "NO"
+parameter OVER_SAMPLING_SHIFT  = 0  ,  
+parameter RX_UDP_Ports_Count     = 2,  //  Number of  RX UDP Chanels
 parameter RX_CLK_BUFF_SCH_TYPE  = 0 
 )
 (
 input  wire          CLK625MHZ,
 input  wire          EthClk125,
 input  wire          EthClk125_90,
+
+input  wire          TG_Start_Pulse,
+input  wire [32-1:0] TG_PacketCount,
+input  wire [16-1:0] TG_PacketSize,    
+input  wire [16-1:0] TG_PacketGap,    
+
 
 input  wire          RGMII_RXC,
 input  wire          RGMII_RX_CTL,
@@ -51,24 +59,24 @@ output wire          RGMII_TXC,
 output wire          RGMII_TX_CTL,
 output wire [4-1:0]  RGMII_TXD,
 
-output wire  		 UDP_Data_Source_CLK,
-output wire  		 UDP_Data_Source_TFIRST,
-output wire 		 UDP_Data_Source_TVALID,
-output wire 		 UDP_Data_Source_TERROR,
-output wire			 UDP_Data_Source_TLAST ,
-output wire [ 8-1:0] UDP_Data_Source_TDATA ,
+output wire  		                     UDP_Data_Source_CLK,
+output wire [ RX_UDP_Ports_Count*1-1:0 ] UDP_Data_Source_TFIRST,
+output wire [ RX_UDP_Ports_Count*1-1:0 ] UDP_Data_Source_TVALID,
+output wire [ RX_UDP_Ports_Count*1-1:0 ] UDP_Data_Source_TERROR,
+output wire [ RX_UDP_Ports_Count*1-1:0 ] UDP_Data_Source_TLAST ,
+output wire [ RX_UDP_Ports_Count*8-1:0 ] UDP_Data_Source_TDATA ,
 
-input  wire [48-1:0] MAC_LOCAL_ADDR_IN  ,
-input  wire [32-1:0] IP4_LOCAL_ADDR_IN  ,
-input  wire [16-1:0] UDP_LOCAL_PORT_IN  ,
+input  wire [48-1:0]                     MAC_LOCAL_ADDR_IN  ,
+input  wire [32-1:0]                     IP4_LOCAL_ADDR_IN  ,
+input  wire [ RX_UDP_Ports_Count*16-1:0] UDP_LOCAL_PORT_IN  ,
 
-input  wire [48-1:0] MAC_REMOTE_ADDR_IN,
-input  wire [32-1:0] IP4_REMOTE_ADDR_IN,
-input  wire [16-1:0] UDP_REMOTE_PORT_IN,
+input  wire [ RX_UDP_Ports_Count*48-1:0] MAC_REMOTE_ADDR_IN,
+input  wire [ RX_UDP_Ports_Count*32-1:0] IP4_REMOTE_ADDR_IN,
+input  wire [ RX_UDP_Ports_Count*16-1:0] UDP_REMOTE_PORT_IN,
 
-output wire [48-1:0] MAC_REMOTE_ADDR_OUT,
-output wire [32-1:0] IP4_REMOTE_ADDR_OUT,
-output wire [16-1:0] UDP_REMOTE_PORT_OUT,
+output wire [ RX_UDP_Ports_Count*48-1:0] MAC_REMOTE_ADDR_OUT,
+output wire [ RX_UDP_Ports_Count*32-1:0] IP4_REMOTE_ADDR_OUT,
+output wire [ RX_UDP_Ports_Count*16-1:0] UDP_REMOTE_PORT_OUT,
 
 input  wire          Sink_CLK,
 output wire          Sink_TRDY  ,
@@ -101,27 +109,29 @@ wire                    wRGMII_TX_dERR;
 wire                    wRGMII_TX_dEoF;
 wire [7:0]              wRGMII_TX_DATA;
 
-wire [1*1-1:0]	         wMAC_TxFrameBody_TRDY;
-wire [1*1-1:0]	         wMAC_TxFrameBody_TVALID;
-wire [1*1-1:0]	         wMAC_TxFrameBody_TLAST;
-wire [8*1-1:0]          wMAC_TxFrameBody_TDATA;
+wire [1*2-1:0]	         wMAC_TxFrameBody_TRDY;
+wire [1*2-1:0]	         wMAC_TxFrameBody_TVALID;
+wire [1*2-1:0]	         wMAC_TxFrameBody_TLAST;
+wire [8*2-1:0]          wMAC_TxFrameBody_TDATA;
 
 
-(* keep = "true" *) wire [48-1:0] wMAC_REMOTE_ADDR ;
-(* keep = "true" *) wire [32-1:0] wIP4_REMOTE_ADDR ;
-(* keep = "true" *) wire [16-1:0] wUDP_REMOTE_PORT ;
+(* keep = "true" *) wire [2*48-1:0] wMAC_REMOTE_ADDR ;
+(* keep = "true" *) wire [2*32-1:0] wIP4_REMOTE_ADDR ;
+(* keep = "true" *) wire [2*16-1:0] wUDP_REMOTE_PORT ;
  
  
 (* KEEP_HIERARCHY = "TRUE" *)
 AXISx8_RGMII_BRIDGE 
 #(
 .RX_ARCH                    (RX_ARCH					),             
-.OVER_SAMPLING              ("NO"						),     
+.OVER_SAMPLING              (OVER_SAMPLING              ),
+.OVER_SAMPLING_SHIFT        (OVER_SAMPLING_SHIFT        ),
 .TX_ARCH                    (TX_ARCH					),
-.RX_CLK_BUFF_SCH_TYPE       (RX_CLK_BUFF_SCH_TYPE	),
-.RGMII_TXC_FRONT_POSITION   ("CENTER_ALIGNED"		),      // EDGE_ALIGNED , CENTER_ALIGNED
-.RGMII_TXD_REFERENCE_CLK    ("REFERENCE_125MHz"		),      // REFERENCE_PHY_RXC, REFERENCE_125MHz,     
-.RGMII_TXC_REFERENCE_CLK    ("REFERENCE_125MHz_90"	)       // REFERENCE_PHY_RXC, REFERENCE_125MHz, REFERENCE_125MHz_90, REFERENCE_250MHz,
+.RX_CLK_BUFF_SCH_TYPE       (RX_CLK_BUFF_SCH_TYPE	    ),
+.RGMII_TXC_FRONT_POSITION   ("CENTER_ALIGNED"		    ),      // EDGE_ALIGNED , CENTER_ALIGNED
+.RGMII_TXD_REFERENCE_CLK    ("REFERENCE_125MHz"		    ),      // REFERENCE_PHY_RXC, REFERENCE_125MHz,     
+.RGMII_TXC_REFERENCE_CLK    ("REFERENCE_125MHz_90"	    )       // REFERENCE_PHY_RXC, REFERENCE_125MHz, REFERENCE_125MHz_90, REFERENCE_250MHz,
+
 ) AXISx8_RGMII_BRIDGE_INST
 (
 .RGMII_LINK_UP              (),
@@ -178,10 +188,11 @@ AXISx8_Clock_Crossing_FIFO AXISx8_Clock_Crossing_FIFO_INST
 (* KEEP_HIERARCHY = "TRUE" *)
 AXISx8_UDP_Offloading_Engine   
 #(
-.MB_ARCH			 ( MB_ARCH ),
-.TxPortCount    (    1    ),
-.Has_ARP_Proc   (  "YES"  ),                        // "YES" or "NO"   
-.HasICMP_PING   (  "YES"   )                         // "YES" or "NO"
+.MB_ARCH		    (   MB_ARCH             ),
+.TxPortCount        (    2                  ),
+.RX_UDP_Ports_Count (   RX_UDP_Ports_Count  ),
+.Has_ARP_Proc       (  "YES"                ),                        // "YES" or "NO"   
+.HasICMP_PING       (  "YES"                )                         // "YES" or "NO"
 )
  AXISx8_UDP_Offloading_Engine_inst
  (
@@ -224,6 +235,11 @@ AXISx8_UDP_Offloading_Engine
 
 assign UDP_Data_Source_CLK =  EthClk125;
 
+assign MAC_REMOTE_ADDR_OUT      =  wMAC_REMOTE_ADDR;
+assign IP4_REMOTE_ADDR_OUT     =   wIP4_REMOTE_ADDR;
+assign UDP_REMOTE_PORT_OUT      =  wUDP_REMOTE_PORT;
+
+
 (* KEEP_HIERARCHY = "TRUE" *)
 AXISx8_UDP_Framing_AXISx32_Sink    
 #(
@@ -234,32 +250,53 @@ AXISx8_UDP_Framing_AXISx32_Sink
 ) 
 AXISx8_UDP_Framing_AXISx32_Sink_inst
 (      
-. Sink_CLK              (Sink_CLK                   ),
-. Sink_TRDY             (Sink_TRDY                  ),
-. Sink_TVALID           (Sink_TVALID                ),
-. Sink_TLAST            (Sink_TLAST                 ),
-. Sink_TKEEP            (Sink_TKEEP                 ),
-. Sink_TDATA            (Sink_TDATA                 ),
+. Sink_CLK              (Sink_CLK                       ),
+. Sink_TRDY             (Sink_TRDY                      ),
+. Sink_TVALID           (Sink_TVALID                    ),
+. Sink_TLAST            (Sink_TLAST                     ),
+. Sink_TKEEP            (Sink_TKEEP                     ),
+. Sink_TDATA            (Sink_TDATA                     ),
  
-. UDP_LOCAL_PORT_IN     (UDP_LOCAL_PORT_IN          ),
-. UDP_REMOTE_PORT_IN    (UDP_REMOTE_PORT_IN         ),
+. UDP_LOCAL_PORT_IN     (UDP_LOCAL_PORT_IN  [0*16 +:16] ),
+. UDP_REMOTE_PORT_IN    (UDP_REMOTE_PORT_IN [0*16 +:16] ),
   
-. IP4_LOCAL_ADDR_IN     (IP4_LOCAL_ADDR_IN          ),
-. IP4_REMOTE_ADDR_IN    (IP4_REMOTE_ADDR_IN         ),
+. IP4_LOCAL_ADDR_IN     (IP4_LOCAL_ADDR_IN              ),
+. IP4_REMOTE_ADDR_IN    (IP4_REMOTE_ADDR_IN [0*32 +:32] ),
 
-. MAC_LOCAL_ADDR_IN     (MAC_LOCAL_ADDR_IN          ),  
-. MAC_REMOTE_ADDR_IN    (MAC_REMOTE_ADDR_IN         ),
+. MAC_LOCAL_ADDR_IN     (MAC_LOCAL_ADDR_IN              ),  
+. MAC_REMOTE_ADDR_IN    (MAC_REMOTE_ADDR_IN [0*48 +:48] ),
 
-. Source_CLK            ( EthClk125                 ),    
-. Source_TRDY           (wMAC_TxFrameBody_TRDY      ),
-. Source_TVALID         (wMAC_TxFrameBody_TVALID    ),
-. Source_TLAST          (wMAC_TxFrameBody_TLAST     ),
-. Source_TDATA          (wMAC_TxFrameBody_TDATA     )       
+. Source_CLK            ( EthClk125                          ),    
+. Source_TRDY           (wMAC_TxFrameBody_TRDY      [0]      ),
+. Source_TVALID         (wMAC_TxFrameBody_TVALID    [0]      ),
+. Source_TLAST          (wMAC_TxFrameBody_TLAST     [0]      ),
+. Source_TDATA          (wMAC_TxFrameBody_TDATA     [0*8 +:8])       
 );
 
 
-assign MAC_REMOTE_ADDR_OUT      =  wMAC_REMOTE_ADDR;
-assign IP4_REMOTE_ADDR_OUT     =   wIP4_REMOTE_ADDR;
-assign UDP_REMOTE_PORT_OUT      =  wUDP_REMOTE_PORT;
+(* KEEP_HIERARCHY = "TRUE" *)
+AXISx8_UDP_TG AXISx8_UDP_TG_inst
+(     
 
+. UDP_LOCAL_PORT_IN     (UDP_LOCAL_PORT_IN  [1*16 +:16] ),
+. UDP_REMOTE_PORT_IN    (UDP_REMOTE_PORT_IN [1*16 +:16] ),
+
+. IP4_LOCAL_ADDR_IN     (IP4_LOCAL_ADDR_IN              ),
+. IP4_REMOTE_ADDR_IN    (IP4_REMOTE_ADDR_IN [1*32 +:32] ),
+
+. MAC_LOCAL_ADDR_IN     (MAC_LOCAL_ADDR_IN          ),  
+. MAC_REMOTE_ADDR_IN    (MAC_REMOTE_ADDR_IN [1*48 +:48] ),
+    
+.TG_Start_Pulse         (TG_Start_Pulse),
+.TG_PacketCount         (TG_PacketCount),
+.TG_PacketSize          (TG_PacketSize),
+.TG_PacketGap           (TG_PacketGap),   
+
+. Source_CLK            ( EthClk125                          ),    
+. Source_TRDY           (wMAC_TxFrameBody_TRDY      [1]      ),
+. Source_TVALID         (wMAC_TxFrameBody_TVALID    [1]      ),
+. Source_TLAST          (wMAC_TxFrameBody_TLAST     [1]      ),
+. Source_TDATA          (wMAC_TxFrameBody_TDATA     [1*8 +:8])  
+);
 endmodule
+
