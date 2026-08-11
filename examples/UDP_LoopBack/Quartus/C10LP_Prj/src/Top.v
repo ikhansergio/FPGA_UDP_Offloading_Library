@@ -15,9 +15,9 @@ output wire [4-1:0]  RGMII_TXD,
 output reg EtheReset =0             // Inverted on PCB. EtheReset == 1 -> PHY is reseted
 
  );
- 
-(* keep = "true" *) reg [16-1:0] wUDP_LOCAL_PORT_TG = 16'd9998;  
-(* keep = "true" *) reg [16-1:0] wUDP_LOCAL_PORT_LB = 16'd9999;  
+
+(* keep = "true" *) reg [16-1:0] wUDP_LOCAL_PORT_LB = 16'd9998;  
+(* keep = "true" *) reg [16-1:0] wUDP_LOCAL_PORT_TG = 16'd9999;  
 
 (* keep = "true" *) reg  [  48-1:0] wMAC_LOCAL_ADDR = 48'hCC28AA040506;
 (* keep = "true" *) reg  [  32-1:0] wIP4_LOCAL_ADDR = {8'd192,8'd168,8'd0,8'd49};  

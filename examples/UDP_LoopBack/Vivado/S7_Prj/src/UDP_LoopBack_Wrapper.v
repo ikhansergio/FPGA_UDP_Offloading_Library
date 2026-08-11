@@ -76,7 +76,7 @@ wire wUDP_CLK;
 (* KEEP = "TRUE" *)wire   [32-1:0] wUDP_Data_TDATA_x32;
 
 (* keep = "true" *) wire [2*16-1:0] wUDP_LOCAL_PORT_IN;
-assign wUDP_LOCAL_PORT_IN = {UDP_LOCAL_PORT_LB_IN,UDP_LOCAL_PORT_TG_IN}; 
+assign wUDP_LOCAL_PORT_IN = {UDP_LOCAL_PORT_TG_IN,UDP_LOCAL_PORT_LB_IN}; 
 
 (* keep = "true" *) wire [2*48-1:0] wMAC_REMOTE_ADDR;
 (* keep = "true" *) wire [2*32-1:0] wIP4_REMOTE_ADDR; 
