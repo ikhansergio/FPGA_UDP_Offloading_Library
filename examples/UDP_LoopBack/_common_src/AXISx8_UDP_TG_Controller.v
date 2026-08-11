@@ -25,7 +25,7 @@
 
 module AXISx8_UDP_TG_Controller
 #(
-    parameter PROTOCOL_MAGIC_CONSTANT = 32'hDEADBEAF
+    parameter PROTOCOL_MAGIC_CONSTANT = 32'hAFBEADDE
 ) 
 (
     input                           CLK ,

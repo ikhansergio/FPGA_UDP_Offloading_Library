@@ -30,7 +30,7 @@
 // "ALT_Cyclone10LP",  - Altera Cyclone10LP Series FPGAs
 // "DEFAULT_LOGIC",    - implementation on FPGA fabric
 
-module UDP_Offloading_Engine_Wrapper
+module UDP_Offloading_Engine_RGMII_Wrapper
 #(
 parameter RX_ARCH = "DEFAULT_LOGIC" ,
 parameter TX_ARCH = "DEFAULT_LOGIC" ,

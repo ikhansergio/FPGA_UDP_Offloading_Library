@@ -89,7 +89,7 @@ assign wUDP_LOCAL_PORT_IN = {UDP_LOCAL_PORT_TG_IN,UDP_LOCAL_PORT_LB_IN};
 
 
  (* KEEP_HIERARCHY = "TRUE" *)
- UDP_Offloading_Engine_Wrapper
+ UDP_Offloading_Engine_RGMII_Wrapper
 #(
 .RX_ARCH (RX_ARCH),
 .TX_ARCH (TX_ARCH),
@@ -97,7 +97,7 @@ assign wUDP_LOCAL_PORT_IN = {UDP_LOCAL_PORT_TG_IN,UDP_LOCAL_PORT_LB_IN};
 .RX_CLK_BUFF_SCH_TYPE(RX_CLK_BUFF_SCH_TYPE),
 .OVER_SAMPLING(OVER_SAMPLING),
 .OVER_SAMPLING_SHIFT(OVER_SAMPLING_SHIFT)
-)UDP_Offloading_Engine_Wrapper_inst
+)UDP_Offloading_Engine_RGMII_Wrapper_inst
 (
 .CLK625MHZ                  (CLK625MHZ),
 .EthClk125                  (EthClk125),
