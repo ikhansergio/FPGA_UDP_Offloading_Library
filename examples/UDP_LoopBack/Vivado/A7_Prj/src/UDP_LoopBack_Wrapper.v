@@ -36,7 +36,9 @@ module UDP_LoopBack_Wrapper
 parameter RX_ARCH = "DEFAULT_LOGIC" ,
 parameter TX_ARCH = "DEFAULT_LOGIC" ,
 parameter MB_ARCH = "DEFAULT_LOGIC" ,
-parameter RX_CLK_BUFF_SCH_TYPE  = 0 
+parameter RX_CLK_BUFF_SCH_TYPE  = 0 ,
+parameter OVER_SAMPLING = "NO"      ,                       // "YES" or "NO"
+parameter OVER_SAMPLING_SHIFT  = 0  
 )
 (
 input  wire          CLK625MHZ,
@@ -92,7 +94,9 @@ assign wUDP_LOCAL_PORT_IN = {UDP_LOCAL_PORT_LB_IN,UDP_LOCAL_PORT_TG_IN};
 .RX_ARCH (RX_ARCH),
 .TX_ARCH (TX_ARCH),
 .MB_ARCH (MB_ARCH),
-.RX_CLK_BUFF_SCH_TYPE(RX_CLK_BUFF_SCH_TYPE)
+.RX_CLK_BUFF_SCH_TYPE(RX_CLK_BUFF_SCH_TYPE),
+.OVER_SAMPLING(OVER_SAMPLING),
+.OVER_SAMPLING_SHIFT(OVER_SAMPLING_SHIFT)
 )UDP_Offloading_Engine_Wrapper_inst
 (
 .CLK625MHZ                  (CLK625MHZ),

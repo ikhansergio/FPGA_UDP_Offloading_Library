@@ -35,6 +35,8 @@ module UDP_Offloading_Engine_Wrapper
 parameter RX_ARCH = "DEFAULT_LOGIC" ,
 parameter TX_ARCH = "DEFAULT_LOGIC" ,
 parameter MB_ARCH = "DEFAULT_LOGIC" ,
+parameter OVER_SAMPLING = "NO"      ,                       // "YES" or "NO"
+parameter OVER_SAMPLING_SHIFT  = 0  ,  
 parameter RX_UDP_Ports_Count     = 2,  //  Number of  RX UDP Chanels
 parameter RX_CLK_BUFF_SCH_TYPE  = 0 
 )
@@ -122,12 +124,13 @@ wire [8*2-1:0]          wMAC_TxFrameBody_TDATA;
 AXISx8_RGMII_BRIDGE 
 #(
 .RX_ARCH                    (RX_ARCH					),             
-.OVER_SAMPLING              ("NO"						),     
+.OVER_SAMPLING              (OVER_SAMPLING              ),
+.OVER_SAMPLING_SHIFT        (OVER_SAMPLING_SHIFT        ),
 .TX_ARCH                    (TX_ARCH					),
-.RX_CLK_BUFF_SCH_TYPE       (RX_CLK_BUFF_SCH_TYPE	),
-.RGMII_TXC_FRONT_POSITION   ("CENTER_ALIGNED"		),      // EDGE_ALIGNED , CENTER_ALIGNED
-.RGMII_TXD_REFERENCE_CLK    ("REFERENCE_125MHz"		),      // REFERENCE_PHY_RXC, REFERENCE_125MHz,     
-.RGMII_TXC_REFERENCE_CLK    ("REFERENCE_125MHz_90"	)       // REFERENCE_PHY_RXC, REFERENCE_125MHz, REFERENCE_125MHz_90, REFERENCE_250MHz,
+.RX_CLK_BUFF_SCH_TYPE       (RX_CLK_BUFF_SCH_TYPE	    ),
+.RGMII_TXC_FRONT_POSITION   ("CENTER_ALIGNED"		    ),      // EDGE_ALIGNED , CENTER_ALIGNED
+.RGMII_TXD_REFERENCE_CLK    ("REFERENCE_125MHz"		    ),      // REFERENCE_PHY_RXC, REFERENCE_125MHz,     
+.RGMII_TXC_REFERENCE_CLK    ("REFERENCE_125MHz_90"	    )       // REFERENCE_PHY_RXC, REFERENCE_125MHz, REFERENCE_125MHz_90, REFERENCE_250MHz,
 
 ) AXISx8_RGMII_BRIDGE_INST
 (

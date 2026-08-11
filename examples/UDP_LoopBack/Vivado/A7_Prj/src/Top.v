@@ -43,10 +43,12 @@ output reg EtheReset =0             // Inverted on PCB. EtheReset == 1 -> PHY is
 (* KEEP_HIERARCHY = "TRUE" *)
 UDP_LoopBack_Wrapper
 #(
-.RX_ARCH("XLX_SERIES7"),
-.TX_ARCH("XLX_SERIES7"),
-.MB_ARCH("XLX_SERIES7"),
-.RX_CLK_BUFF_SCH_TYPE(3)
+.RX_ARCH                ("XLX_SERIES7"  ),
+.TX_ARCH                ("XLX_SERIES7"  ),
+.MB_ARCH                ("XLX_SERIES7"  ),
+.RX_CLK_BUFF_SCH_TYPE   (3              ),
+.OVER_SAMPLING          ("NO"           ),
+.OVER_SAMPLING_SHIFT    (0              )
 )UDP_LoopBack_Wrapper_inst
 (
 .CLK625MHZ      (0),
