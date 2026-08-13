@@ -1,6 +1,6 @@
 [**AXISx8_RGMII_BRIDGE**](./AXISx8_RGMII_BRIDGE/README.md) - Verilog library implementing 1000Base-T/100Base-T/10Base-T Ethernet PHY interfacing via RGMII interface.
 
-[**AXISx8_RMII_BRIDGE**](./AXISx8_RMII_BRIDGE/README.md) - Verilog library implementing 1000Base-T/100Base-T/10Base-T Ethernet PHY interfacing via RGMII interface.
+[**AXISx8_RMII_BRIDGE**](./AXISx8_RMII_BRIDGE/README.md) - Verilog library implementing 1000Base-T/100Base-T/10Base-T Ethernet PHY interfacing via RGMII interface. (Under developing...)
 
 [**AXISx8_UDP_Offloading_Engine**](./AXISx8_UDP_Offloading_Engine/README.md) - Verilog library that implements the reception of Ethernet II packets, calculation of their CRC, MAC address control, IPv4 address control, UDP port control and control of checksums. ARP and ICMP PING functions are also implemented.
 
