@@ -25,24 +25,24 @@
 
 module AXISx8_Clock_Crossing_FIFO 
 (
-input 	wire 				s_axis_aresetn,
-input 	wire 				s_axis_aclk,
-input 	wire 				s_axis_tvalid,
-output 	wire 				s_axis_tready,
+input 	wire 			s_axis_aresetn,
+input 	wire 			s_axis_aclk,
+input 	wire 			s_axis_tvalid,
+output 	wire 			s_axis_tready,
 input 	wire [7 : 0] 	s_axis_tdata,
-input 	wire 				s_axis_tlast,
+input 	wire 			s_axis_tlast,
 input 	wire [0 : 0] 	s_axis_tuser,
 
-input 	wire 				m_axis_aclk,
-output 	reg  				m_axis_tvalid,
-input 	wire 				m_axis_tready,
+input 	wire 			m_axis_aclk,
+output 	reg  			m_axis_tvalid,
+input 	wire 			m_axis_tready,
 output 	reg  [7 : 0] 	m_axis_tdata,
-output 	reg  				m_axis_tlast,
+output 	reg  			m_axis_tlast,
 output 	reg  [0 : 0] 	m_axis_tuser
 );
 
 
-wire 				  wRdEpt;
+wire 			 wRdEpt;
 wire [10-1 : 0 ] ws_Data;
 wire [10-1 : 0 ] wm_Data;
 assign ws_Data = {s_axis_tuser, s_axis_tlast, s_axis_tdata};
@@ -54,9 +54,9 @@ assign ws_Data = {s_axis_tuser, s_axis_tlast, s_axis_tdata};
 	.rdreq             ( m_axis_tready	),
 	.wrclk             ( s_axis_aclk    ),
 	.wrreq             ( s_axis_tvalid  ),
-	.q                 ( wm_Data    		),
-	.rdempty           ( wRdEpt     		),
-	.rdusedw           ( 			  		),
+	.q                 ( wm_Data    	),
+	.rdempty           ( wRdEpt     	),
+	.rdusedw           ( 			  	),
 	.wrfull            (~s_axis_tready	)
 	); 
 	

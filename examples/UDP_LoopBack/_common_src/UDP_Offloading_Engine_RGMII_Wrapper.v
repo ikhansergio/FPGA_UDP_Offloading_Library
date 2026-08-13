@@ -165,7 +165,10 @@ AXISx8_RGMII_BRIDGE
 
 
 (* KEEP_HIERARCHY = "TRUE" *)
-AXISx8_Clock_Crossing_FIFO AXISx8_Clock_Crossing_FIFO_INST 
+AXISx8_Clock_Crossing_FIFO 
+#(
+.MB_ARCH (MB_ARCH )
+)AXISx8_Clock_Crossing_FIFO_INST 
 (
   .s_axis_aresetn                   (1'b1                                       ),  // input wire s_axis_aresetn
   .s_axis_aclk                      (wRGMII_RX_dCLK                             ),        // input wire s_axis_aclk
@@ -182,7 +185,6 @@ AXISx8_Clock_Crossing_FIFO AXISx8_Clock_Crossing_FIFO_INST
   .m_axis_tlast                     (wRGMII_FIFO_RX_dEoF                        ),      // output wire m_axis_tlast
   .m_axis_tuser                     (wRGMII_FIFO_RX_dErr                        )      // output wire [0 : 0] m_axis_tuser
   
-
 );
 
 (* KEEP_HIERARCHY = "TRUE" *)
