@@ -32,6 +32,7 @@ parameter INPUT_INVERCE = 0
 (
 	input              CLK,
 
+    //input   wire       FCS_Check_Sink_SoF,
 	input   wire       FCS_Check_Sink_Val,
 	input   wire       FCS_Check_Sink_MSK,  
 	input   wire       FCS_Check_Sink_EoF,
@@ -39,7 +40,9 @@ parameter INPUT_INVERCE = 0
 	input   wire [7:0] FCS_Check_Sink_Dat,
 	
 	output 	reg        FCS_Check_Source_Val=0,
+	output 	reg        FCS_Check_Source_SoF=0,
 	output 	reg        FCS_Check_Source_EoF=0,
+	output 	reg        FCS_Check_Source_CRC=0,
 	output 	reg        FCS_Check_Source_Err=0,
     output  reg [7:0]  FCS_Check_Source_Dat=0
  );
@@ -126,12 +129,14 @@ CRC_ErrorFlag0 <= !((wCRC_out  [ 8-1 :0]==FCS_Check_Sink_Dat));
 CRC_ErrorFlag1 <= !((CRC_Delay0[ 8-1 :0]==FCS_Check_Sink_Dat)&&(!CRC_ErrorFlag0));
 CRC_ErrorFlag2 <= !((CRC_Delay1[ 8-1 :0]==FCS_Check_Sink_Dat)&&(!CRC_ErrorFlag1));
 FCS_Check_Source_Err <= (!((CRC_Delay2[ 8-1 :0]==FCS_Check_Sink_Dat)&&(!CRC_ErrorFlag2)))||FCS_Check_Sink_Err;
+FCS_Check_Source_CRC <= ( ((CRC_Delay2[ 8-1 :0]==FCS_Check_Sink_Dat)&&(!CRC_ErrorFlag2)));
 end 
 
 FCS_Check_Source_Val<=FCS_Check_Sink_MSK;                 
 if (FCS_Check_Sink_MSK) FCS_Check_Source_Dat<=FCS_Check_Sink_Dat;
     else if (CRC_PacketRxBusy==0) FCS_Check_Source_Dat<=0;    
 FCS_Check_Source_EoF <= FCS_Check_Sink_EoF;
+FCS_Check_Source_SoF <= FCS_Check_Sink_SoF;
 end 
 
 endmodule

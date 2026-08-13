@@ -43,12 +43,12 @@ module AXISx8_UDP_TG_Controller
                  
 );
 
-
-
 (* keep = "true" *) wire [8-1:0]                   wTDATA0 ;
+(* keep = "true" *) wire                           wTFIRSTD0;
 (* keep = "true" *) wire                           wTVALID0;
 (* keep = "true" *) wire                           wTLAST0 ;
 (* keep = "true" *) wire                           wTERROR0;
+(* keep = "true" *) wire                           wCRC_FLAG0;
 
 (* keep = "true" *) wire [8-1:0]                   wTDATA1 ;
 (* keep = "true" *) wire                           wTVALID1;
@@ -62,6 +62,18 @@ module AXISx8_UDP_TG_Controller
 (* keep = "true" *) wire                           wTERROR2;
 
 (* keep = "true" *) reg [7:0]Position=0;
+
+(* keep = "true" *) reg [4:0]HeaderPosition=0;
+
+always @(posedge CLK)
+begin
+if (TVALID)
+    begin
+    if (TFIRST)HeaderPosition<=0;
+        else if (HeaderPosition!=5'b11111) HeaderPosition <= HeaderPosition +1'b1;
+    end
+end
+
 
 (* KEEP_HIERARCHY = "TRUE" *)
 EthernetRxFrameFCS_Check_x8  
@@ -80,11 +92,22 @@ EthernetRxFrameFCS_Check_x8
 .FCS_Check_Sink_Dat           (TDATA    ),
 
 .FCS_Check_Source_Val         (wTVALID0  ),
+.FCS_Check_Source_SoF         (wTFIRSTD0 ),
 .FCS_Check_Source_EoF         (wTLAST0   ),
 .FCS_Check_Source_Err         (wTERROR0  ),
+.FCS_Check_Source_CRC         (wCRC_FLAG0),
 .FCS_Check_Source_Dat         (wTDATA0   )
 );
 
+(* keep = "true" *) reg HeaderCRC_ValidFlag=0;
+always @(posedge CLK)
+begin
+if (wTVALID0)
+    begin
+    if (wTFIRSTD0)HeaderCRC_ValidFlag<=0;
+        else if (HeaderPosition!=5'b01111) HeaderCRC_ValidFlag <= wCRC_FLAG0;
+    end
+end
 
 (* KEEP_HIERARCHY = "TRUE" *)
 EthernetRxFrameFCS_Remover_x8      EthernetRxFrameFCS_Remover_x8_inst
@@ -149,7 +172,7 @@ if (wTVALID2 && (Position == 3) )  PacketCount            <= wTDATA2[31:0];
 
 TG_Start_Pulse <= CommandCodeFlag&&MagicNumberFlag&&wTLAST2&&wTVALID2&&!wTERROR2;
 
-if (CommandCodeFlag&&MagicNumberFlag&&wTLAST2&&wTVALID2&&!wTERROR2)
+if (CommandCodeFlag&&MagicNumberFlag&&wTLAST2&&wTVALID2&&!wTERROR2&&HeaderCRC_ValidFlag)
     begin
     TG_PacketSize  <= PacketSize;
     TG_PacketCount <= PacketCount;
