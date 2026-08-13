@@ -34,7 +34,7 @@ if { $list_projs eq "" } {
 set bCheckIPs 1
 set bCheckIPsPassed 1
 if { $bCheckIPs == 1 } {
-  set list_check_ips { xilinx.com:ip:axis_data_fifo:2.0 xilinx.com:ip:clk_wiz:6.0 xilinx.com:ip:fifo_generator:13.2 xilinx.com:ip:blk_mem_gen:8.4 xilinx.com:ip:dist_mem_gen:8.0 }
+  set list_check_ips { xilinx.com:ip:clk_wiz:6.0 xilinx.com:ip:fifo_generator:13.2 xilinx.com:ip:blk_mem_gen:8.4 xilinx.com:ip:dist_mem_gen:8.0 }
   set list_ips_missing ""
   common::send_msg_id "IPS_TCL-1001" "INFO" "Checking if the following IPs exist in the project's IP catalog: $list_check_ips ."
 
@@ -55,29 +55,6 @@ if { $bCheckIPsPassed != 1 } {
   common::send_msg_id "IPS_TCL-102" "WARNING" "Will not continue with creation of design due to the error(s) above."
   return 1
 }
-
-##################################################################
-# CREATE IP AXISx8_Clock_Crossing_FIFO
-##################################################################
-
-set AXISx8_Clock_Crossing_FIFO [create_ip -name axis_data_fifo -vendor xilinx.com -library ip -version 2.0 -module_name AXISx8_Clock_Crossing_FIFO]
-
-# User Parameters
-set_property -dict [list \
-  CONFIG.FIFO_DEPTH {32} \
-  CONFIG.HAS_TLAST {1} \
-  CONFIG.IS_ACLK_ASYNC {1} \
-  CONFIG.PROG_FULL_THRESH {13} \
-  CONFIG.SYNCHRONIZATION_STAGES {8} \
-  CONFIG.TUSER_WIDTH {1} \
-] [get_ips AXISx8_Clock_Crossing_FIFO]
-
-# Runtime Parameters
-set_property -dict { 
-  GENERATE_SYNTH_CHECKPOINT {1}
-} $AXISx8_Clock_Crossing_FIFO
-
-##################################################################
 
 ##################################################################
 # CREATE IP Sys_Clk_PLL
@@ -117,6 +94,31 @@ set_property -dict [list \
 set_property -dict { 
   GENERATE_SYNTH_CHECKPOINT {1}
 } $Sys_Clk_PLL
+
+##################################################################
+
+##################################################################
+# CREATE IP XLX_DIST_FIFO_10x32
+##################################################################
+
+set XLX_DIST_FIFO_10x32 [create_ip -name fifo_generator -vendor xilinx.com -library ip -version 13.2 -module_name XLX_DIST_FIFO_10x32]
+
+# User Parameters
+set_property -dict [list \
+  CONFIG.Clock_Type_AXI {Independent_Clock} \
+  CONFIG.Fifo_Implementation {Independent_Clocks_Distributed_RAM} \
+  CONFIG.INTERFACE_TYPE {Native} \
+  CONFIG.Input_Data_Width {10} \
+  CONFIG.Input_Depth {32} \
+  CONFIG.Performance_Options {First_Word_Fall_Through} \
+  CONFIG.Reset_Pin {false} \
+  CONFIG.synchronization_stages {8} \
+] [get_ips XLX_DIST_FIFO_10x32]
+
+# Runtime Parameters
+set_property -dict { 
+  GENERATE_SYNTH_CHECKPOINT {1}
+} $XLX_DIST_FIFO_10x32
 
 ##################################################################
 

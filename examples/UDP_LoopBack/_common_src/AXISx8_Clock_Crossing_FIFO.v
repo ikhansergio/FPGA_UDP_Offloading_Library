@@ -92,7 +92,6 @@ if (MB_ARCH == "XLX_SERIES7")
 	);   
  end
  endgenerate  
-
 	
 always @(posedge m_axis_aclk )
 begin
