@@ -170,9 +170,9 @@ if (wTVALID2 && (Position == 1) )  MagicNumberFlag        <=(wTDATA2[31:0] == PR
 if (wTVALID2 && (Position == 2) )  {PacketGap,PacketSize} <= wTDATA2[31:0];
 if (wTVALID2 && (Position == 3) )  PacketCount            <= wTDATA2[31:0];
 
-TG_Start_Pulse <= CommandCodeFlag&&MagicNumberFlag&&wTLAST2&&wTVALID2&&!wTERROR2;
+TG_Start_Pulse <= CommandCodeFlag&&MagicNumberFlag&&wTLAST2&&wTVALID2&&(!wTERROR2)&&HeaderCRC_ValidFlag;
 
-if (CommandCodeFlag&&MagicNumberFlag&&wTLAST2&&wTVALID2&&!wTERROR2&&HeaderCRC_ValidFlag)
+if (CommandCodeFlag&&MagicNumberFlag&&wTLAST2&&wTVALID2&&(!wTERROR2)&&HeaderCRC_ValidFlag)
     begin
     TG_PacketSize  <= PacketSize;
     TG_PacketCount <= PacketCount;
