@@ -25,16 +25,18 @@
 
 module AXISx8_UDP_TG_Controller
 #(
-    parameter PROTOCOL_MAGIC_CONSTANT = 32'hAFBEADDE
+    parameter COMAND_CODE = 8'h01
 ) 
 (
     input                           CLK ,
     
-    input [8-1:0]                   TDATA ,
+    input [32-1:0]                  TDATA ,
     input                           TVALID,
     input                           TFIRST,
     input                           TLAST,
     input                           TERROR,
+    input [16-1:0]                  POSITION,
+    input [ 8-1:0]                  CommandCode,
     
     output  reg                     TG_Start_Pulse=0,
     output  reg [32-1:0]            TG_PacketCount=0,
@@ -43,136 +45,24 @@ module AXISx8_UDP_TG_Controller
                  
 );
 
-(* keep = "true" *) wire [8-1:0]                   wTDATA0 ;
-(* keep = "true" *) wire                           wTFIRSTD0;
-(* keep = "true" *) wire                           wTVALID0;
-(* keep = "true" *) wire                           wTLAST0 ;
-(* keep = "true" *) wire                           wTERROR0;
-(* keep = "true" *) wire                           wCRC_FLAG0;
-
-(* keep = "true" *) wire [8-1:0]                   wTDATA1 ;
-(* keep = "true" *) wire                           wTVALID1;
-(* keep = "true" *) wire                           wTLAST1 ;
-(* keep = "true" *) wire                           wTERROR1;
-
-(* keep = "true" *) wire [32-1:0]                  wTDATA2 ;
-(* keep = "true" *) wire                           wTFIRSTD2;
-(* keep = "true" *) wire                           wTVALID2;
-(* keep = "true" *) wire                           wTLAST2 ;
-(* keep = "true" *) wire                           wTERROR2;
-
-(* keep = "true" *) reg [7:0]Position=0;
-
-(* keep = "true" *) reg [4:0]HeaderPosition=0;
-
-always @(posedge CLK)
-begin
-if (TVALID)
-    begin
-    if (TFIRST)HeaderPosition<=0;
-        else if (HeaderPosition!=5'b11111) HeaderPosition <= HeaderPosition +1'b1;
-    end
-end
-
-
-(* KEEP_HIERARCHY = "TRUE" *)
-EthernetRxFrameFCS_Check_x8  
-#(
-.INIT_FF(1),
-.INPUT_REVERCEORDER(1),
-.INPUT_INVERCE(0)
-) TG_Controller_FCS_Check_x8_inst
-(
-.CLK                          (CLK),
-
-.FCS_Check_Sink_Val           (TVALID   ), 
-.FCS_Check_Sink_MSK           (TVALID   ),
-.FCS_Check_Sink_EoF           (TLAST    ),
-.FCS_Check_Sink_Err           (TERROR   ),
-.FCS_Check_Sink_Dat           (TDATA    ),
-
-.FCS_Check_Source_Val         (wTVALID0  ),
-.FCS_Check_Source_SoF         (wTFIRSTD0 ),
-.FCS_Check_Source_EoF         (wTLAST0   ),
-.FCS_Check_Source_Err         (wTERROR0  ),
-.FCS_Check_Source_CRC         (wCRC_FLAG0),
-.FCS_Check_Source_Dat         (wTDATA0   )
-);
-
-(* keep = "true" *) reg HeaderCRC_ValidFlag=0;
-always @(posedge CLK)
-begin
-if (wTVALID0)
-    begin
-    if (wTFIRSTD0)HeaderCRC_ValidFlag<=0;
-        else if (HeaderPosition!=5'b01111) HeaderCRC_ValidFlag <= wCRC_FLAG0;
-    end
-end
-
-(* KEEP_HIERARCHY = "TRUE" *)
-EthernetRxFrameFCS_Remover_x8      EthernetRxFrameFCS_Remover_x8_inst
-(
-.CLK                          (CLK      ),
-.FCS_Remover_Sink_Val         (wTVALID0 ),
-.FCS_Remover_Sink_EoF         (wTLAST0  ),
-.FCS_Remover_Sink_Err         (wTERROR0 ),  
-.FCS_Remover_Sink_Dat         (wTDATA0  ),
-
-.FCS_Remover_Source_Val       (wTVALID1 ),
-.FCS_Remover_Source_EoF       (wTLAST1  ),
-.FCS_Remover_Source_Err       (wTERROR1 ),
-.FCS_Remover_Source_Dat       (wTDATA1  )
- );
-
-(* KEEP_HIERARCHY = "TRUE" *)
-AXIS_Width_Up_Converter
-#(
-. BIT_WIDTH             (8),
-. N                     (4),
-. BIG_ENDIAN            (0),         
-. TFIRST_ReSTORE        (1) 
-) AXISx8_To_AXISx32_Width_Up_Converter_inst
-(
-           
-. CLK                       (CLK),
- 
-. TFIRST                    (0),   
-. TVALID                    (wTVALID1   ),
-. TERROR                    (wTERROR1   ),
-. TLAST                     (wTLAST1    ),       
-. TDATA                     (wTDATA1    ),  
-
-. TFIRST_OUT                (wTFIRSTD2  ),
-. TVALID_OUT                (wTVALID2   ),
-. TERROR_OUT                (wTERROR2   ), 
-. TLAST_OUT                 (wTLAST2    ),
-. TKEEP_OUT                 (           ),
-. TDATA_OUT                 (wTDATA2    )
- );  
-
-
-always @(posedge CLK)
-begin
-if (wTVALID2&&wTFIRSTD2) Position<=1;
-    else if (wTVALID2) Position<=Position+1;
-end
 
 (* keep = "true" *) reg CommandCodeFlag =0;
-(* keep = "true" *) reg MagicNumberFlag =0;
+
 (* keep = "true" *) reg [15:0]PacketSize=0;
 (* keep = "true" *) reg [15:0]PacketGap=0;
 (* keep = "true" *) reg [31:0]PacketCount=0;
 
 always @(posedge CLK)
 begin
-if (wTVALID2 && wTFIRSTD2       )  CommandCodeFlag        <=(wTDATA2[ 7:0] ==  8'h01);
-if (wTVALID2 && (Position == 1) )  MagicNumberFlag        <=(wTDATA2[31:0] == PROTOCOL_MAGIC_CONSTANT );
-if (wTVALID2 && (Position == 2) )  {PacketGap,PacketSize} <= wTDATA2[31:0];
-if (wTVALID2 && (Position == 3) )  PacketCount            <= wTDATA2[31:0];
 
-TG_Start_Pulse <= CommandCodeFlag&&MagicNumberFlag&&wTLAST2&&wTVALID2&&(!wTERROR2)&&HeaderCRC_ValidFlag;
+if (TVALID && (POSITION == 0) )  CommandCodeFlag        <= ( CommandCode == COMAND_CODE );
 
-if (CommandCodeFlag&&MagicNumberFlag&&wTLAST2&&wTVALID2&&(!wTERROR2)&&HeaderCRC_ValidFlag)
+if (TVALID && (POSITION == 1) )  {PacketGap,PacketSize} <= TDATA[31:0];
+if (TVALID && (POSITION == 2) )  PacketCount            <= TDATA[31:0];
+
+TG_Start_Pulse <= CommandCodeFlag&&TLAST&&TVALID&&!TERROR;
+
+if (CommandCodeFlag&&TLAST&&TVALID&&!TERROR)
     begin
     TG_PacketSize  <= PacketSize;
     TG_PacketCount <= PacketCount;
@@ -182,3 +72,4 @@ end
 
 
 endmodule
+

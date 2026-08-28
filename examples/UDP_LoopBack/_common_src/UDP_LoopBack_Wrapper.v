@@ -38,7 +38,8 @@ parameter TX_ARCH = "DEFAULT_LOGIC" ,
 parameter MB_ARCH = "DEFAULT_LOGIC" ,
 parameter RX_CLK_BUFF_SCH_TYPE  = 0 ,
 parameter OVER_SAMPLING = "NO"      ,                       // "YES" or "NO"
-parameter OVER_SAMPLING_SHIFT  = 0  
+parameter OVER_SAMPLING_SHIFT  = 0  ,
+parameter COMAND_UNIQ_CONST = 32'hAFBEADDE 
 )
 (
 input  wire          CLK625MHZ,
@@ -170,17 +171,67 @@ AXIS_Width_Up_Converter
 . TDATA_OUT                 (wUDP_Data_TDATA_x32            )
  );  
  
+ (* keep = "true" *) wire [32-1:0]                  wTDATA_32  ;
+ (* keep = "true" *) wire [ 4-1:0]                  wTKEEP_32  ;
+ (* keep = "true" *) wire                           wTFIRST_32 ;
+ (* keep = "true" *) wire                           wTVALID_32 ;
+ (* keep = "true" *) wire                           wTLAST_32  ;
+ (* keep = "true" *) wire                           wTERROR_32 ;
+ 
+ (* keep = "true" *) wire [16-1:0]                  wPOSITION ;
+ (* keep = "true" *) wire                           wCommandSize_ValidFlag;
+ 
+ (* keep = "true" *) wire [ 8-1:0]                  wCommandCode ;
+ (* keep = "true" *) wire [ 8-1:0]                  wCommandParam ;
+ (* keep = "true" *) wire [16-1:0]                  wCommandSize ;
+ (* keep = "true" *) wire [32-1:0]                  wCommandReserve ;
+ 
+ (* KEEP_HIERARCHY = "TRUE" *)
+ AXISx8_CommandHeaderDecoder
+ #(
+ .COMAND_UNIQ_CONST (COMAND_UNIQ_CONST)
+ ) AXISx8_CommandHeaderDecoder_inst
+ (
+ .CLK                            (wUDP_CLK),
+     
+ .Sink_TDATA                     (wUDP_Data_TDATA       [1*8 +:8]),
+ .Sink_TVALID                    (wUDP_Data_TVALID      [1]      ),
+ .Sink_TFIRST                    (wUDP_Data_TFIRST      [1]      ),
+ .Sink_TLAST                     (wUDP_Data_TLAST       [1]      ),
+ .Sink_TERROR                    (wUDP_Data_TERROR      [1]      ),
+     
+ .Source_TFIRST                  (wTFIRST_32),
+ .Source_TVALID                  (wTVALID_32),
+ .Source_TERROR                  (wTERROR_32),
+ .Source_TLAST                   (wTLAST_32 ),
+ .Source_TKEEP                   (wTKEEP_32 ),
+ .Source_TDATA                   (wTDATA_32 ),
+     
+ .POSITION                       (wPOSITION),
+
+ .CommandSize_ValidFlag          (wCommandSize_ValidFlag),
+
+    
+ .CommandCode                    (wCommandCode),
+ .CommandParam                   (wCommandParam),
+ .CommandSize                    (wCommandSize),
+ .CommandReserve                 (wCommandReserve)  
+ );
+ 
+
  (* KEEP_HIERARCHY = "TRUE" *)
 AXISx8_UDP_TG_Controller    AXISx8_UDP_TG_Controller_inst
 (
 
 . CLK                       (wUDP_CLK                       ),
     
-. TFIRST                    (wUDP_Data_TFIRST      [1]      ),   
-. TVALID                    (wUDP_Data_TVALID      [1]      ),
-. TERROR                    (wUDP_Data_TERROR      [1]      ),
-. TLAST                     (wUDP_Data_TLAST       [1]      ),       
-. TDATA                     (wUDP_Data_TDATA       [1*8 +:8]),  
+. TFIRST                    (wTFIRST_32                     ),   
+. TVALID                    (wTVALID_32                     ),
+. TERROR                    (wTERROR_32                     ),
+. TLAST                     (wTLAST_32                      ),       
+. TDATA                     (wTDATA_32                      ), 
+. POSITION                  (wPOSITION                      ), 
+. CommandCode               (wCommandCode                   ),
     
 .TG_Start_Pulse             (wTG_Start_Pulse),
 .TG_PacketCount             (wTG_PacketCount),
