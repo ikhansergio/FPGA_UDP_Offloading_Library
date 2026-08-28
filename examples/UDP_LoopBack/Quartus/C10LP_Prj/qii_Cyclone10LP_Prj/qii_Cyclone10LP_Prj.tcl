@@ -15,7 +15,7 @@
 
 # Quartus Prime: Generate Tcl File for Project
 # File: qii_Cyclone10LP_Prj.tcl
-# Generated on: Thu Aug 13 12:04:03 2026
+# Generated on: Fri Aug 28 16:03:09 2026
 
 # Load Quartus Prime Tcl Project package
 package require ::quartus::project
@@ -61,6 +61,7 @@ if {$make_assignments} {
 	set_global_assignment -name VHDL_SHOW_LMF_MAPPING_MESSAGES OFF
 	set_global_assignment -name VERILOG_INPUT_VERSION SYSTEMVERILOG_2005
 	set_global_assignment -name VERILOG_SHOW_LMF_MAPPING_MESSAGES OFF
+	set_global_assignment -name VERILOG_FILE ../../../_common_src/AXISx8_CommandHeaderDecoder.v
 	set_global_assignment -name VERILOG_FILE ../../../_common_src/UDP_Offloading_Engine_RGMII_Wrapper.v
 	set_global_assignment -name VERILOG_FILE ../../../_common_src/UDP_LoopBack_Wrapper.v
 	set_global_assignment -name VERILOG_FILE ../../../_common_src/AXISx8_UDP_TG_Controller.v
