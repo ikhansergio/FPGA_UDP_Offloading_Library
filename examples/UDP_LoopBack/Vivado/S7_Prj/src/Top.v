@@ -17,8 +17,9 @@ output reg EtheReset =0             // Inverted on PCB. EtheReset == 1 -> PHY is
 
  );
  
-(* keep = "true" *) reg [16-1:0] wUDP_LOCAL_PORT_LB = 16'd9998;  
-(* keep = "true" *) reg [16-1:0] wUDP_LOCAL_PORT_TG = 16'd9999;    
+(* keep = "true" *) reg [16-1:0] wUDP_LOCAL_PORT_UC = 16'd9997;     //User commands port
+(* keep = "true" *) reg [16-1:0] wUDP_LOCAL_PORT_LB = 16'd9998;     //Loop Back port  
+(* keep = "true" *) reg [16-1:0] wUDP_LOCAL_PORT_TG = 16'd9999;     //Traffic generator port    
 
 (* keep = "true" *) reg  [  48-1:0] wMAC_LOCAL_ADDR = 48'hCC28AA040506;
 (* keep = "true" *) reg  [  32-1:0] wIP4_LOCAL_ADDR = {8'd192,8'd168,8'd0,8'd49};  
@@ -57,8 +58,27 @@ UDP_LoopBack_Wrapper
 
 .MAC_LOCAL_ADDR_IN          (wMAC_LOCAL_ADDR),
 .IP4_LOCAL_ADDR_IN          (wIP4_LOCAL_ADDR),
+.UDP_LOCAL_PORT_UC_IN       (wUDP_LOCAL_PORT_UC),
 .UDP_LOCAL_PORT_TG_IN       (wUDP_LOCAL_PORT_TG),
 .UDP_LOCAL_PORT_LB_IN       (wUDP_LOCAL_PORT_LB),
+
+.Source_CLK                 (),
+.Source_TFIRST              (),
+.Source_TVALID              (),
+.Source_TERROR              (),
+.Source_TLAST               (),
+.Source_TDATA               (),
+
+.MAC_REMOTE_ADDR_OUT        (),
+.IP4_REMOTE_ADDR_OUT        (),
+.UDP_REMOTE_PORT_OUT        (),
+
+.MAC_TxFrameBody_TRDY       (),
+.MAC_TxFrameBody_TVALID     (0),
+.MAC_TxFrameBody_TERROR     (0),
+.MAC_TxFrameBody_TLAST      (0),
+.MAC_TxFrameBody_TDATA      (0),
+
 
 .RGMII_RXC      (RGMII_RXC),
 .RGMII_RX_CTL   (RGMII_RX_CTL),

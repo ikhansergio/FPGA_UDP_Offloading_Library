@@ -37,8 +37,8 @@ parameter TX_ARCH = "DEFAULT_LOGIC" ,
 parameter MB_ARCH = "DEFAULT_LOGIC" ,
 parameter OVER_SAMPLING = "NO"      ,                       // "YES" or "NO"
 parameter OVER_SAMPLING_SHIFT  = 0  ,  
-parameter RX_UDP_Ports_Count     = 2,  //  Number of  RX UDP Chanels
-parameter RX_CLK_BUFF_SCH_TYPE  = 0 
+parameter RX_UDP_Ports_Count   = 2  ,                       //  Number of  RX UDP Chanels
+parameter RX_CLK_BUFF_SCH_TYPE = 0 
 )
 (
 input  wire          CLK625MHZ,
@@ -65,6 +65,12 @@ output wire [ RX_UDP_Ports_Count*1-1:0 ] UDP_Data_Source_TVALID,
 output wire [ RX_UDP_Ports_Count*1-1:0 ] UDP_Data_Source_TERROR,
 output wire [ RX_UDP_Ports_Count*1-1:0 ] UDP_Data_Source_TLAST ,
 output wire [ RX_UDP_Ports_Count*8-1:0 ] UDP_Data_Source_TDATA ,
+
+output wire [1-1:0]	                    MAC_TxFrameBody_TRDY,
+input  wire [1-1:0]	                    MAC_TxFrameBody_TVALID,
+input  wire [1-1:0]	                    MAC_TxFrameBody_TERROR,
+input  wire [1-1:0]	                    MAC_TxFrameBody_TLAST,
+input  wire [8-1:0]                     MAC_TxFrameBody_TDATA,
 
 input  wire [48-1:0]                     MAC_LOCAL_ADDR_IN  ,
 input  wire [32-1:0]                     IP4_LOCAL_ADDR_IN  ,
@@ -109,10 +115,11 @@ wire                    wRGMII_TX_dERR;
 wire                    wRGMII_TX_dEoF;
 wire [7:0]              wRGMII_TX_DATA;
 
-wire [1*2-1:0]	         wMAC_TxFrameBody_TRDY;
-wire [1*2-1:0]	         wMAC_TxFrameBody_TVALID;
-wire [1*2-1:0]	         wMAC_TxFrameBody_TLAST;
-wire [8*2-1:0]          wMAC_TxFrameBody_TDATA;
+wire [1*3-1:0]	         wMAC_TxFrameBody_TRDY;
+wire [1*3-1:0]	         wMAC_TxFrameBody_TERROR;
+wire [1*3-1:0]	         wMAC_TxFrameBody_TVALID;
+wire [1*3-1:0]	         wMAC_TxFrameBody_TLAST;
+wire [8*3-1:0]           wMAC_TxFrameBody_TDATA;
 
 
 (* keep = "true" *) wire [2*48-1:0] wMAC_REMOTE_ADDR ;
@@ -191,7 +198,7 @@ AXISx8_Clock_Crossing_FIFO
 AXISx8_UDP_Offloading_Engine   
 #(
 .MB_ARCH		    (   MB_ARCH             ),
-.TxPortCount        (    2                  ),
+.TxPortCount        (   3                   ),
 .RX_UDP_Ports_Count (   RX_UDP_Ports_Count  ),
 .Has_ARP_Proc       (  "YES"                ),                        // "YES" or "NO"   
 .HasICMP_PING       (  "YES"                )                         // "YES" or "NO"
@@ -223,7 +230,7 @@ AXISx8_UDP_Offloading_Engine
 
 .Sink_TRDY                  (wMAC_TxFrameBody_TRDY),
 .Sink_TVALID                (wMAC_TxFrameBody_TVALID),
-.Sink_TERROR                (1'b0),
+.Sink_TERROR                (wMAC_TxFrameBody_TERROR),
 .Sink_TLAST                 (wMAC_TxFrameBody_TLAST),
 .Sink_TDATA                 (wMAC_TxFrameBody_TDATA),
 
@@ -300,5 +307,11 @@ AXISx8_UDP_TG AXISx8_UDP_TG_inst
 . Source_TLAST          (wMAC_TxFrameBody_TLAST     [1]      ),
 . Source_TDATA          (wMAC_TxFrameBody_TDATA     [1*8 +:8])  
 );
-endmodule
 
+assign wMAC_TxFrameBody_TRDY        [2]         = MAC_TxFrameBody_TRDY;
+assign wMAC_TxFrameBody_TVALID      [2]         = MAC_TxFrameBody_TVALID;
+assign wMAC_TxFrameBody_TERROR      [2]         = MAC_TxFrameBody_TERROR;
+assign wMAC_TxFrameBody_TLAST       [2]         = MAC_TxFrameBody_TLAST;      
+assign wMAC_TxFrameBody_TDATA       [2*8 +:8]   = MAC_TxFrameBody_TDATA;
+
+endmodule
