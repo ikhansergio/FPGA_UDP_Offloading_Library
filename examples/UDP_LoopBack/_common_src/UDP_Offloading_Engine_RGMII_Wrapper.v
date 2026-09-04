@@ -122,9 +122,9 @@ wire [1*3-1:0]	         wMAC_TxFrameBody_TLAST;
 wire [8*3-1:0]           wMAC_TxFrameBody_TDATA;
 
 
-(* keep = "true" *) wire [2*48-1:0] wMAC_REMOTE_ADDR ;
-(* keep = "true" *) wire [2*32-1:0] wIP4_REMOTE_ADDR ;
-(* keep = "true" *) wire [2*16-1:0] wUDP_REMOTE_PORT ;
+(* keep = "true" *) wire [RX_UDP_Ports_Count*48-1:0] wMAC_REMOTE_ADDR ;
+(* keep = "true" *) wire [RX_UDP_Ports_Count*32-1:0] wIP4_REMOTE_ADDR ;
+(* keep = "true" *) wire [RX_UDP_Ports_Count*16-1:0] wUDP_REMOTE_PORT ;
  
  
 (* KEEP_HIERARCHY = "TRUE" *)
