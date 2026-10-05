@@ -1,6 +1,3 @@
-BUILD_DIR = $$PWD/build
-DESTDIR = $$BUILD_DIR/bin
-
 QT       += core gui
 QT       += network
 
