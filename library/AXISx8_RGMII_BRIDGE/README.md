@@ -1,6 +1,6 @@
 # AXISx8_RGMII_BRIDGE
 
-AXISx8_RGMII_BRIDGE - Verilog library implementing 1000Base-T Ethernet PHY interfacing via RGMII interface.
+AXISx8_RGMII_BRIDGE - A Verilog library, implementing 1000Base-T Ethernet PHY interfacing via RGMII interface.
 # Parameters:
 **RX_ARCH** - Supported architectures for RX path.
 

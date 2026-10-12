@@ -1,6 +1,6 @@
 # AXISx8_RMII_BRIDGE
 
-AXISx8_RMII_BRIDGE - Verilog library implementing 100Base-T/10Base-T Ethernet PHY interfacing via RMII interface.
+AXISx8_RMII_BRIDGE - A Verilog library, implementing 100Base-T/10Base-T Ethernet PHY interfacing via RMII interface.
 
 RMII_LINK_UP is an input used to indicate whether the link is up. If RMII_LINK_UP == 0, no transmission occurs. If RMII_LINK_UP == 1, data is sent to the PHY.
 
