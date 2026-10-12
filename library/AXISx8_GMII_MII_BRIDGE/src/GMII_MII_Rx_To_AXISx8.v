@@ -61,7 +61,7 @@ GMII_RXDV_D<=GMII_RXDV;
 
 if (GMII_MII_MODE_SELECT)
     begin
-    Source_TUSER  <= {GMII_COL,GMII_CRS};
+    Source_TUSER  <= {GMII_CRS , GMII_COL};
     Source_TVALID <= GMII_RXDV;
     Source_TFIRST <= GMII_RXDV & ! GMII_RXDV_D;
     Source_TDATA  <= GMII_RXD;

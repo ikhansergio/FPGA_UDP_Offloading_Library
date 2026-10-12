@@ -23,36 +23,41 @@
 //SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-
-
 module AXISx8_GMII_MII_BRIDGE
 (
-input  wire         GMII_MII_MODE_SELECT  ,         
+input  wire          GMII_MII_MODE_SELECT   ,         
       
-output wire         GMII_TXCLK,
-output wire         GMII_RXCLK,
+output wire          GMII_TXCLK             ,
+output wire          GMII_RXCLK             ,
 
-input  wire         GMII_CLK,
+input  wire          GMII_CLK               ,
 
-input  wire         GMII_RXDV,
-input  wire         GMII_RXERR,
-input  wire [8-1:0] GMII_RXD,
+input  wire          GMII_RXDV              ,
+input  wire          GMII_RXERR             ,
+input  wire [8-1:0]  GMII_RXD               ,
+input  wire          GMII_RX_COL            ,
+input  wire          GMII_RX_CRS            ,
 
-output wire         GMII_TX_EN,
-output wire         GMII_TX_ERR,
-output wire [8-1:0] GMII_TXD,   
+output wire          GMII_TX_EN             ,
+output wire          GMII_TX_ERR            ,
+output wire [8-1:0]  GMII_TXD               ,   
+output  wire         GMII_TX_COL            ,
+output  wire         GMII_TX_CRS            ,
 
+output wire  		 Sink_TREADY             ,
+input  wire          Sink_TVALID            ,
+input  wire          Sink_TERROR            ,
+input  wire          Sink_TFIRST            ,
+input  wire          Sink_TLAST             ,
+input  wire  [8-1:0] Sink_TDATA             ,
+input  wire  [2-1:0] Sink_TUSER             ,
 
-output  wire         GMII_COL,
-output  wire         GMII_CRS,
-
-output wire          Source_TVALID         ,
-output wire          Source_TERROR         ,
-output wire          Source_TFIRST         ,
-output wire          Source_TLAST          ,
+output wire          Source_TVALID          ,
+output wire          Source_TERROR          ,
+output wire          Source_TFIRST          ,
+output wire          Source_TLAST           ,
 output wire  [8-1:0] Source_TDATA    
 );
-
 
 (* KEEP_HIERARCHY = "TRUE" *)
 GMII_MII_Rx_To_AXISx8		GMII_MII_Rx_To_AXISx8_inst
@@ -63,8 +68,8 @@ GMII_MII_Rx_To_AXISx8		GMII_MII_Rx_To_AXISx8_inst
 .GMII_RXERR              (GMII_RXERR			),
 .GMII_RXD                (GMII_RXD				),
 
-.GMII_COL                (1'b0                  ),
-.GMII_CRS                (1'b0                  ),
+.GMII_COL                (GMII_RX_COL           ),
+.GMII_CRS                (GMII_RX_CRS           ),
 
 .Source_TVALID           (Source_TVALID         ),
 .Source_TERROR           (Source_TERROR         ),
@@ -73,8 +78,26 @@ GMII_MII_Rx_To_AXISx8		GMII_MII_Rx_To_AXISx8_inst
 .Source_TDATA            (Source_TDATA          )
 );
 
+(* KEEP_HIERARCHY = "TRUE" *)
+AXISx8_To_GMII_MII_Tx   AXISx8_To_GMII_MII_Tx_inst
+(
+.GMII_MII_MODE_SELECT  (GMII_MII_MODE_SELECT    ),
+.GMII_TXCLK            (GMII_CLK                ),
+   
+.GMII_TXEN             (GMII_TXEN               ),
+.GMII_TXERR            (GMII_TXERR              ),
+.GMII_TXD              (GMII_TXD                ),
 
+.GMII_TX_COL           (GMII_TX_COL             ),
+.GMII_TX_CRS           (GMII_TX_CRS             ),
 
-
+.Sink_TREADY           (Sink_TREADY             ),
+.Sink_TVALID           (Sink_TVALID             ),
+.Sink_TERROR           (Sink_TERROR             ),
+.Sink_TFIRST           (Sink_TFIRST             ),
+.Sink_TLAST            (Sink_TLAST              ),
+.Sink_TDATA            (Sink_TDATA              ),
+.Sink_TUSER            (Sink_TUSER              )
+);
 
 endmodule
