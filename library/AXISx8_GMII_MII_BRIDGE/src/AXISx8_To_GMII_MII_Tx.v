@@ -28,7 +28,7 @@ module AXISx8_To_GMII_MII_Tx
 input   wire         GMII_MII_MODE_SELECT  ,
 input   wire         GMII_TXCLK            ,
    
-output  reg          GMII_TXEN=0           ,
+output  reg          GMII_TX_EN=0          ,
 output  reg          GMII_TXERR=0          ,
 output  reg  [8-1:0] GMII_TXD=0            ,
 
@@ -52,7 +52,7 @@ MII_Hi_Data <= Sink_TDATA[7:4];
 if (GMII_MII_MODE_SELECT)
     begin
 	Sink_TREADY 			        <= 1'b1;
-	GMII_TXEN   			        <= Sink_TVALID;
+	GMII_TX_EN   			        <= Sink_TVALID;
 	GMII_TXERR				        <= Sink_TERROR;
 	GMII_TXD				        <= Sink_TDATA;
 	{GMII_TX_CRS,GMII_TX_COL} 	    <= Sink_TUSER;
@@ -61,7 +61,7 @@ if (GMII_MII_MODE_SELECT)
 	begin
 	Sink_TREADY <= !Sink_TREADY;
 	
-	if (Sink_TREADY) GMII_TXEN		             <= Sink_TVALID;
+	if (Sink_TREADY) GMII_TX_EN		             <= Sink_TVALID;
 	if (Sink_TREADY) GMII_TXERR		             <= Sink_TERROR;
 	if (Sink_TREADY) GMII_TXD		             <= {4'h0, Sink_TDATA [3:0]}; 
 		else if (!Sink_TREADY) GMII_TXD		     <= {4'h0, MII_Hi_Data [3:0]}; 

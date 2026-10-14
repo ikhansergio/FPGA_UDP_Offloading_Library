@@ -26,23 +26,20 @@
 module AXISx8_GMII_MII_BRIDGE
 (
 input  wire          GMII_MII_MODE_SELECT   ,         
-      
-output wire          GMII_TXCLK             ,
-output wire          GMII_RXCLK             ,
 
-input  wire          GMII_CLK               ,
-
+input  wire          GMII_RXCLK             ,
 input  wire          GMII_RXDV              ,
 input  wire          GMII_RXERR             ,
 input  wire [8-1:0]  GMII_RXD               ,
 input  wire          GMII_RX_COL            ,
 input  wire          GMII_RX_CRS            ,
 
+input  wire          GMII_TXCLK             ,
 output wire          GMII_TX_EN             ,
-output wire          GMII_TX_ERR            ,
+output wire          GMII_TXERR             ,
 output wire [8-1:0]  GMII_TXD               ,   
-output  wire         GMII_TX_COL            ,
-output  wire         GMII_TX_CRS            ,
+output wire          GMII_TX_COL            ,
+output wire          GMII_TX_CRS            ,
 
 output wire  		 Sink_TREADY             ,
 input  wire          Sink_TVALID            ,
@@ -59,11 +56,12 @@ output wire          Source_TLAST           ,
 output wire  [8-1:0] Source_TDATA    
 );
 
+
 (* KEEP_HIERARCHY = "TRUE" *)
 GMII_MII_Rx_To_AXISx8		GMII_MII_Rx_To_AXISx8_inst
 (
 .GMII_MII_MODE_SELECT    (GMII_MII_MODE_SELECT	),
-.GMII_RXCLK              (GMII_CLK				),   
+.GMII_RXCLK              (GMII_RXCLK    		),   
 .GMII_RXDV               (GMII_RXDV				),
 .GMII_RXERR              (GMII_RXERR			),
 .GMII_RXD                (GMII_RXD				),
@@ -82,9 +80,9 @@ GMII_MII_Rx_To_AXISx8		GMII_MII_Rx_To_AXISx8_inst
 AXISx8_To_GMII_MII_Tx   AXISx8_To_GMII_MII_Tx_inst
 (
 .GMII_MII_MODE_SELECT  (GMII_MII_MODE_SELECT    ),
-.GMII_TXCLK            (GMII_CLK                ),
+.GMII_TXCLK            (GMII_TXCLK               ),
    
-.GMII_TXEN             (GMII_TXEN               ),
+.GMII_TX_EN            (GMII_TX_EN              ),
 .GMII_TXERR            (GMII_TXERR              ),
 .GMII_TXD              (GMII_TXD                ),
 
