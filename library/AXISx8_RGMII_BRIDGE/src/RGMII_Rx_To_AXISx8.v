@@ -183,7 +183,7 @@ begin
     Source_TERROR <= Source_TERROR_Reg && RGMII_RX_CLK_EN_Reg;
     Source_TFIRST <= Source_TFIRST_Reg && RGMII_RX_CLK_EN_Reg;
     Source_TLAST  <= Source_TLAST_Reg  && RGMII_RX_CLK_EN_Reg;
-    if (RGMII_RX_CLK_EN_Reg ) Source_TDATA  <= Source_TDATA_Reg;
+    Source_TDATA  <= Source_TDATA_Reg;
     end 
 end
 endgenerate
