@@ -1,3 +1,3 @@
 [**UDP_LoopBack Project**](./UDP_LoopBack/README.md) - A simple UDP loopback example. All UDP packets received by the FPGA device's port are sent back. They are transmitted to the same port from which the UDP datagram originated. ARP and PING functions are enabled.
 
-**Zynq_GMII_MII_2_RGMII_Adapter Project** is an example project that demonstrates how to use a library to convert a Zynq system's GMII/MII interface (via EMIO) into an RGMII interface.
+**Zynq_GMII_MII_2_RGMII_Adapter Project** - An example project that demonstrates how to use a library to convert a Zynq system's GMII/MII interface (via EMIO) into an RGMII interface.
