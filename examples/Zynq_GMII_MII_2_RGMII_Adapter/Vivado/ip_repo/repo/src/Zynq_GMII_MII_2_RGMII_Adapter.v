@@ -109,6 +109,42 @@ AXISx8_RGMII_BRIDGE
 );
 
 
+// TODO: Check RGMII Sink_PHY_TREADY signal corrct processing in 100/10 Mbit modes.
+// For full RXC clocking mode without AXISx8_Clock_Crossing_FIFO we need to sync phases of RXC divider in AXISx8_RGMII_BRIDGE
+
+//generate
+//if ((RGMII_TXD_REFERENCE_CLK == "REFERENCE_PHY_RXC")&&(RGMII_TXC_REFERENCE_CLK == "REFERENCE_PHY_RXC")) 
+//begin
+//(* KEEP_HIERARCHY = "TRUE" *)
+//AXISx8_Clock_Crossing_FIFO 
+//#(
+//.MB_ARCH (MB_ARCH )
+//)AXISx8_Clock_Crossing_FIFO_INST 
+//(
+//  .s_axis_aresetn                   (1'b1                                       ),  // input wire s_axis_aresetn
+//  .s_axis_aclk                      (wRGMII_RX_dCLK                             ),  // input wire s_axis_aclk
+//  .s_axis_tvalid                    (wRGMII_TX_dVAL                             ),  // input wire s_axis_tvalid
+//  .s_axis_tready                    (1'b1                                       ),  // output wire s_axis_tready
+//  .s_axis_tdata                     (wRGMII_TX_DATA                             ),  // input wire [7 : 0] s_axis_tdata
+//  .s_axis_tlast                     (wRGMII_TX_dEoF                             ),  // input wire s_axis_tlast
+//  .s_axis_tuser                     (wRGMII_TX_dERR                             ),  // input wire [0 : 0] s_axis_tuser
+  
+//  .m_axis_aclk                      ( RGMII_TXD_REFERENCE                       ),  // input wire m_axis_aclk
+//  .m_axis_tvalid                    (wRGMII_FIFO_TX_dVAL                        ),  // output wire m_axis_tvalid
+//  .m_axis_tready                    (wRGMII_FIFO_TX_dRDY                        ),  // input wire m_axis_tready
+//  .m_axis_tdata                     (wRGMII_FIFO_TX_DATA                        ),  // output wire [7 : 0] m_axis_tdata
+//  .m_axis_tlast                     (wRGMII_FIFO_TX_dEoF                        ),  // output wire m_axis_tlast
+//  .m_axis_tuser                     (wRGMII_FIFO_TX_dErr                        )   // output wire [0 : 0] m_axis_tuser
+//);
+//end
+//else 
+//begin
+//assign wRGMII_FIFO_TX_dVAL = wRGMII_TX_dVAL;
+//assign wRGMII_FIFO_TX_DATA = wRGMII_TX_DATA;
+//assign wRGMII_FIFO_TX_dEoF = wRGMII_TX_dEoF;
+//assign wRGMII_FIFO_TX_dErr = wRGMII_TX_dERR;
+//end
+//endgenerate
 
 (* KEEP_HIERARCHY = "TRUE" *)
 AXISx8_Clock_Crossing_FIFO 
@@ -130,7 +166,6 @@ AXISx8_Clock_Crossing_FIFO
   .m_axis_tdata                     (wRGMII_FIFO_TX_DATA                        ),  // output wire [7 : 0] m_axis_tdata
   .m_axis_tlast                     (wRGMII_FIFO_TX_dEoF                        ),  // output wire m_axis_tlast
   .m_axis_tuser                     (wRGMII_FIFO_TX_dErr                        )   // output wire [0 : 0] m_axis_tuser
-  
 );
 
 
