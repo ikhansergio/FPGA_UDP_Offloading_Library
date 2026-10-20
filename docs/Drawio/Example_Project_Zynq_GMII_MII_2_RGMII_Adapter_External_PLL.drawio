@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 OPR/131.0.0.0">
   <diagram name="Page-1" id="g0-s9DwC3oRhXUgsUFM5">
-    <mxGraphModel dx="988" dy="577" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1178" dy="708" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -10,7 +10,7 @@
         <mxCell id="l-Vy5mzzBIYiazb95XEs-61" parent="1" style="dashed=0;outlineConnect=0;align=center;html=1;shape=mxgraph.pid.engines.generator_(ac);fontSize=12;" value="G" vertex="1">
           <mxGeometry height="40" width="40" x="500" y="1000" as="geometry" />
         </mxCell>
-        <mxCell id="yTzFU9XdyJXrLIyD52_Z-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;rotation=-90;" value="&lt;div&gt;&lt;span style=&quot;background-color: transparent; font-size: 8px;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;" vertex="1">
+        <mxCell id="yTzFU9XdyJXrLIyD52_Z-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;rotation=-90;" value="&lt;div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;AXISx8_GMII_MII_BRIDGE&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="80" width="240" y="880" as="geometry" />
         </mxCell>
         <mxCell id="yTzFU9XdyJXrLIyD52_Z-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;textDirection=vertical-rl;rotation=-180;fillColor=#d0cee2;strokeColor=#56517e;fontSize=18;" value="GMII/MII" vertex="1">
@@ -93,6 +93,11 @@
         <mxCell id="AnH1CLtexSemaWGZ5eR8-14" connectable="0" parent="yTzFU9XdyJXrLIyD52_Z-33" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];labelBackgroundColor=none;labelBorderColor=none;labelPosition=center;verticalLabelPosition=top;rotation=-90;" value="125 Mhz 90 Deg" vertex="1">
           <mxGeometry relative="1" x="-0.695" y="-1" as="geometry">
             <mxPoint x="338" y="-11" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-7AbKlQtiCwZGIa6q3Z3-1" connectable="0" parent="yTzFU9XdyJXrLIyD52_Z-33" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];labelBackgroundColor=none;labelBorderColor=none;labelPosition=center;verticalLabelPosition=top;" value="Zynq_GMII_MII_2_RGMII_Adapter" vertex="1">
+          <mxGeometry relative="1" x="-0.695" y="-1" as="geometry">
+            <mxPoint x="-42" y="-151" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="yTzFU9XdyJXrLIyD52_Z-38" edge="1" parent="1" source="yTzFU9XdyJXrLIyD52_Z-1" style="endArrow=none;html=1;rounded=0;exitX=0.213;exitY=1.025;exitDx=0;exitDy=0;exitPerimeter=0;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;entryX=0.125;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=classic;startFill=1;endFill=0;" target="yTzFU9XdyJXrLIyD52_Z-23" value="">

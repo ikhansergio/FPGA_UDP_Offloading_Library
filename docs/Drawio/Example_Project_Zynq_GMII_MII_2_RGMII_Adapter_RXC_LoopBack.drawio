@@ -1,13 +1,13 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 OPR/131.0.0.0">
   <diagram name="Page-1" id="g0-s9DwC3oRhXUgsUFM5">
-    <mxGraphModel dx="566" dy="340" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="817" dy="491" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="yTzFU9XdyJXrLIyD52_Z-27" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" value="" vertex="1">
           <mxGeometry height="440" width="440" x="40" y="680" as="geometry" />
         </mxCell>
-        <mxCell id="yTzFU9XdyJXrLIyD52_Z-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;rotation=-90;" value="&lt;div&gt;&lt;span style=&quot;background-color: transparent; font-size: 8px;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;" vertex="1">
+        <mxCell id="yTzFU9XdyJXrLIyD52_Z-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;rotation=-90;" value="&lt;div&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;&lt;font&gt;AXISx8_GMII_MII_BRIDGE&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;&lt;font&gt;&lt;br&gt;&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="80" width="240" y="880" as="geometry" />
         </mxCell>
         <mxCell id="yTzFU9XdyJXrLIyD52_Z-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;textDirection=vertical-rl;rotation=-180;fillColor=#d0cee2;strokeColor=#56517e;fontSize=18;" value="GMII/MII" vertex="1">
@@ -137,6 +137,9 @@
             <mxPoint x="480" y="760" as="sourcePoint" />
             <mxPoint x="520" y="760" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="Hz61Koo9H7REDLEoem1f-1" connectable="0" parent="1" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];labelBackgroundColor=none;labelBorderColor=none;labelPosition=center;verticalLabelPosition=top;" value="Zynq_GMII_MII_2_RGMII_Adapter" vertex="1">
+          <mxGeometry x="130" y="700" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
