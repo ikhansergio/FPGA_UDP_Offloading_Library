@@ -31,30 +31,30 @@ void TG_UDP_Control::Send_UDP_Data2(QByteArray Data)
     mmmmm.setAddress("192.168.0.92");
     qint64 SendResult=0;
 
-    unsigned int index =0;
+    //unsigned int index =0;
 
     unsigned int PackCount =0;
 
 
-    for (int j=0;j<1000000; j++)
-    {
+    //for (int j=0;j<1000000; j++)
+    //{
 
-       if (index==0) QThread::msleep(10);
-       index++;
-       if (index>100)index=0;
+       //if (index==0) QThread::msleep(10);
+       //index++;
+       //if (index>100)index=0;
 
        *reinterpret_cast<unsigned int*> (Data.data())  = PackCount;
 
-        for (int i=0;i<10000; i++)
-        {
+        //for (int i=0;i<10000; i++)
+        //{
 
             SendResult = TG_UdpSocket->writeDatagram(Data, mmmmm , 9998);
             TG_UdpSocket->flush();
-            if (SendResult>0)  break;
+            //if (SendResult>0)  break;
 
-        }
+        //}
     PackCount++;
-    }
+    //}
 
 std::cout << "PackCount " << PackCount << std::endl;
 }
