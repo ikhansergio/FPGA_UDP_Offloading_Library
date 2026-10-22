@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "CRC32.h"
+#include <QTextBlock>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -68,10 +69,20 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    QByteArray Data;
-    Data.resize(1024);
-    emit Send_UDP_Data2(Data);
+    //ui->RxTextBrowser->clear();
+    int TxLineCount = ui->TxTextBrowser->document()->lineCount();
 
+    if (TxLineCount>0)
+    {
+
+        for (int i=0; i<TxLineCount;i++ )
+        {
+            QTextBlock Textblock= ui->TxTextBrowser->document()->findBlockByLineNumber(i);
+
+            QByteArray Data = Textblock.text().toUtf8();
+            emit Send_UDP_Data2(Data);
+        }
+    }
 }
 
 
