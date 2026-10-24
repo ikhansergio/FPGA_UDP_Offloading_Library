@@ -5,7 +5,7 @@ module Top
 parameter ETH_RESET_POLARITY = "POSITIVE"   // "POSITIVE" or "NEGATIVE"
 )
 (
-input CLK_100MHZ                    ,
+input CLK_50MHZ                    ,
 
 
 input  wire          RGMII_RXC      ,
