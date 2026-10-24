@@ -1,19 +1,22 @@
 `timescale 1ns / 1ps
 
 module Top
+#(
+parameter ETH_RESET_POLARITY = "POSITIVE"   // "POSITIVE" or "NEGATIVE"
+)
 (
-input CLK_50MHZ                    ,
+input CLK_100MHZ                    ,
 
 
-input  wire          RGMII_RXC,
-input  wire          RGMII_RX_CTL,
-input  wire [4-1:0]  RGMII_RXD,
+input  wire          RGMII_RXC      ,
+input  wire          RGMII_RX_CTL   ,
+input  wire [4-1:0]  RGMII_RXD      ,
 
-output wire          RGMII_TXC,
-output wire          RGMII_TX_CTL,
-output wire [4-1:0]  RGMII_TXD,
+output wire          RGMII_TXC      ,
+output wire          RGMII_TX_CTL   ,
+output wire [4-1:0]  RGMII_TXD      ,
 
-output reg EtheReset =0             // Inverted on PCB. EtheReset == 1 -> PHY is reseted
+output reg           RGMII_PHY_RST =0             
 
  );
  
@@ -27,6 +30,7 @@ output reg EtheReset =0             // Inverted on PCB. EtheReset == 1 -> PHY is
 
 (* keep = "true" *) wire           wEthClk125;
 (* keep = "true" *) wire           wEthClk125_90;
+(* keep = "true" *) wire           wEthClk_25;
 
  (* KEEP_HIERARCHY = "TRUE" *)
  Sys_Clk_PLL  Sys_Clk_PLL_inst
@@ -34,12 +38,22 @@ output reg EtheReset =0             // Inverted on PCB. EtheReset == 1 -> PHY is
   // Clock out ports
   .clk_out1 (wEthClk125),
   .clk_out2 (wEthClk125_90),
+  .clk_out3 (wEthClk_25),
   // Status and control signals
   .locked   (),
  // Clock in ports
   .clk_in1 (CLK_50MHZ)
  );
  
+reg [20-1:0] EtheResetCounter =1; 
+wire wResetCondition;
+assign wResetCondition = (EtheResetCounter!=0);
+always @(posedge wEthClk_25)
+begin
+if (wResetCondition) EtheResetCounter<=EtheResetCounter+1'b1;
+if (ETH_RESET_POLARITY == "POSITIVE" ) RGMII_PHY_RST <= wResetCondition;
+    else RGMII_PHY_RST <= !wResetCondition;
+end 
 
 (* KEEP_HIERARCHY = "TRUE" *)
 UDP_LoopBack_Wrapper
