@@ -1,6 +1,6 @@
 
-set_property IOSTANDARD LVCMOS33 [get_ports EtheReset]
-set_property PACKAGE_PIN D10 [get_ports EtheReset]
+set_property IOSTANDARD LVCMOS33 [get_ports RGMII_PHY_RST]
+set_property PACKAGE_PIN D10 [get_ports RGMII_PHY_RST]
 
 set_property IOSTANDARD LVCMOS33 [get_ports CLK_100MHZ]
 set_property PACKAGE_PIN E15 [get_ports CLK_100MHZ]
