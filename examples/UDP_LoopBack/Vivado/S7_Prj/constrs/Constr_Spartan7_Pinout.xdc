@@ -1,6 +1,6 @@
 set_property PACKAGE_PIN P14 [get_ports CLK_100MHZ]
 
-set_property PACKAGE_PIN J11 [get_ports EtheReset]
+set_property PACKAGE_PIN J11 [get_ports RGMII_PHY_RST]
 
 set_property PACKAGE_PIN P7  [get_ports {RGMII_TXD[0]}]
 set_property PACKAGE_PIN R7  [get_ports {RGMII_TXD[1]}]
@@ -18,7 +18,7 @@ set_property PACKAGE_PIN N12 [get_ports RGMII_RXC]
 
 #set_property PACKAGE_PIN N12 [get_ports CLK_100MHZ]
 
-#set_property PACKAGE_PIN L14 [get_ports EtheReset]
+#set_property PACKAGE_PIN L14 [get_ports RGMII_PHY_RST]
 
 #set_property PACKAGE_PIN K13 [get_ports {RGMII_TXD[0]}]
 #set_property PACKAGE_PIN J15 [get_ports {RGMII_TXD[1]}]
@@ -35,7 +35,7 @@ set_property PACKAGE_PIN N12 [get_ports RGMII_RXC]
 #set_property PACKAGE_PIN P14 [get_ports RGMII_RXC]
 
 
-set_property IOSTANDARD LVCMOS33 [get_ports EtheReset]
+set_property IOSTANDARD LVCMOS33 [get_ports RGMII_PHY_RST]
 
 set_property IOSTANDARD LVCMOS33 [get_ports CLK_100MHZ]
 
