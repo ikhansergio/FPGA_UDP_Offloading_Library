@@ -2,11 +2,12 @@
 
 module Top
 #(
-parameter ETH_RESET_POLARITY = "POSITIVE"   // "POSITIVE" or "NEGATIVE"
+parameter ETH_RESET_POLARITY = "POSITIVE",   // "POSITIVE" or "NEGATIVE"
+parameter TX_MAC_Ports_Count = 1  ,
+parameter RX_UDP_Ports_Count = 1    
 )
 (
 input CLK_100MHZ                    ,
-
 
 input  wire          RGMII_RXC      ,
 input  wire          RGMII_RX_CTL   ,
@@ -58,17 +59,19 @@ end
 (* KEEP_HIERARCHY = "TRUE" *)
 UDP_LoopBack_Wrapper
 #(
-.RX_ARCH                ("XLX_SERIES7"  ),
-.TX_ARCH                ("XLX_SERIES7"  ),
-.MB_ARCH                ("XLX_SERIES7"  ),
-.RX_CLK_BUFF_SCH_TYPE   (3              ),
-.OVER_SAMPLING          ("NO"           ),
-.OVER_SAMPLING_SHIFT    (0              )
+.RX_ARCH                ("XLX_SERIES7"      ),
+.TX_ARCH                ("XLX_SERIES7"      ),
+.MB_ARCH                ("XLX_SERIES7"      ),
+.RX_CLK_BUFF_SCH_TYPE   (3                  ),
+.TX_MAC_Ports_Count     (TX_MAC_Ports_Count ),
+.RX_UDP_Ports_Count		(RX_UDP_Ports_Count ),
+.OVER_SAMPLING          ("NO"               ),
+.OVER_SAMPLING_SHIFT    (0                  )
 )UDP_LoopBack_Wrapper_inst
 (
-.CLK625MHZ      (0),
-.EthClk125      (wEthClk125),
-.EthClk125_90   (wEthClk125_90),
+.CLK625MHZ                  (0),
+.EthClk125                  (wEthClk125),
+.EthClk125_90               (wEthClk125_90),
 
 .MAC_LOCAL_ADDR_IN          (wMAC_LOCAL_ADDR),
 .IP4_LOCAL_ADDR_IN          (wIP4_LOCAL_ADDR),
@@ -76,12 +79,12 @@ UDP_LoopBack_Wrapper
 .UDP_LOCAL_PORT_TG_IN       (wUDP_LOCAL_PORT_TG),
 .UDP_LOCAL_PORT_LB_IN       (wUDP_LOCAL_PORT_LB),
 
-.Source_CLK                 (),
-.Source_TFIRST              (),
-.Source_TVALID              (),
-.Source_TERROR              (),
-.Source_TLAST               (),
-.Source_TDATA               (),
+.UDP_Data_Source_CLK        (),
+.UDP_Data_Source_TFIRST     (),
+.UDP_Data_Source_TVALID     (),
+.UDP_Data_Source_TERROR     (),
+.UDP_Data_Source_TLAST      (),
+.UDP_Data_Source_TDATA      (),
 
 .MAC_REMOTE_ADDR_OUT        (),
 .IP4_REMOTE_ADDR_OUT        (),
@@ -93,14 +96,13 @@ UDP_LoopBack_Wrapper
 .MAC_TxFrameBody_TLAST      (0),
 .MAC_TxFrameBody_TDATA      (0),
 
+.RGMII_RXC                  (RGMII_RXC      ),
+.RGMII_RX_CTL               (RGMII_RX_CTL   ),
+.RGMII_RXD                  (RGMII_RXD      ),
 
-.RGMII_RXC      (RGMII_RXC),
-.RGMII_RX_CTL   (RGMII_RX_CTL),
-.RGMII_RXD      (RGMII_RXD),
-
-.RGMII_TXC      (RGMII_TXC),
-.RGMII_TX_CTL   (RGMII_TX_CTL),
-.RGMII_TXD      (RGMII_TXD)
+.RGMII_TXC                  (RGMII_TXC      ),
+.RGMII_TX_CTL               (RGMII_TX_CTL   ),
+.RGMII_TXD                  (RGMII_TXD      )
 );
 
 endmodule

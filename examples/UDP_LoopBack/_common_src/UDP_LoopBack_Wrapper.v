@@ -39,6 +39,8 @@ parameter MB_ARCH = "DEFAULT_LOGIC" ,
 parameter RX_CLK_BUFF_SCH_TYPE  = 0 ,
 parameter OVER_SAMPLING = "NO"      ,                       // "YES" or "NO"
 parameter OVER_SAMPLING_SHIFT  = 0  ,
+parameter TX_MAC_Ports_Count   = 1  ,                       //  Number of  Tx Masters  
+parameter RX_UDP_Ports_Count   = 1  ,                       //  Number of  RX UDP Chanels
 parameter COMAND_UNIQ_CONST = 32'hAFBEADDE
 )
 (
@@ -46,22 +48,22 @@ input  wire          CLK625MHZ,
 input  wire          EthClk125,
 input  wire          EthClk125_90,
 
-output wire  		  Source_CLK,
-output wire           Source_TFIRST,
-output wire           Source_TVALID,
-output wire           Source_TERROR,
-output wire           Source_TLAST ,
-output wire [ 8-1:0 ] Source_TDATA ,
+output wire  		                       UDP_Data_Source_CLK    ,
+output wire [ RX_UDP_Ports_Count*1-1:0 ] UDP_Data_Source_TFIRST ,
+output wire [ RX_UDP_Ports_Count*1-1:0 ] UDP_Data_Source_TVALID ,
+output wire [ RX_UDP_Ports_Count*1-1:0 ] UDP_Data_Source_TERROR ,
+output wire [ RX_UDP_Ports_Count*1-1:0 ] UDP_Data_Source_TLAST  ,
+output wire [ RX_UDP_Ports_Count*8-1:0 ] UDP_Data_Source_TDATA  ,
 
-output wire [ 48-1:0] MAC_REMOTE_ADDR_OUT,
-output wire [ 32-1:0] IP4_REMOTE_ADDR_OUT,
-output wire [ 16-1:0] UDP_REMOTE_PORT_OUT,
+output wire [ RX_UDP_Ports_Count*48-1:0] MAC_REMOTE_ADDR_OUT,
+output wire [ RX_UDP_Ports_Count*32-1:0] IP4_REMOTE_ADDR_OUT,
+output wire [ RX_UDP_Ports_Count*16-1:0] UDP_REMOTE_PORT_OUT,
 
-output wire [1-1:0]	  MAC_TxFrameBody_TRDY,
-input  wire [1-1:0]	  MAC_TxFrameBody_TVALID,
-input  wire [1-1:0]	  MAC_TxFrameBody_TERROR,
-input  wire [1-1:0]	  MAC_TxFrameBody_TLAST,
-input  wire [8-1:0]   MAC_TxFrameBody_TDATA,
+output wire [ TX_MAC_Ports_Count*1-1:0 ] MAC_TxFrameBody_TRDY,
+input  wire [ TX_MAC_Ports_Count*1-1:0 ] MAC_TxFrameBody_TVALID,
+input  wire [ TX_MAC_Ports_Count*1-1:0 ] MAC_TxFrameBody_TERROR,
+input  wire [ TX_MAC_Ports_Count*1-1:0 ] MAC_TxFrameBody_TLAST,
+input  wire [ TX_MAC_Ports_Count*8-1:0 ] MAC_TxFrameBody_TDATA,
 
 input  wire          RGMII_RXC,
 input  wire          RGMII_RX_CTL,
@@ -74,25 +76,27 @@ output wire [4-1:0]  RGMII_TXD,
 input  wire [48-1:0] MAC_LOCAL_ADDR_IN  ,
 input  wire [32-1:0] IP4_LOCAL_ADDR_IN  ,
 
-input  wire [16-1:0] UDP_LOCAL_PORT_UC_IN,
-input  wire [16-1:0] UDP_LOCAL_PORT_TG_IN, 
-input  wire [16-1:0] UDP_LOCAL_PORT_LB_IN 
+input  wire [ RX_UDP_Ports_Count*16-1:0] UDP_LOCAL_PORT_UC_IN,
+input  wire [                    16-1:0] UDP_LOCAL_PORT_TG_IN, 
+input  wire [                    16-1:0] UDP_LOCAL_PORT_LB_IN 
 
 );
 
+localparam RX_UDP_Ports_Full_Count   =  RX_UDP_Ports_Count + 2 ;
+
 wire wUDP_CLK;
  
-(* KEEP = "TRUE" *)wire	[3*1-1:0] wUDP_Data_TFIRST;
-(* KEEP = "TRUE" *)wire	[3*1-1:0] wUDP_Data_TVALID;
-(* KEEP = "TRUE" *)wire	[3*1-1:0] wUDP_Data_TERROR;
-(* KEEP = "TRUE" *)wire	[3*1-1:0] wUDP_Data_TLAST ;
-(* KEEP = "TRUE" *)wire [3*8-1:0] wUDP_Data_TDATA ;
+(* KEEP = "TRUE" *)wire	[RX_UDP_Ports_Full_Count*1-1:0] wUDP_Data_TFIRST;
+(* KEEP = "TRUE" *)wire	[RX_UDP_Ports_Full_Count*1-1:0] wUDP_Data_TVALID;
+(* KEEP = "TRUE" *)wire	[RX_UDP_Ports_Full_Count*1-1:0] wUDP_Data_TERROR;
+(* KEEP = "TRUE" *)wire	[RX_UDP_Ports_Full_Count*1-1:0] wUDP_Data_TLAST ;
+(* KEEP = "TRUE" *)wire [RX_UDP_Ports_Full_Count*8-1:0] wUDP_Data_TDATA ;
 
-(* keep = "true" *) wire [3*48-1:0] wMAC_REMOTE_ADDR;
-(* keep = "true" *) wire [3*32-1:0] wIP4_REMOTE_ADDR; 
-(* keep = "true" *) wire [3*16-1:0] wUDP_REMOTE_PORT;  
+(* keep = "true" *) wire [RX_UDP_Ports_Full_Count*48-1:0] wMAC_REMOTE_ADDR;
+(* keep = "true" *) wire [RX_UDP_Ports_Full_Count*32-1:0] wIP4_REMOTE_ADDR; 
+(* keep = "true" *) wire [RX_UDP_Ports_Full_Count*16-1:0] wUDP_REMOTE_PORT;  
 
-(* keep = "true" *) wire [3*16-1:0] wUDP_LOCAL_PORT_IN;
+(* keep = "true" *) wire [RX_UDP_Ports_Full_Count*16-1:0] wUDP_LOCAL_PORT_IN;
 assign wUDP_LOCAL_PORT_IN = {UDP_LOCAL_PORT_UC_IN,UDP_LOCAL_PORT_TG_IN,UDP_LOCAL_PORT_LB_IN}; 
 
 //(* KEEP = "TRUE" *)wire            wUDP_Data_TFIRST_x32 ;
@@ -111,13 +115,14 @@ assign wUDP_LOCAL_PORT_IN = {UDP_LOCAL_PORT_UC_IN,UDP_LOCAL_PORT_TG_IN,UDP_LOCAL
  (* KEEP_HIERARCHY = "TRUE" *)
  UDP_Offloading_Engine_RGMII_Wrapper
 #(
-.RX_ARCH (RX_ARCH),
-.TX_ARCH (TX_ARCH),
-.MB_ARCH (MB_ARCH),
-.RX_CLK_BUFF_SCH_TYPE(RX_CLK_BUFF_SCH_TYPE),
-.RX_UDP_Ports_Count (3),
-.OVER_SAMPLING(OVER_SAMPLING),
-.OVER_SAMPLING_SHIFT(OVER_SAMPLING_SHIFT)
+.RX_ARCH                (RX_ARCH                    ),
+.TX_ARCH                (TX_ARCH                    ),
+.MB_ARCH                (MB_ARCH                    ),
+.RX_CLK_BUFF_SCH_TYPE   (RX_CLK_BUFF_SCH_TYPE       ),
+.TX_MAC_Ports_Count     (TX_MAC_Ports_Count         ),
+.RX_UDP_Ports_Count     (RX_UDP_Ports_Full_Count    ),
+.OVER_SAMPLING          (OVER_SAMPLING              ),
+.OVER_SAMPLING_SHIFT    (OVER_SAMPLING_SHIFT        )
 )UDP_Offloading_Engine_RGMII_Wrapper_inst
 (
 .CLK625MHZ                  (CLK625MHZ),
@@ -263,22 +268,22 @@ AXISx8_UDP_TG_Controller    AXISx8_UDP_TG_Controller_inst
 . POSITION                  (wPOSITION                      ), 
 . CommandCode               (wCommandCode                   ),
     
-.TG_Start_Pulse             (wTG_Start_Pulse),
-.TG_PacketCount             (wTG_PacketCount),
-.TG_PacketSize              (wTG_PacketSize),  
-.TG_PacketGap               (wTG_PacketGap) 
+.TG_Start_Pulse             (wTG_Start_Pulse                ),
+.TG_PacketCount             (wTG_PacketCount                ),
+.TG_PacketSize              (wTG_PacketSize                 ),  
+.TG_PacketGap               (wTG_PacketGap                  ) 
             
 );
 
-assign Source_CLK       =  wUDP_CLK; 
-assign Source_TFIRST    =  wUDP_Data_TFIRST      [2];
-assign Source_TVALID    =  wUDP_Data_TVALID      [2];
-assign Source_TERROR    =  wUDP_Data_TERROR      [2];
-assign Source_TLAST     =  wUDP_Data_TLAST       [2];
-assign Source_TDATA     =  wUDP_Data_TDATA       [2*8 +: 8];
+assign UDP_Data_Source_CLK       =  wUDP_CLK; 
+assign UDP_Data_Source_TFIRST    =  wUDP_Data_TFIRST      [2*1 +: RX_UDP_Ports_Count*1];
+assign UDP_Data_Source_TVALID    =  wUDP_Data_TVALID      [2*1 +: RX_UDP_Ports_Count*1];
+assign UDP_Data_Source_TERROR    =  wUDP_Data_TERROR      [2*1 +: RX_UDP_Ports_Count*1];
+assign UDP_Data_Source_TLAST     =  wUDP_Data_TLAST       [2*1 +: RX_UDP_Ports_Count*1];
+assign UDP_Data_Source_TDATA     =  wUDP_Data_TDATA       [2*8 +: RX_UDP_Ports_Count*8];
 
-assign MAC_REMOTE_ADDR_OUT  =   wMAC_REMOTE_ADDR [2*48+:48];
-assign IP4_REMOTE_ADDR_OUT  =   wIP4_REMOTE_ADDR [2*32+:32];
-assign UDP_REMOTE_PORT_OUT  =   wUDP_REMOTE_PORT [2*16+:16];
+assign MAC_REMOTE_ADDR_OUT  =   wMAC_REMOTE_ADDR [2*48+: RX_UDP_Ports_Count*48];
+assign IP4_REMOTE_ADDR_OUT  =   wIP4_REMOTE_ADDR [2*32+: RX_UDP_Ports_Count*32];
+assign UDP_REMOTE_PORT_OUT  =   wUDP_REMOTE_PORT [2*16+: RX_UDP_Ports_Count*16];
 
 endmodule

@@ -36,7 +36,8 @@ parameter RX_ARCH = "DEFAULT_LOGIC" ,
 parameter TX_ARCH = "DEFAULT_LOGIC" ,
 parameter MB_ARCH = "DEFAULT_LOGIC" ,
 parameter OVER_SAMPLING = "NO"      ,                       // "YES" or "NO"
-parameter OVER_SAMPLING_SHIFT  = 0  ,  
+parameter OVER_SAMPLING_SHIFT  = 0  ,
+parameter TX_MAC_Ports_Count   = 1  ,                       //  Number of  Tx Masters  
 parameter RX_UDP_Ports_Count   = 2  ,                       //  Number of  RX UDP Chanels
 parameter RX_CLK_BUFF_SCH_TYPE = 0 
 )
@@ -66,11 +67,11 @@ output wire [ RX_UDP_Ports_Count*1-1:0 ] UDP_Data_Source_TERROR,
 output wire [ RX_UDP_Ports_Count*1-1:0 ] UDP_Data_Source_TLAST ,
 output wire [ RX_UDP_Ports_Count*8-1:0 ] UDP_Data_Source_TDATA ,
 
-output wire [1-1:0]	                    MAC_TxFrameBody_TRDY,
-input  wire [1-1:0]	                    MAC_TxFrameBody_TVALID,
-input  wire [1-1:0]	                    MAC_TxFrameBody_TERROR,
-input  wire [1-1:0]	                    MAC_TxFrameBody_TLAST,
-input  wire [8-1:0]                     MAC_TxFrameBody_TDATA,
+output wire [ TX_MAC_Ports_Count*1-1:0 ] MAC_TxFrameBody_TRDY,
+input  wire [ TX_MAC_Ports_Count*1-1:0 ] MAC_TxFrameBody_TVALID,
+input  wire [ TX_MAC_Ports_Count*1-1:0 ] MAC_TxFrameBody_TERROR,
+input  wire [ TX_MAC_Ports_Count*1-1:0 ] MAC_TxFrameBody_TLAST,
+input  wire [ TX_MAC_Ports_Count*8-1:0 ] MAC_TxFrameBody_TDATA,
 
 input  wire [48-1:0]                     MAC_LOCAL_ADDR_IN  ,
 input  wire [32-1:0]                     IP4_LOCAL_ADDR_IN  ,
@@ -92,7 +93,7 @@ input  wire [ 4-1:0] Sink_TKEEP,
 input  wire [32-1:0] Sink_TDATA
 );
 
-
+localparam TX_MAC_Ports_Full_Count   =  TX_MAC_Ports_Count + 2 ;
  
 wire                    wRGMII_RX_dCLK;
 wire                    wRGMII_RX_dVAL;
@@ -115,11 +116,11 @@ wire                    wRGMII_TX_dERR;
 wire                    wRGMII_TX_dEoF;
 wire [7:0]              wRGMII_TX_DATA;
 
-wire [1*3-1:0]	         wMAC_TxFrameBody_TRDY;
-wire [1*3-1:0]	         wMAC_TxFrameBody_TERROR;
-wire [1*3-1:0]	         wMAC_TxFrameBody_TVALID;
-wire [1*3-1:0]	         wMAC_TxFrameBody_TLAST;
-wire [8*3-1:0]           wMAC_TxFrameBody_TDATA;
+wire [TX_MAC_Ports_Full_Count*1-1:0]	         wMAC_TxFrameBody_TRDY;
+wire [TX_MAC_Ports_Full_Count*1-1:0]	         wMAC_TxFrameBody_TERROR;
+wire [TX_MAC_Ports_Full_Count*1-1:0]	         wMAC_TxFrameBody_TVALID;
+wire [TX_MAC_Ports_Full_Count*1-1:0]	         wMAC_TxFrameBody_TLAST;
+wire [TX_MAC_Ports_Full_Count*8-1:0]	         wMAC_TxFrameBody_TDATA;
 
 
 (* keep = "true" *) wire [RX_UDP_Ports_Count*48-1:0] wMAC_REMOTE_ADDR ;
@@ -197,11 +198,11 @@ AXISx8_Clock_Crossing_FIFO
 (* KEEP_HIERARCHY = "TRUE" *)
 AXISx8_UDP_Offloading_Engine   
 #(
-.MB_ARCH		    (   MB_ARCH             ),
-.TxPortCount        (   3                   ),
-.RX_UDP_Ports_Count (   RX_UDP_Ports_Count  ),
-.Has_ARP_Proc       (  "YES"                ),                        // "YES" or "NO"   
-.HasICMP_PING       (  "YES"                )                         // "YES" or "NO"
+.MB_ARCH		    (   MB_ARCH                   ),
+.TxPortCount        (   TX_MAC_Ports_Full_Count   ),
+.RX_UDP_Ports_Count (   RX_UDP_Ports_Count        ),
+.Has_ARP_Proc       (  "YES"                      ),                        // "YES" or "NO"   
+.HasICMP_PING       (  "YES"                      )                         // "YES" or "NO"
 )
  AXISx8_UDP_Offloading_Engine_inst
  (
@@ -308,10 +309,11 @@ AXISx8_UDP_TG AXISx8_UDP_TG_inst
 . Source_TDATA          (wMAC_TxFrameBody_TDATA     [1*8 +:8])  
 );
 
-assign wMAC_TxFrameBody_TRDY        [2]         = MAC_TxFrameBody_TRDY;
-assign wMAC_TxFrameBody_TVALID      [2]         = MAC_TxFrameBody_TVALID;
-assign wMAC_TxFrameBody_TERROR      [2]         = MAC_TxFrameBody_TERROR;
-assign wMAC_TxFrameBody_TLAST       [2]         = MAC_TxFrameBody_TLAST;      
-assign wMAC_TxFrameBody_TDATA       [2*8 +:8]   = MAC_TxFrameBody_TDATA;
+assign wMAC_TxFrameBody_TRDY        [2*1 +: TX_MAC_Ports_Count*1] = MAC_TxFrameBody_TRDY;
+assign wMAC_TxFrameBody_TVALID      [2*1 +: TX_MAC_Ports_Count*1] = MAC_TxFrameBody_TVALID;
+assign wMAC_TxFrameBody_TERROR      [2*1 +: TX_MAC_Ports_Count*1] = MAC_TxFrameBody_TERROR;
+assign wMAC_TxFrameBody_TLAST       [2*1 +: TX_MAC_Ports_Count*1] = MAC_TxFrameBody_TLAST;      
+assign wMAC_TxFrameBody_TDATA       [2*8 +: TX_MAC_Ports_Count*8] = MAC_TxFrameBody_TDATA;
+
 
 endmodule

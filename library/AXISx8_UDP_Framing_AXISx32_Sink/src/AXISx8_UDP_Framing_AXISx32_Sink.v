@@ -337,8 +337,19 @@ Bin2GrayRegisteredOut #( .WIDTH(BitWidth(BufferSize)) ) Bin2GrayRegisteredOut_in
 (* KEEP = "TRUE" *) reg [8-1:0]     FinishPulse = 0;
 
 (* KEEP = "TRUE" *) reg [2-1:0]  READ_STATE=0;
+
+// DataLength_Rd and UDP_Checksum_Rd are pipeline regs. 
+// Added to improve timing characteristics on Altera Cyclone devices
+
+(* KEEP = "TRUE" *) reg [16-1:0]    DataLength_Rd   =0;
+(* KEEP = "TRUE" *) reg [16-1:0]    UDP_Checksum_Rd =0;
+
 always @(posedge Source_CLK)
 begin 
+
+DataLength_Rd   <= wDataLength_Rd;
+UDP_Checksum_Rd <= wUDP_Checksum_Rd;
+
 if ((READ_STATE==0) ) 
     begin
     if (!wCommandFOFO_Empty) READ_STATE<=READ_STATE+1;
@@ -361,16 +372,16 @@ Tx_MAC_FrameBody_StartReadPulse <=   (READ_STATE==1);
 // Error condition Sync FIRST/LAST error
 end
 
-assign wDATA_LastPosition = (wDataLength_Rd[1:0] == 2'd1 ) ? 4'b0001 :
-                            (wDataLength_Rd[1:0] == 2'd2 ) ? 4'b0010 :
-                            (wDataLength_Rd[1:0] == 2'd3 ) ? 4'b0100 :4'b1000 ;
+assign wDATA_LastPosition = (DataLength_Rd[1:0] == 2'd1 ) ? 4'b0001 :
+                            (DataLength_Rd[1:0] == 2'd2 ) ? 4'b0010 :
+                            (DataLength_Rd[1:0] == 2'd3 ) ? 4'b0100 :4'b1000 ;
 
 always @(posedge Source_CLK)
 begin
 ReadDonePulse <= Source_TRDY && Tx_MAC_FrameBody_TLAST && Tx_MAC_FrameBody_VALID;
-IPv4_TotalLength<= wDataLength_Rd+8+20;
-UDP_TotalLength <= wDataLength_Rd+8;
-UDP_Checksum    <= wUDP_Checksum_Rd;
+IPv4_TotalLength<= DataLength_Rd+8+20;
+UDP_TotalLength <= DataLength_Rd+8;
+UDP_Checksum    <= UDP_Checksum_Rd;
 //if (ReadDonePulse)IPv4_Identification <= IPv4_Identification +1'b1;
 
     if (Tx_MAC_FrameBody_StartReadPulse)
@@ -392,7 +403,7 @@ UDP_Checksum    <= wUDP_Checksum_Rd;
                 ShiftRegD2<=ShiftRegD3;
                 ShiftRegD3<=0;
                 end
-            if ((Tx_MAC_FrameBody_ByteCounter ==33 )&&Tx_MAC_FrameBody_VALID) DATA_TotalLength<= wDataLength_Rd [16-1:2]  + (|wDataLength_Rd[1:0]) -1;
+            if ((Tx_MAC_FrameBody_ByteCounter ==33 )&&Tx_MAC_FrameBody_VALID) DATA_TotalLength<= DataLength_Rd [16-1:2]  + (|DataLength_Rd[1:0]) -1;
                 else if (RdPointerIncPulse)  DATA_TotalLength <=DATA_TotalLength-1'b1;
 
             if ((Tx_MAC_FrameBody_ByteCounter ==33 )&&Tx_MAC_FrameBody_VALID) ReadDataState <= 1'b1; 
@@ -405,11 +416,11 @@ UDP_Checksum    <= wUDP_Checksum_Rd;
                 begin
                 if (PADDING_INSERTION=="YES")
                     begin 
-                    if (wDataLength_Rd > 18) DATA_TotalLength_Full<= wDataLength_Rd [16-1:0]  + 8 ;
+                    if (DataLength_Rd > 18) DATA_TotalLength_Full<= DataLength_Rd [16-1:0]  + 8 ;
                         else DATA_TotalLength_Full <= 18  + 8 ;
                     end else 
                     begin 
-                        DATA_TotalLength_Full<= wDataLength_Rd [16-1:0]  + 8 ;
+                        DATA_TotalLength_Full<= DataLength_Rd [16-1:0]  + 8 ;
                     end
                 end
                 else if (ReadDataState_Full) DATA_TotalLength_Full <=DATA_TotalLength_Full-1'b1;

@@ -15,7 +15,7 @@
 
 # Quartus Prime: Generate Tcl File for Project
 # File: qii_Cyclone10LP_Prj.tcl
-# Generated on: Fri Aug 28 16:03:09 2026
+# Generated on: Tue Oct 27 12:18:52 2026
 
 # Load Quartus Prime Tcl Project package
 package require ::quartus::project
@@ -154,7 +154,6 @@ if {$make_assignments} {
 	set_global_assignment -name SDC_FILE ../constrs/Constr_Cyclone10LP_KSZ9031_RGMII.sdc
 	set_location_assignment PIN_R8 -to CLK_100MHZ
 	set_location_assignment PIN_T8 -to RGMII_RXC
-	set_location_assignment PIN_M8 -to EtheReset
 	set_location_assignment PIN_M6 -to RGMII_RXD[3]
 	set_location_assignment PIN_M7 -to RGMII_RXD[2]
 	set_location_assignment PIN_N5 -to RGMII_RXD[1]
@@ -166,6 +165,7 @@ if {$make_assignments} {
 	set_location_assignment PIN_T6 -to RGMII_TXD[1]
 	set_location_assignment PIN_R5 -to RGMII_TXD[0]
 	set_location_assignment PIN_T5 -to RGMII_TX_CTL
+	set_location_assignment PIN_M8 -to RGMII_PHY_RST
 	set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
 
 	# Commit assignments
