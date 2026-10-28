@@ -36,4 +36,6 @@ set_property SLEW FAST [get_ports {RGMII_TXD[0]}]
 set_property SLEW FAST [get_ports RGMII_TX_CTL]
 set_property SLEW FAST [get_ports RGMII_TXC]
 
+set_false_path -to [get_ports {RGMII_PHY_RST}]
+
 

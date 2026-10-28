@@ -1,8 +1,13 @@
 create_clock -period 10.00 -name CLK_100MHZ -waveform {0.00 5.000} [get_ports CLK_100MHZ]
 create_clock -period 8.000 -name RGMII_RXC -waveform {1.200 5.200} [get_ports RGMII_RXC]
 
+#set_clock_uncertainty -setup -add 0.1 [get_clocks CLK_100MHZ]
+#set_clock_uncertainty -setup -add 0.1 [get_clocks RGMII_RXC]
+
 create_clock -period 8.000 -name RGMII_VIRT  -waveform {0.000 4.000}
 derive_pll_clocks -create_base_clocks
+
+derive_clock_uncertainty
 
 set_input_delay -clock RGMII_VIRT  -min -add_delay -0.60 [get_ports {RGMII_RX_CTL {RGMII_RXD[3]} {RGMII_RXD[2]} {RGMII_RXD[1]} {RGMII_RXD[0]}}]
 set_input_delay -clock RGMII_VIRT  -max -add_delay 0.600 [get_ports {RGMII_RX_CTL {RGMII_RXD[3]} {RGMII_RXD[2]} {RGMII_RXD[1]} {RGMII_RXD[0]}}]
@@ -36,3 +41,5 @@ set_false_path -fall_from [get_clocks Sys_Clk_PLL_inst|altpll_component|auto_gen
 
 set_false_path -from [get_clocks CLK_100MHZ] -to [get_clocks RGMII_RXC]
 set_false_path -from [get_clocks RGMII_RXC] -to [get_clocks CLK_100MHZ]
+
+set_false_path -to [get_ports {RGMII_PHY_RST}]

@@ -33,6 +33,7 @@
 
 module UDP_LoopBack_Wrapper
 #(
+parameter ETH_RESET_POLARITY = "POSITIVE",   // "POSITIVE" or "NEGATIVE"
 parameter RX_ARCH = "DEFAULT_LOGIC" ,
 parameter TX_ARCH = "DEFAULT_LOGIC" ,
 parameter MB_ARCH = "DEFAULT_LOGIC" ,
@@ -47,8 +48,9 @@ parameter COMAND_UNIQ_CONST = 32'hAFBEADDE
 input  wire          CLK625MHZ,
 input  wire          EthClk125,
 input  wire          EthClk125_90,
+input  wire          EthClk_25,
 
-output wire  		                       UDP_Data_Source_CLK    ,
+output wire  		                     UDP_Data_Source_CLK    ,
 output wire [ RX_UDP_Ports_Count*1-1:0 ] UDP_Data_Source_TFIRST ,
 output wire [ RX_UDP_Ports_Count*1-1:0 ] UDP_Data_Source_TVALID ,
 output wire [ RX_UDP_Ports_Count*1-1:0 ] UDP_Data_Source_TERROR ,
@@ -59,11 +61,11 @@ output wire [ RX_UDP_Ports_Count*48-1:0] MAC_REMOTE_ADDR_OUT,
 output wire [ RX_UDP_Ports_Count*32-1:0] IP4_REMOTE_ADDR_OUT,
 output wire [ RX_UDP_Ports_Count*16-1:0] UDP_REMOTE_PORT_OUT,
 
-output wire [ TX_MAC_Ports_Count*1-1:0 ] MAC_TxFrameBody_TRDY,
-input  wire [ TX_MAC_Ports_Count*1-1:0 ] MAC_TxFrameBody_TVALID,
-input  wire [ TX_MAC_Ports_Count*1-1:0 ] MAC_TxFrameBody_TERROR,
-input  wire [ TX_MAC_Ports_Count*1-1:0 ] MAC_TxFrameBody_TLAST,
-input  wire [ TX_MAC_Ports_Count*8-1:0 ] MAC_TxFrameBody_TDATA,
+output wire [ TX_MAC_Ports_Count*1-1:0 ] MAC_Tx_Sink_TRDY,
+input  wire [ TX_MAC_Ports_Count*1-1:0 ] MAC_Tx_Sink_TVALID,
+input  wire [ TX_MAC_Ports_Count*1-1:0 ] MAC_Tx_Sink_TERROR,
+input  wire [ TX_MAC_Ports_Count*1-1:0 ] MAC_Tx_Sink_TLAST,
+input  wire [ TX_MAC_Ports_Count*8-1:0 ] MAC_Tx_Sink_TDATA,
 
 input  wire          RGMII_RXC,
 input  wire          RGMII_RX_CTL,
@@ -72,6 +74,8 @@ input  wire [4-1:0]  RGMII_RXD,
 output wire          RGMII_TXC,
 output wire          RGMII_TX_CTL,
 output wire [4-1:0]  RGMII_TXD,
+
+output reg           RGMII_PHY_RST =0,
 
 input  wire [48-1:0] MAC_LOCAL_ADDR_IN  ,
 input  wire [32-1:0] IP4_LOCAL_ADDR_IN  ,
@@ -83,6 +87,16 @@ input  wire [                    16-1:0] UDP_LOCAL_PORT_LB_IN
 );
 
 localparam RX_UDP_Ports_Full_Count   =  RX_UDP_Ports_Count + 2 ;
+
+reg [20-1:0] EtheResetCounter =1; 
+wire wResetCondition;
+assign wResetCondition = (EtheResetCounter!=0);
+always @(posedge EthClk_25)
+begin
+if (wResetCondition) EtheResetCounter<=EtheResetCounter+1'b1;
+if (ETH_RESET_POLARITY == "POSITIVE" ) RGMII_PHY_RST <= wResetCondition;
+    else RGMII_PHY_RST <= !wResetCondition;
+end 
 
 wire wUDP_CLK;
  
@@ -161,11 +175,11 @@ assign wUDP_LOCAL_PORT_IN = {UDP_LOCAL_PORT_UC_IN,UDP_LOCAL_PORT_TG_IN,UDP_LOCAL
 .UDP_Data_Source_TLAST      (wUDP_Data_TLAST     ),
 .UDP_Data_Source_TDATA      (wUDP_Data_TDATA     ),
 
-.MAC_TxFrameBody_TRDY       (MAC_TxFrameBody_TRDY   ),
-.MAC_TxFrameBody_TVALID     (MAC_TxFrameBody_TVALID ),
-.MAC_TxFrameBody_TERROR     (MAC_TxFrameBody_TERROR ),
-.MAC_TxFrameBody_TLAST      (MAC_TxFrameBody_TLAST  ),
-.MAC_TxFrameBody_TDATA      (MAC_TxFrameBody_TDATA  ),
+.MAC_TxFrameBody_TRDY       (MAC_Tx_Sink_TRDY   ),
+.MAC_TxFrameBody_TVALID     (MAC_Tx_Sink_TVALID ),
+.MAC_TxFrameBody_TERROR     (MAC_Tx_Sink_TERROR ),
+.MAC_TxFrameBody_TLAST      (MAC_Tx_Sink_TLAST  ),
+.MAC_TxFrameBody_TDATA      (MAC_Tx_Sink_TDATA  ),
 
 .Sink_CLK                   (wUDP_CLK            ),
 .Sink_TRDY                  (),

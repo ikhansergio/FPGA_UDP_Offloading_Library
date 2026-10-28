@@ -17,9 +17,8 @@ output wire          RGMII_TXC      ,
 output wire          RGMII_TX_CTL   ,
 output wire [4-1:0]  RGMII_TXD      ,
 
-output reg           RGMII_PHY_RST =0             
-
- );
+output wire          RGMII_PHY_RST              
+);
  
 (* keep = "true" *) reg [16-1:0] wUDP_LOCAL_PORT_UC = 16'd9997;     //User commands port
 (* keep = "true" *) reg [16-1:0] wUDP_LOCAL_PORT_LB = 16'd9998;     //Loop Back port  
@@ -46,19 +45,10 @@ output reg           RGMII_PHY_RST =0
   .clk_in1 (CLK_100MHZ)
  );
  
-reg [20-1:0] EtheResetCounter =1; 
-wire wResetCondition;
-assign wResetCondition = (EtheResetCounter!=0);
-always @(posedge wEthClk_25)
-begin
-if (wResetCondition) EtheResetCounter<=EtheResetCounter+1'b1;
-if (ETH_RESET_POLARITY == "POSITIVE" ) RGMII_PHY_RST <= wResetCondition;
-    else RGMII_PHY_RST <= !wResetCondition;
-end 
-
 (* KEEP_HIERARCHY = "TRUE" *)
 UDP_LoopBack_Wrapper
 #(
+.ETH_RESET_POLARITY     (ETH_RESET_POLARITY ),
 .RX_ARCH                ("XLX_SERIES7"      ),
 .TX_ARCH                ("XLX_SERIES7"      ),
 .MB_ARCH                ("XLX_SERIES7"      ),
@@ -70,8 +60,9 @@ UDP_LoopBack_Wrapper
 )UDP_LoopBack_Wrapper_inst
 (
 .CLK625MHZ                  (0),
-.EthClk125                  (wEthClk125),
-.EthClk125_90               (wEthClk125_90),
+.EthClk125                  (wEthClk125     ),
+.EthClk125_90               (wEthClk125_90  ),
+.EthClk_25                  (wEthClk_25     ),
 
 .MAC_LOCAL_ADDR_IN          (wMAC_LOCAL_ADDR),
 .IP4_LOCAL_ADDR_IN          (wIP4_LOCAL_ADDR),
@@ -90,11 +81,11 @@ UDP_LoopBack_Wrapper
 .IP4_REMOTE_ADDR_OUT        (),
 .UDP_REMOTE_PORT_OUT        (),
 
-.MAC_TxFrameBody_TRDY       (),
-.MAC_TxFrameBody_TVALID     (0),
-.MAC_TxFrameBody_TERROR     (0),
-.MAC_TxFrameBody_TLAST      (0),
-.MAC_TxFrameBody_TDATA      (0),
+.MAC_Tx_Sink_TRDY           (),
+.MAC_Tx_Sink_TVALID         (0),
+.MAC_Tx_Sink_TERROR         (0),
+.MAC_Tx_Sink_TLAST          (0),
+.MAC_Tx_Sink_TDATA          (0),
 
 .RGMII_RXC                  (RGMII_RXC      ),
 .RGMII_RX_CTL               (RGMII_RX_CTL   ),
@@ -102,7 +93,8 @@ UDP_LoopBack_Wrapper
 
 .RGMII_TXC                  (RGMII_TXC      ),
 .RGMII_TX_CTL               (RGMII_TX_CTL   ),
-.RGMII_TXD                  (RGMII_TXD      )
+.RGMII_TXD                  (RGMII_TXD      ),
+.RGMII_PHY_RST              (RGMII_PHY_RST  )
 );
 
 endmodule
