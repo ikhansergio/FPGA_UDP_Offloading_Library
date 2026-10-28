@@ -42,4 +42,8 @@ set_false_path -fall_from [get_clocks Sys_Clk_PLL_inst|altpll_component|auto_gen
 set_false_path -from [get_clocks CLK_100MHZ] -to [get_clocks RGMII_RXC]
 set_false_path -from [get_clocks RGMII_RXC] -to [get_clocks CLK_100MHZ]
 
+set_false_path -from [get_clocks {RGMII_RXC}] -to [get_clocks {Sys_Clk_PLL_inst|altpll_component|auto_generated|pll1|clk[0]}]
+set_false_path -from [get_clocks {RGMII_RXC}] -to [get_clocks {Sys_Clk_PLL_inst|altpll_component|auto_generated|pll1|clk[1]}]
+set_false_path -from [get_clocks {RGMII_RXC}] -to [get_clocks {Sys_Clk_PLL_inst|altpll_component|auto_generated|pll1|clk[2]}]
+
 set_false_path -to [get_ports {RGMII_PHY_RST}]

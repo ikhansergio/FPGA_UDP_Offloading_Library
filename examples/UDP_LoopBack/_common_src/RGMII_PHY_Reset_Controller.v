@@ -25,20 +25,36 @@
 
 module RGMII_PHY_Reset_Controller
 #(
-parameter ETH_RESET_POLARITY = "POSITIVE"   // "POSITIVE" or "NEGATIVE"
+parameter ETH_RESET_POLARITY = "POSITIVE",   // "POSITIVE" or "NEGATIVE"
+parameter ETH_NO_LINK_RESET  = "NO"         // "YES" or "NO"
 ) 
 (
-    input                CLK ,
-    
-	 output reg           RGMII_PHY_RST =0                 
+input  wire         CLK ,
+input  wire         RGMII_LINK_IN,
+output reg          RGMII_PHY_RST =0                 
 );
 
-reg [20-1:0] EtheResetCounter =1; 
-wire wResetCondition;
-assign wResetCondition = (EtheResetCounter!=0);
+reg RGMII_LINK_State=0;
+reg [30-1:0] EthLinkControlCounter =1;
+reg EtheNoLinkResetPulse =0;
+
 always @(posedge CLK)
 begin
-if (wResetCondition) EtheResetCounter<=EtheResetCounter+1'b1;
+RGMII_LINK_State <= RGMII_LINK_IN;
+// Start counting time, if no RGMII_LINK_IN
+if (RGMII_LINK_State)  EthLinkControlCounter<=1;
+    else EthLinkControlCounter<=EthLinkControlCounter+1;
+// Generate Reset Pulse, if no Link for long time.    
+if (ETH_NO_LINK_RESET  == "YES") EtheNoLinkResetPulse <= (EthLinkControlCounter==0); 
+    else if (ETH_NO_LINK_RESET  != "YES")  EtheNoLinkResetPulse <= 0;    
+end
+
+reg [20-1:0] EthResetCounter =1; 
+wire wResetCondition;
+assign wResetCondition = (EthResetCounter!=0) || EtheNoLinkResetPulse;
+always @(posedge CLK)
+begin
+if (wResetCondition ) EthResetCounter<=EthResetCounter+1'b1;
 if (ETH_RESET_POLARITY == "POSITIVE" ) RGMII_PHY_RST <= wResetCondition;
     else RGMII_PHY_RST <= !wResetCondition;
 end 

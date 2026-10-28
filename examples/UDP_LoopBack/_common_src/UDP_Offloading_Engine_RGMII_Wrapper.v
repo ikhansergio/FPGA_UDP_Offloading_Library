@@ -52,6 +52,10 @@ input  wire [16-1:0] TG_PacketSize,
 input  wire [16-1:0] TG_PacketGap,    
 
 
+output wire          RGMII_LINK_UP         ,               // PHY InBand Status. Link is Up.
+output wire          RGMII_DUPLEX          ,               // PHY InBand Status. Duplex is enabled.
+output wire  [2-1:0] RGMII_SPEED           ,               // PHY InBand Status. Ethernet PHY speed.
+
 input  wire          RGMII_RXC,
 input  wire          RGMII_RX_CTL,
 input  wire [4-1:0]  RGMII_RXD,
@@ -142,9 +146,9 @@ AXISx8_RGMII_BRIDGE
 
 ) AXISx8_RGMII_BRIDGE_INST
 (
-.RGMII_LINK_UP              (),
-.RGMII_DUPLEX               (),
-.RGMII_SPEED                (),
+.RGMII_LINK_UP              (RGMII_LINK_UP  ),
+.RGMII_DUPLEX               (RGMII_DUPLEX   ),
+.RGMII_SPEED                (RGMII_SPEED    ),
 
 .CLK625MHZ                  (CLK625MHZ),
 .RGMII_RXC                  (RGMII_RXC),

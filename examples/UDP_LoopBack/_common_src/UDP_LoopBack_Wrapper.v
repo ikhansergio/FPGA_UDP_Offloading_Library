@@ -34,6 +34,7 @@
 module UDP_LoopBack_Wrapper
 #(
 parameter ETH_RESET_POLARITY = "POSITIVE",   // "POSITIVE" or "NEGATIVE"
+parameter ETH_NO_LINK_RESET  = "NO",         // "YES" or "NO"
 parameter RX_ARCH = "DEFAULT_LOGIC" ,
 parameter TX_ARCH = "DEFAULT_LOGIC" ,
 parameter MB_ARCH = "DEFAULT_LOGIC" ,
@@ -88,15 +89,20 @@ input  wire [                    16-1:0] UDP_LOCAL_PORT_LB_IN
 
 localparam RX_UDP_Ports_Full_Count   =  RX_UDP_Ports_Count + 2 ;
 
+
+wire wRGMII_LINK_UP;
+
 (* KEEP_HIERARCHY = "TRUE" *)
 RGMII_PHY_Reset_Controller 
 #(
-.ETH_RESET_POLARITY (ETH_RESET_POLARITY)
+.ETH_RESET_POLARITY (ETH_RESET_POLARITY ),
+.ETH_NO_LINK_RESET  (ETH_NO_LINK_RESET  )
 ) 
 RGMII_PHY_Reset_Controller_inst
 (
-.CLK 					(EthClk_25		),
-.RGMII_PHY_RST 	(RGMII_PHY_RST)                
+.CLK 			(EthClk_25		),
+.RGMII_LINK_IN  (wRGMII_LINK_UP ),
+.RGMII_PHY_RST 	(RGMII_PHY_RST  )                
 );
 
 wire wUDP_CLK;
@@ -143,6 +149,10 @@ assign wUDP_LOCAL_PORT_IN = {UDP_LOCAL_PORT_UC_IN,UDP_LOCAL_PORT_TG_IN,UDP_LOCAL
 .CLK625MHZ                  (CLK625MHZ),
 .EthClk125                  (EthClk125),
 .EthClk125_90               (EthClk125_90),
+
+.RGMII_LINK_UP              (wRGMII_LINK_UP ),
+.RGMII_DUPLEX               (               ),
+.RGMII_SPEED                (               ),
 
 .TG_Start_Pulse             (wTG_Start_Pulse),
 .TG_PacketCount             (wTG_PacketCount),

@@ -3,6 +3,7 @@
  module Top
 #(
 parameter ETH_RESET_POLARITY = "POSITIVE",   // "POSITIVE" or "NEGATIVE"
+parameter ETH_NO_LINK_RESET  = "NO",         // "YES" or "NO"
 parameter TX_MAC_Ports_Count = 1  ,
 parameter RX_UDP_Ports_Count = 1    
 )
@@ -48,6 +49,7 @@ output wire          RGMII_PHY_RST
 UDP_LoopBack_Wrapper
 #(
 .ETH_RESET_POLARITY     (ETH_RESET_POLARITY ),
+.ETH_NO_LINK_RESET      (ETH_NO_LINK_RESET  ),
 .RX_ARCH                ("ALT_Cyclone10LP"  ),
 .TX_ARCH                ("ALT_Cyclone10LP"  ),
 .MB_ARCH                ("ALT_Cyclone10LP"  ),
