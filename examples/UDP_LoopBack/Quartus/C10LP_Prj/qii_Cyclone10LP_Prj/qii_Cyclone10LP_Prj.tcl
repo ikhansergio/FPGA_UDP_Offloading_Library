@@ -15,7 +15,7 @@
 
 # Quartus Prime: Generate Tcl File for Project
 # File: qii_Cyclone10LP_Prj.tcl
-# Generated on: Tue Oct 27 12:18:52 2026
+# Generated on: Wed Oct 28 11:32:10 2026
 
 # Load Quartus Prime Tcl Project package
 package require ::quartus::project
@@ -152,6 +152,7 @@ if {$make_assignments} {
 	set_global_assignment -name QIP_FILE ../ip/Sys_Clk_PLL.qip
 	set_global_assignment -name VERILOG_FILE ../src/AXISx8_Clock_Crossing_FIFO.v
 	set_global_assignment -name SDC_FILE ../constrs/Constr_Cyclone10LP_KSZ9031_RGMII.sdc
+	set_global_assignment -name VERILOG_FILE ../../../_common_src/RGMII_PHY_Reset_Controller.v
 	set_location_assignment PIN_R8 -to CLK_100MHZ
 	set_location_assignment PIN_T8 -to RGMII_RXC
 	set_location_assignment PIN_M6 -to RGMII_RXD[3]

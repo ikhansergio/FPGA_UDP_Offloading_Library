@@ -75,7 +75,7 @@ output wire          RGMII_TXC,
 output wire          RGMII_TX_CTL,
 output wire [4-1:0]  RGMII_TXD,
 
-output reg           RGMII_PHY_RST =0,
+output wire          RGMII_PHY_RST,
 
 input  wire [48-1:0] MAC_LOCAL_ADDR_IN  ,
 input  wire [32-1:0] IP4_LOCAL_ADDR_IN  ,
@@ -88,15 +88,16 @@ input  wire [                    16-1:0] UDP_LOCAL_PORT_LB_IN
 
 localparam RX_UDP_Ports_Full_Count   =  RX_UDP_Ports_Count + 2 ;
 
-reg [20-1:0] EtheResetCounter =1; 
-wire wResetCondition;
-assign wResetCondition = (EtheResetCounter!=0);
-always @(posedge EthClk_25)
-begin
-if (wResetCondition) EtheResetCounter<=EtheResetCounter+1'b1;
-if (ETH_RESET_POLARITY == "POSITIVE" ) RGMII_PHY_RST <= wResetCondition;
-    else RGMII_PHY_RST <= !wResetCondition;
-end 
+(* KEEP_HIERARCHY = "TRUE" *)
+RGMII_PHY_Reset_Controller 
+#(
+.ETH_RESET_POLARITY (ETH_RESET_POLARITY)
+) 
+RGMII_PHY_Reset_Controller_inst
+(
+.CLK 					(EthClk_25		),
+.RGMII_PHY_RST 	(RGMII_PHY_RST)                
+);
 
 wire wUDP_CLK;
  
