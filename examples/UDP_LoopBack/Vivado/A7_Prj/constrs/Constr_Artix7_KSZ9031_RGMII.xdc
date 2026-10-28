@@ -16,6 +16,7 @@ set_false_path -hold -rise_from [get_clocks RGMII_VIRT ] -rise_to [get_clocks RG
 
 create_generated_clock -name CLK_125MHZ    -source [get_pins Sys_Clk_PLL_inst/inst/mmcm_adv_inst/CLKIN1] -master_clock [get_clocks CLK_100MHZ] [get_pins Sys_Clk_PLL_inst/inst/mmcm_adv_inst/CLKOUT0]
 create_generated_clock -name CLK_125MHZ_90 -source [get_pins Sys_Clk_PLL_inst/inst/mmcm_adv_inst/CLKIN1] -master_clock [get_clocks CLK_100MHZ] [get_pins Sys_Clk_PLL_inst/inst/mmcm_adv_inst/CLKOUT1]
+create_generated_clock -name CLK_25MHZ -source [get_pins Sys_Clk_PLL_inst/inst/mmcm_adv_inst/CLKIN1] -master_clock [get_clocks CLK_50MHZ] [get_pins Sys_Clk_PLL_inst/inst/mmcm_adv_inst/CLKOUT2]
 
 create_generated_clock -name RGMII_TX_CLK_90 -source [get_pins Sys_Clk_PLL_inst/inst/clk_out2] -multiply_by 1 [get_ports RGMII_TXC]
 
@@ -35,5 +36,9 @@ set_property SLEW FAST [get_ports {RGMII_TXD[1]}]
 set_property SLEW FAST [get_ports {RGMII_TXD[0]}]
 set_property SLEW FAST [get_ports RGMII_TX_CTL]
 set_property SLEW FAST [get_ports RGMII_TXC]
+
+set_false_path -from [get_clocks {RGMII_RXC}] -to [get_clocks CLK_125MHZ]
+set_false_path -from [get_clocks {RGMII_RXC}] -to [get_clocks CLK_125MHZ_90]
+set_false_path -from [get_clocks {RGMII_RXC}] -to [get_clocks CLK_25MHZ]
 
 set_false_path -to [get_ports {RGMII_PHY_RST}]
