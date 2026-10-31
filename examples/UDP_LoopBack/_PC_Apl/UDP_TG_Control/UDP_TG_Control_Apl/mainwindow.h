@@ -26,10 +26,14 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void  TG_Pack_Received(int index);
+    void  WindowOnTimerUpdate(void);
+
 signals:
     void Send_UDP_Data(QByteArray Data);
     void Send_UDP_Data2(QByteArray Data);
 private:
+    QTimer *timer;
     Ui::MainWindow *ui;
 
     QThread *UDP_thread_0;

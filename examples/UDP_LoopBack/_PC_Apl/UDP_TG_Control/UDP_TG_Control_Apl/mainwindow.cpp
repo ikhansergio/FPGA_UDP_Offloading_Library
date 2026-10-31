@@ -3,6 +3,8 @@
 #include "CRC32.h"
 #include <QTextBlock>
 
+#include <QTimer>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -18,7 +20,16 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, &MainWindow::Send_UDP_Data, TG_UDP_Control_Cli, &TG_UDP_Control::Send_UDP_Data);
     connect(this, &MainWindow::Send_UDP_Data2, TG_UDP_Control_Cli, &TG_UDP_Control::Send_UDP_Data2);
 
+    connect( TG_UDP_Control_Cli, &TG_UDP_Control::TG_Pack_Received, this, &MainWindow::TG_Pack_Received);
+
+
     UDP_thread_0->start();
+
+
+    timer = new QTimer();
+
+    connect(timer, &QTimer::timeout, this, &MainWindow::WindowOnTimerUpdate);
+    timer->start(100);
 }
 
 MainWindow::~MainWindow()
@@ -31,6 +42,24 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+
+
+void MainWindow::WindowOnTimerUpdate()
+{
+
+int TG_Counter =    TG_UDP_Control_Cli->TG_Counter;
+
+setWindowTitle(QString::number(TG_Counter) );
+
+}
+
+void MainWindow::TG_Pack_Received(int index)
+{
+
+setWindowTitle(QString::number(index) );
+
+}
 
 void MainWindow::on_pushButton_clicked()
 {
@@ -80,7 +109,9 @@ void MainWindow::on_pushButton_2_clicked()
             QTextBlock Textblock= ui->TxTextBrowser->document()->findBlockByLineNumber(i);
 
             QByteArray Data = Textblock.text().toUtf8();
-            emit Send_UDP_Data2(Data);
+            int Size = Data.size();
+            if (Size)
+                 emit Send_UDP_Data2(Data);
         }
     }
 }
