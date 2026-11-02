@@ -48,9 +48,17 @@ MainWindow::~MainWindow()
 void MainWindow::WindowOnTimerUpdate()
 {
 
-int TG_Counter =    TG_UDP_Control_Cli->TG_Counter;
+float TG_Counter  =    TG_UDP_Control_Cli->TG_Counter;
+float ElapsedSeconds =    TG_UDP_Control_Cli->ElapsedSeconds;
+double UDP_Rx_Rate_MBps = TG_Counter * 1024;
+UDP_Rx_Rate_MBps = UDP_Rx_Rate_MBps / (double)ElapsedSeconds;
 
-setWindowTitle(QString::number(TG_Counter) );
+UDP_Rx_Rate_MBps = UDP_Rx_Rate_MBps / 1000000;
+UDP_Rx_Rate_MBps = UDP_Rx_Rate_MBps *8;
+
+float UDP_Rx_Rate = TG_Counter *100/ 10000000;
+
+setWindowTitle(QString::number(TG_Counter) + "    " +  QString::number(UDP_Rx_Rate_MBps)+ "    " +  QString::number(UDP_Rx_Rate));
 
 }
 
@@ -76,7 +84,8 @@ void MainWindow::on_pushButton_clicked()
     TG_Start_Command.TG_PacketSize =1024;
     TG_Start_Command.TG_PacketGap  =65500;
     TG_Start_Command.TG_PacketGap  =200;
-    TG_Start_Command.TG_PacketCount  =1000000;
+    TG_Start_Command.TG_PacketCount  =10000000;
+    TG_Start_Command.TG_PacketCount  =10000000;
 
     for (int i=0;i<16; i++)
     {

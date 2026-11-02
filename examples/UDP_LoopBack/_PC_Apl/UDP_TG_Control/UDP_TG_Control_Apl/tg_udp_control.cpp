@@ -24,8 +24,11 @@ void TG_UDP_Control::Send_UDP_Data(QByteArray Data)
     for (int i=0;i<10; i++)
     {
         SendResult = TG_UdpSocket->writeDatagram(Data, mmmmm , 9999);
+        ElapsedTimer.start();
         if (SendResult>0) return;
     }
+
+
 
 }
 
@@ -93,6 +96,22 @@ while (TG_UdpSocket->hasPendingDatagrams())
     } else if (senderPort==9999)
     {
     TG_Counter++;
+    ElapsedMs = ElapsedTimer.elapsed();
+    if (ElapsedMs==0)  ElapsedMs ++;
+
+    ElapsedSeconds = (float)ElapsedMs;
+    ElapsedSeconds = ElapsedSeconds/1000;
+    /*
+    temp *= 1024;
+    temp *= 1000;
+    temp = temp/(double)ElapsedMs;
+
+    UDP_Rx_Rate = (float)temp;
+    UDP_Rx_Rate = UDP_Rx_Rate / 1000000;
+    //UDP_Rx_Rate = (TG_Counter*1024)/ElapsedMs;
+    */
+
+
     //emit  TG_Pack_Received(TG_Counter);
     }
 };

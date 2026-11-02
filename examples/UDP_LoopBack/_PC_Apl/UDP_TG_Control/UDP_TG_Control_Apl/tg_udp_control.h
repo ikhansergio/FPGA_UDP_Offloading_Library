@@ -5,6 +5,7 @@
 #include <QUdpSocket>
 #include <QByteArray>
 #include <QThread>
+#include <QElapsedTimer>
 
 class TG_UDP_Control : public QObject
 {
@@ -18,12 +19,16 @@ public:
 
     int Counter =0;
     int TG_Counter =0;
+    float  ElapsedSeconds;
 
 signals:
     void TG_Pack_Received(int index);
 
 private:
     QByteArray UDP_Buffer;
+    QElapsedTimer ElapsedTimer;
+    qint64 ElapsedMs;
+
 
 public slots:
     void Send_UDP_Data(QByteArray Data);
