@@ -66,16 +66,16 @@ if {$make_assignments} {
 	set_global_assignment -name VERILOG_FILE ../../../_common_src/UDP_LoopBack_Wrapper.v
 	set_global_assignment -name VERILOG_FILE ../../../_common_src/AXISx8_UDP_TG_Controller.v
 	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_TG/src/AXISx8_UDP_TG.v
-	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_x36_8k_BLK/ALT_x36_8k_BLK.v
-	set_global_assignment -name QIP_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_x36_8k_BLK/ALT_x36_8k_BLK.qip
-	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_x36_4k_BLK/ALT_x36_4k_BLK.v
-	set_global_assignment -name QIP_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_x36_4k_BLK/ALT_x36_4k_BLK.qip
-	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_x36_2k_BLK/ALT_x36_2k_BLK.v
-	set_global_assignment -name QIP_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_x36_2k_BLK/ALT_x36_2k_BLK.qip
-	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_x36_1k_BLK/ALT_x36_1k_BLK.v
-	set_global_assignment -name QIP_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_x36_1k_BLK/ALT_x36_1k_BLK.qip
-	set_global_assignment -name VERILOG_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_BLK_FIFO_36x256/ALT_BLK_FIFO_36x256.v
-	set_global_assignment -name QIP_FILE ../../../../../library/_common_src/Hard_IP/Altera/ALT_BLK_FIFO_36x256/ALT_BLK_FIFO_36x256.qip
+	set_global_assignment -name VERILOG_FILE ../../../../../library/Hard_IP/Altera/ALT_x36_8k_BLK/ALT_x36_8k_BLK.v
+	set_global_assignment -name QIP_FILE ../../../../../library/Hard_IP/Altera/ALT_x36_8k_BLK/ALT_x36_8k_BLK.qip
+	set_global_assignment -name VERILOG_FILE ../../../../../library/Hard_IP/Altera/ALT_x36_4k_BLK/ALT_x36_4k_BLK.v
+	set_global_assignment -name QIP_FILE ../../../../../library/Hard_IP/Altera/ALT_x36_4k_BLK/ALT_x36_4k_BLK.qip
+	set_global_assignment -name VERILOG_FILE ../../../../../library/Hard_IP/Altera/ALT_x36_2k_BLK/ALT_x36_2k_BLK.v
+	set_global_assignment -name QIP_FILE ../../../../../library/Hard_IP/Altera/ALT_x36_2k_BLK/ALT_x36_2k_BLK.qip
+	set_global_assignment -name VERILOG_FILE ../../../../../library/Hard_IP/Altera/ALT_x36_1k_BLK/ALT_x36_1k_BLK.v
+	set_global_assignment -name QIP_FILE ../../../../../library/Hard_IP/Altera/ALT_x36_1k_BLK/ALT_x36_1k_BLK.qip
+	set_global_assignment -name VERILOG_FILE ../../../../../library/Hard_IP/Altera/ALT_BLK_FIFO_36x256/ALT_BLK_FIFO_36x256.v
+	set_global_assignment -name QIP_FILE ../../../../../library/Hard_IP/Altera/ALT_BLK_FIFO_36x256/ALT_BLK_FIFO_36x256.qip
 	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/UDP_RxDatagramProcessing_Core_x8.v
 	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/nextCRC32_D8_fcs.v
 	set_global_assignment -name VERILOG_FILE ../../../../../library/AXISx8_UDP_Offloading_Engine/src/MAC_FrameBody2EthernetPhysicalFrameConverter_x8.v
