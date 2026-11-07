@@ -41,19 +41,19 @@ input  wire	[48-1:0]     IPv4_REMOTE_ADDR   ,
 output wire    [8-1:0]   IPv4_Header
 );
 
-(* keep = "true" *) reg [16-1:0]    IPv4_HeaderChecksum                       =   0;
-(* keep = "true" *) reg [24-1:0]    IPv4_HeaderChecksum_Step0                 =   0;
-(* keep = "true" *) reg [24-1:0]    IPv4_HeaderChecksum_Step1                 =   0;
-(* keep = "true" *) reg [24-1:0]    IPv4_HeaderChecksum_Step2                 =   0;
-(* keep = "true" *) reg [24-1:0]    IPv4_HeaderChecksum_Step3                 =   0;
-(* keep = "true" *) reg [17-1:0]    IPv4_HeaderChecksum_Step4                 =   0;
+reg [16-1:0]    IPv4_HeaderChecksum                       =   0;
+reg [24-1:0]    IPv4_HeaderChecksum_Step0                 =   0;
+reg [24-1:0]    IPv4_HeaderChecksum_Step1                 =   0;
+reg [24-1:0]    IPv4_HeaderChecksum_Step2                 =   0;
+reg [24-1:0]    IPv4_HeaderChecksum_Step3                 =   0;
+reg [17-1:0]    IPv4_HeaderChecksum_Step4                 =   0;
 
-(* keep = "true" *) reg [8-1:0]     TX_SwitchREG_Ethernet_II_IP4_HeaderHi     =   0;
-(* keep = "true" *) reg [8-1:0]     TX_SwitchREG_Ethernet_II_IP4_HeaderLo     =   0;
+reg [8-1:0]     TX_SwitchREG_Ethernet_II_IP4_HeaderHi     =   0;
+reg [8-1:0]     TX_SwitchREG_Ethernet_II_IP4_HeaderLo     =   0;
 
-(* keep = "true" *) reg [3-1:0]     TX_SwitchREG_Decoder                      =   0;
+reg [3-1:0]     TX_SwitchREG_Decoder                      =   0;
 
-(* keep = "true" *) reg [16-1:0]    IPv4_Identification                       =   0;
+reg [16-1:0]    IPv4_Identification                       =   0;
 
 always @(posedge CLK)
 begin

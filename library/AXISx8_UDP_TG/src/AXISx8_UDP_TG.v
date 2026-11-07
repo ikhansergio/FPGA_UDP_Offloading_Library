@@ -77,64 +77,64 @@ generate if ( ETHERNET_MTU <= 28                         )             begin AXI
 
 
 
-(* KEEP = "TRUE" *) wire [16-1:0]    wDataLength_Rd   ;
-(* KEEP = "TRUE" *) wire [16-1:0]    wUDP_Checksum_Rd ;
+wire [16-1:0]    wDataLength_Rd   ;
+wire [16-1:0]    wUDP_Checksum_Rd ;
 
 
 
-(* KEEP = "TRUE" *) reg  [16-1:0]    DATA_TotalLength_Full                     =   0;
+reg  [16-1:0]    DATA_TotalLength_Full                     =   0;
 
-(* KEEP = "TRUE" *) reg  [14-1:0]    DATA_TotalLength                          =   0;
+reg  [14-1:0]    DATA_TotalLength                          =   0;
 
-(* KEEP = "TRUE" *) reg [16-1:0]    UDP_TotalLength                           =   0;
-(* KEEP = "TRUE" *) reg [16-1:0]    UDP_Checksum                              =   0;
+reg [16-1:0]    UDP_TotalLength                           =   0;
+reg [16-1:0]    UDP_Checksum                              =   0;
 
-(* KEEP = "TRUE" *) reg [16-1:0]    IPv4_TotalLength                          =   0;
+reg [16-1:0]    IPv4_TotalLength                          =   0;
 
-(* KEEP = "TRUE" *) reg             Tx_MAC_FrameBody_StartReadPulse           =   0;
+reg             Tx_MAC_FrameBody_StartReadPulse           =   0;
 
-(* KEEP = "TRUE" *) reg             Tx_MAC_FrameBody_VALID                    =   0;
-(* KEEP = "TRUE" *) reg             Tx_MAC_FrameBody_TLAST                    =   0;
+reg             Tx_MAC_FrameBody_VALID                    =   0;
+reg             Tx_MAC_FrameBody_TLAST                    =   0;
 //reg [8-1:0]     Tx_MAC_FrameBody_TDATA                    =   0;
-(* KEEP = "TRUE" *) wire[8-1:0]    wTx_MAC_FrameBody_TDATA;
+wire[8-1:0]    wTx_MAC_FrameBody_TDATA;
 
 
 
-(* KEEP = "TRUE" *) reg ReadDonePulse = 0 ;
+reg ReadDonePulse = 0 ;
 
 
-(* KEEP = "TRUE" *) reg [6-1:0]     Tx_MAC_FrameBody_ByteCounter              =   63;
+reg [6-1:0]     Tx_MAC_FrameBody_ByteCounter              =   63;
 
-(* KEEP = "TRUE" *) reg [3-1:0]     TX_SwitchREG_Decoder                      =   0;
+reg [3-1:0]     TX_SwitchREG_Decoder                      =   0;
 
-(* KEEP = "TRUE" *) wire[8-1:0]    wTX_SwitchREG_Ethernet_II_MAC;
-(* KEEP = "TRUE" *) wire[8-1:0]    wTX_SwitchREG_Ethernet_II_IP4;
-(* KEEP = "TRUE" *) wire[8-1:0]    wTX_SwitchREG_Ethernet_II_UDP;
+wire[8-1:0]    wTX_SwitchREG_Ethernet_II_MAC;
+wire[8-1:0]    wTX_SwitchREG_Ethernet_II_IP4;
+wire[8-1:0]    wTX_SwitchREG_Ethernet_II_UDP;
 
-(* KEEP = "TRUE" *) reg [2-1:0]     RdPointerDivider  = 0;
-(* KEEP = "TRUE" *) reg             RdPointerIncPulse = 0;
+reg [2-1:0]     RdPointerDivider  = 0;
+reg             RdPointerIncPulse = 0;
 
-(* KEEP = "TRUE" *) reg [4-1:0]     LoadDataPulse = 0;
+reg [4-1:0]     LoadDataPulse = 0;
 
-(* KEEP = "TRUE" *) reg             ReadDataState = 0;
-(* KEEP = "TRUE" *) reg             ReadDataState_Full = 0;
+reg             ReadDataState = 0;
+reg             ReadDataState_Full = 0;
 
-(* KEEP = "TRUE" *) reg [8-1:0]     ShiftRegD0 = 0;
-(* KEEP = "TRUE" *) reg [8-1:0]     ShiftRegD1 = 0;
-(* KEEP = "TRUE" *) reg [8-1:0]     ShiftRegD2 = 0;
-(* KEEP = "TRUE" *) reg [8-1:0]     ShiftRegD3 = 0;
+reg [8-1:0]     ShiftRegD0 = 0;
+reg [8-1:0]     ShiftRegD1 = 0;
+reg [8-1:0]     ShiftRegD2 = 0;
+reg [8-1:0]     ShiftRegD3 = 0;
 
-(* KEEP = "TRUE" *) wire             wCommandFOFO_Empty;
-(* KEEP = "TRUE" *) wire [32-1:0]    wRdData;
+wire             wCommandFOFO_Empty;
+wire [32-1:0]    wRdData;
 
 
-(* KEEP = "TRUE" *) reg  [16-1:0]    TG_PacketSizeReg =0;
+reg  [16-1:0]    TG_PacketSizeReg =0;
 
-(* KEEP = "TRUE" *) reg  [16-1:0]    TG_GapCounter =0;
-(* KEEP = "TRUE" *) reg  [16-1:0]    TG_GapThreshold =0;
+reg  [16-1:0]    TG_GapCounter =0;
+reg  [16-1:0]    TG_GapThreshold =0;
 
-(* KEEP = "TRUE" *) reg  [32-1:0]    TG_PacketCounter =0;
-(* KEEP = "TRUE" *) reg  [32-1:0]    TG_PacketCountThreshold =0;
+reg  [32-1:0]    TG_PacketCounter =0;
+reg  [32-1:0]    TG_PacketCountThreshold =0;
 
 assign wDataLength_Rd = TG_PacketSizeReg;
 

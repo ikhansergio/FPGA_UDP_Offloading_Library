@@ -40,7 +40,7 @@ input  wire [ 8-1:0]     Data_Payload_Part,
 output reg   [8-1:0]     Tx_MAC_FrameBody_TDATA =   0
 );
 
-(* KEEP = "TRUE" *) reg [3-1:0] TX_SwitchREG_Decoder =   0;
+reg [3-1:0] TX_SwitchREG_Decoder =   0;
 
 always @(posedge CLK)
 begin

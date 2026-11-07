@@ -107,30 +107,30 @@ RGMII_PHY_Reset_Controller_inst
 
 wire wUDP_CLK;
  
-(* KEEP = "TRUE" *)wire	[RX_UDP_Ports_Full_Count*1-1:0] wUDP_Data_TFIRST;
-(* KEEP = "TRUE" *)wire	[RX_UDP_Ports_Full_Count*1-1:0] wUDP_Data_TVALID;
-(* KEEP = "TRUE" *)wire	[RX_UDP_Ports_Full_Count*1-1:0] wUDP_Data_TERROR;
-(* KEEP = "TRUE" *)wire	[RX_UDP_Ports_Full_Count*1-1:0] wUDP_Data_TLAST ;
-(* KEEP = "TRUE" *)wire [RX_UDP_Ports_Full_Count*8-1:0] wUDP_Data_TDATA ;
+wire	[RX_UDP_Ports_Full_Count*1-1:0] wUDP_Data_TFIRST;
+wire	[RX_UDP_Ports_Full_Count*1-1:0] wUDP_Data_TVALID;
+wire	[RX_UDP_Ports_Full_Count*1-1:0] wUDP_Data_TERROR;
+wire	[RX_UDP_Ports_Full_Count*1-1:0] wUDP_Data_TLAST ;
+wire [RX_UDP_Ports_Full_Count*8-1:0] wUDP_Data_TDATA ;
 
-(* keep = "true" *) wire [RX_UDP_Ports_Full_Count*48-1:0] wMAC_REMOTE_ADDR;
-(* keep = "true" *) wire [RX_UDP_Ports_Full_Count*32-1:0] wIP4_REMOTE_ADDR; 
-(* keep = "true" *) wire [RX_UDP_Ports_Full_Count*16-1:0] wUDP_REMOTE_PORT;  
+wire [RX_UDP_Ports_Full_Count*48-1:0] wMAC_REMOTE_ADDR;
+wire [RX_UDP_Ports_Full_Count*32-1:0] wIP4_REMOTE_ADDR; 
+wire [RX_UDP_Ports_Full_Count*16-1:0] wUDP_REMOTE_PORT;  
 
-(* keep = "true" *) wire [RX_UDP_Ports_Full_Count*16-1:0] wUDP_LOCAL_PORT_IN;
+wire [RX_UDP_Ports_Full_Count*16-1:0] wUDP_LOCAL_PORT_IN;
 assign wUDP_LOCAL_PORT_IN = {UDP_LOCAL_PORT_UC_IN,UDP_LOCAL_PORT_TG_IN,UDP_LOCAL_PORT_LB_IN}; 
 
-//(* KEEP = "TRUE" *)wire            wUDP_Data_TFIRST_x32 ;
-//(* KEEP = "TRUE" *)wire            wUDP_Data_TERROR_x32 ;
-(* KEEP = "TRUE" *)wire            wUDP_Data_TVALID_x32 ;
-(* KEEP = "TRUE" *)wire            wUDP_Data_TLAST_x32  ;
-(* KEEP = "TRUE" *)wire   [ 4-1:0] wUDP_Data_TKEEP_x32  ;
-(* KEEP = "TRUE" *)wire   [32-1:0] wUDP_Data_TDATA_x32;
+//wire            wUDP_Data_TFIRST_x32 ;
+//wire            wUDP_Data_TERROR_x32 ;
+wire            wUDP_Data_TVALID_x32 ;
+wire            wUDP_Data_TLAST_x32  ;
+wire   [ 4-1:0] wUDP_Data_TKEEP_x32  ;
+wire   [32-1:0] wUDP_Data_TDATA_x32;
 
-(* keep = "true" *) wire            wTG_Start_Pulse;
-(* keep = "true" *) wire  [32-1:0]  wTG_PacketCount;
-(* keep = "true" *) wire  [16-1:0]  wTG_PacketSize;
-(* keep = "true" *) wire  [16-1:0]  wTG_PacketGap;
+wire            wTG_Start_Pulse;
+wire  [32-1:0]  wTG_PacketCount;
+wire  [16-1:0]  wTG_PacketSize;
+wire  [16-1:0]  wTG_PacketGap;
 
 
  (* KEEP_HIERARCHY = "TRUE" *)
@@ -229,20 +229,20 @@ AXIS_Width_Up_Converter
  
  
  
- (* keep = "true" *) wire [32-1:0]                  wTDATA_32  ;
- (* keep = "true" *) wire [ 4-1:0]                  wTKEEP_32  ;
- (* keep = "true" *) wire                           wTFIRST_32 ;
- (* keep = "true" *) wire                           wTVALID_32 ;
- (* keep = "true" *) wire                           wTLAST_32  ;
- (* keep = "true" *) wire                           wTERROR_32 ;
- 
- (* keep = "true" *) wire [16-1:0]                  wPOSITION ;
- (* keep = "true" *) wire                           wCommandSize_ValidFlag;
- 
- (* keep = "true" *) wire [ 8-1:0]                  wCommandCode ;
- (* keep = "true" *) wire [ 8-1:0]                  wCommandParam ;
- (* keep = "true" *) wire [16-1:0]                  wCommandSize ;
- (* keep = "true" *) wire [32-1:0]                  wCommandReserve ;
+wire [32-1:0]                  wTDATA_32  ;
+wire [ 4-1:0]                  wTKEEP_32  ;
+wire                           wTFIRST_32 ;
+wire                           wTVALID_32 ;
+wire                           wTLAST_32  ;
+wire                           wTERROR_32 ;
+
+wire [16-1:0]                  wPOSITION ;
+wire                           wCommandSize_ValidFlag;
+
+wire [ 8-1:0]                  wCommandCode ;
+wire [ 8-1:0]                  wCommandParam ;
+wire [16-1:0]                  wCommandSize ;
+wire [32-1:0]                  wCommandReserve ;
  
  (* KEEP_HIERARCHY = "TRUE" *)
  AXISx8_CommandHeaderDecoder

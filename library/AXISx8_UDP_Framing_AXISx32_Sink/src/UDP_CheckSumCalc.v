@@ -37,10 +37,10 @@ input  wire [32-1:0] IP4_REMOTE_ADDR_IN,
 output wire [16-1:0] CheckSUM_UDP
 );
 
-(* keep = "true" *) reg [20-1:0] UDP_CheckSUM_UDP_HEADER            =0;
-(* keep = "true" *) reg [18-1:0] UDP_CheckSUM_IP4_SUM               =0;
-(* keep = "true" *) reg [20-1:0] UDP_CheckSUM_IP4_PseudoHeader      =0;
-(* keep = "true" *) reg [32-1:0] UDP_CheckSUM_FULL                  =0;
+reg [20-1:0] UDP_CheckSUM_UDP_HEADER            =0;
+reg [18-1:0] UDP_CheckSUM_IP4_SUM               =0;
+reg [20-1:0] UDP_CheckSUM_IP4_PseudoHeader      =0;
+reg [32-1:0] UDP_CheckSUM_FULL                  =0;
 
 
 (* KEEP = "TRUE" *)wire [32-1:0]wUDP_CheckSUM_Data;

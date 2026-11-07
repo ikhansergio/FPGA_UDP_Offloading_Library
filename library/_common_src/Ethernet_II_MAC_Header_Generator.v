@@ -40,10 +40,10 @@ input  wire	[48-1:0]     MAC_REMOTE_ADDR   ,
 output wire    [8-1:0]   MAC_Header
 );
 
-(* keep = "true" *) reg [8-1:0]     TX_SwitchREG_Ethernet_II_External_MAC     =   0;
-(* keep = "true" *) reg [8-1:0]     TX_SwitchREG_Ethernet_II_Internal_MAC     =   0;
+reg [8-1:0]     TX_SwitchREG_Ethernet_II_External_MAC     =   0;
+reg [8-1:0]     TX_SwitchREG_Ethernet_II_Internal_MAC     =   0;
 
-(* keep = "true" *) reg [3-1:0]     TX_SwitchREG_Decoder                      =   0;
+reg [3-1:0]     TX_SwitchREG_Decoder                      =   0;
 
 
 wire [15:0] wEtherTypeValue;

@@ -38,7 +38,7 @@ input  wire [16-1:0]     ICMP_PING_Sequence_Number,
 output reg  [ 8-1:0]     ICMP_PING_Header =0 
 );
 
-(* KEEP = "TRUE" *)reg [16-1:0] ICMP_CheckSUM_CalkRes=0;
+reg [16-1:0] ICMP_CheckSUM_CalkRes=0;
 
 always @(posedge CLK)
 begin

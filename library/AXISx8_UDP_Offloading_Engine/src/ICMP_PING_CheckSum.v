@@ -33,8 +33,8 @@ output reg   [ 1-1:0] ReqPackCheckSUM_Val,
 output reg   [32-1:0] CheckSUM=0
 );
 
-(* KEEP = "TRUE" *)reg  [17-1:0] ICMP_PING_CheckSUM_Sub =0;
-(* KEEP = "TRUE" *)wire [32-1:0]wICMP_PING_CheckSUM_FullPacket;
+reg  [17-1:0] ICMP_PING_CheckSUM_Sub =0;
+wire [32-1:0]wICMP_PING_CheckSUM_FullPacket;
 
  (* KEEP_HIERARCHY = "TRUE" *)
  AXIS32_PayloadCheckSum AXIS32_PayloadCheckSum_inst

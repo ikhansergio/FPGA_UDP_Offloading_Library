@@ -103,48 +103,48 @@ AXISx32_InputChecker    AXISx32_InputChecker_inst
 .Source_TDATA           (wSink_TDATA)
 );
 
-(* KEEP = "TRUE" *) wire wCommandFIFO_Full;
- 
-(* KEEP = "TRUE" *) reg          TVALID_Reg0=0;
-(* KEEP = "TRUE" *) reg          TVALID_Reg1=0;
+wire wCommandFIFO_Full;
 
-(* KEEP = "TRUE" *) reg          TFIRST_Reg0=0;
-(* KEEP = "TRUE" *) reg          TFIRST_Reg1=0;
+reg          TVALID_Reg0=0;
+reg          TVALID_Reg1=0;
 
-(* KEEP = "TRUE" *) reg          TLAST_Reg0=0;
-(* KEEP = "TRUE" *) reg          TLAST_Reg1=0;
-                                                            
-(* KEEP = "TRUE" *) reg [ 4-1:0] TKEEP_Reg0=0;  
-(* KEEP = "TRUE" *) reg [ 4-1:0] TKEEP_Reg1=0;       
+reg          TFIRST_Reg0=0;
+reg          TFIRST_Reg1=0;
 
-(* KEEP = "TRUE" *) reg [32-1:0] TDATA_Reg0=0;  
-(* KEEP = "TRUE" *) reg [32-1:0] TDATA_Reg1=0;       
-    
-(* KEEP = "TRUE" *) reg [16-1:0] RxDataLengthCounter=0;
-(* KEEP = "TRUE" *) reg [16-1:0] RxDataLengthCounter_D1=0;
-(* KEEP = "TRUE" *) reg [16-1:0] RxDataLengthCounter_D2=0;
+reg          TLAST_Reg0=0;
+reg          TLAST_Reg1=0;
+                                        
+reg [ 4-1:0] TKEEP_Reg0=0;  
+reg [ 4-1:0] TKEEP_Reg1=0;       
 
-//(* keep = "true" *) wire [32-1:0] wUDP_CheckSUM_Data;
+reg [32-1:0] TDATA_Reg0=0;  
+reg [32-1:0] TDATA_Reg1=0;       
 
-(* KEEP = "TRUE" *) reg   PacketDropFlag=0; 
-(* KEEP = "TRUE" *) wire  wPacketDropFlag; 
-(* KEEP = "TRUE" *) reg   PacketWasDropedFlag=0; 
+reg [16-1:0] RxDataLengthCounter=0;
+reg [16-1:0] RxDataLengthCounter_D1=0;
+reg [16-1:0] RxDataLengthCounter_D2=0;
 
-(* KEEP = "TRUE" *) reg                                 WrCommandToFIFO =0;
+//wire [32-1:0] wUDP_CheckSUM_Data;
 
-(* KEEP = "TRUE" *) reg                                 WrOverflow_n    =0;
-(* KEEP = "TRUE" *) reg                                 WrWea           =0;
-(* KEEP = "TRUE" *) reg     [32-1: 0]                   WrData          =0;
-(* KEEP = "TRUE" *) reg     [BitWidth(BufferSize)-1:0]  WrPointer       =0;
-(* KEEP = "TRUE" *) reg     [BitWidth(BufferSize)-1:0]  WrPointerReserve=0;
+reg   PacketDropFlag=0; 
+wire  wPacketDropFlag; 
+reg   PacketWasDropedFlag=0; 
 
-(* KEEP = "TRUE" *) reg     [BitWidth(BufferSize)  :0]  WrBufferElements=0;
+reg                                 WrCommandToFIFO =0;
 
-(* KEEP = "TRUE" *) reg     [BitWidth(BufferSize)-1:0]  RdPointer       =0;
-(* KEEP = "TRUE" *) wire    [BitWidth(BufferSize)-1:0] wRdPointerGray;
-(* KEEP = "TRUE" *) wire    [BitWidth(BufferSize)-1:0] wRdPointer;  
+reg                                 WrOverflow_n    =0;
+reg                                 WrWea           =0;
+reg     [32-1: 0]                   WrData          =0;
+reg     [BitWidth(BufferSize)-1:0]  WrPointer       =0;
+reg     [BitWidth(BufferSize)-1:0]  WrPointerReserve=0;
 
-(* KEEP = "TRUE" *) reg RxPacketValid=0;
+reg     [BitWidth(BufferSize)  :0]  WrBufferElements=0;
+
+reg     [BitWidth(BufferSize)-1:0]  RdPointer       =0;
+wire    [BitWidth(BufferSize)-1:0] wRdPointerGray;
+wire    [BitWidth(BufferSize)-1:0] wRdPointer;  
+
+reg RxPacketValid=0;
 
 
 assign wPacketDropFlag = (RxDataLengthCounter>MAX_UDP_PayloadSize) || (  (DROP_IF_OVERFLOW == "YES" ) && (( WrBufferElements > (BufferSize- 8))||wCommandFIFO_Full)); 
@@ -242,10 +242,10 @@ if (wWrDataRDY)
 WrCommandToFIFO <= (TVALID_Reg1 && TLAST_Reg1 && RxPacketValid && wWrDataRDY );     
 end
 
-(* KEEP = "TRUE" *) wire [16-1:0]    wDataLength_Rd   ;
-(* KEEP = "TRUE" *) wire [16-1:0]    wUDP_Checksum_Rd ;
-(* KEEP = "TRUE" *) wire             wCommandFOFO_Empty;
-(* KEEP = "TRUE" *) wire [32-1:0]    wRdData;
+wire [16-1:0]    wDataLength_Rd   ;
+wire [16-1:0]    wUDP_Checksum_Rd ;
+wire             wCommandFOFO_Empty;
+wire [32-1:0]    wRdData;
 
 reg ReadDonePulse = 0 ;
 
@@ -294,55 +294,55 @@ Bin2GrayRegisteredOut #( .WIDTH(BitWidth(BufferSize)) ) Bin2GrayRegisteredOut_in
 .GrayOut             (wRdPointerGray)
  ); 
 
-(* KEEP = "TRUE" *) reg  [16-1:0]    DATA_TotalLength_Full                     =   0;
+reg  [16-1:0]    DATA_TotalLength_Full                     =   0;
 
-(* KEEP = "TRUE" *) reg  [14-1:0]    DATA_TotalLength                          =   0;
-(* KEEP = "TRUE" *) reg  [ 4-1:0]    DATA_LastPosition                         =   0;
-(* KEEP = "TRUE" *) wire [ 4-1:0]   wDATA_LastPosition;
+reg  [14-1:0]    DATA_TotalLength                          =   0;
+reg  [ 4-1:0]    DATA_LastPosition                         =   0;
+wire [ 4-1:0]   wDATA_LastPosition;
 
-(* KEEP = "TRUE" *) reg [16-1:0]    UDP_TotalLength                           =   0;
-(* KEEP = "TRUE" *) reg [16-1:0]    UDP_Checksum                              =   0;
+reg [16-1:0]    UDP_TotalLength                           =   0;
+reg [16-1:0]    UDP_Checksum                              =   0;
 
-(* KEEP = "TRUE" *) reg [16-1:0]    IPv4_TotalLength                          =   0;
+reg [16-1:0]    IPv4_TotalLength                          =   0;
 
-(* KEEP = "TRUE" *) reg             Tx_MAC_FrameBody_StartReadPulse           =   0;
+reg             Tx_MAC_FrameBody_StartReadPulse           =   0;
 
-(* KEEP = "TRUE" *) reg             Tx_MAC_FrameBody_VALID                    =   0;
-(* KEEP = "TRUE" *) reg             Tx_MAC_FrameBody_TLAST                    =   0;
+reg             Tx_MAC_FrameBody_VALID                    =   0;
+reg             Tx_MAC_FrameBody_TLAST                    =   0;
 //reg [8-1:0]     Tx_MAC_FrameBody_TDATA                    =   0;
-(* KEEP = "TRUE" *) wire[8-1:0]    wTx_MAC_FrameBody_TDATA;
+wire[8-1:0]    wTx_MAC_FrameBody_TDATA;
 
-(* KEEP = "TRUE" *) reg [6-1:0]     Tx_MAC_FrameBody_ByteCounter              =   63;
+reg [6-1:0]     Tx_MAC_FrameBody_ByteCounter              =   63;
 
-(* KEEP = "TRUE" *) reg [3-1:0]     TX_SwitchREG_Decoder                      =   0;
+reg [3-1:0]     TX_SwitchREG_Decoder                      =   0;
 
-(* KEEP = "TRUE" *) wire[8-1:0]    wTX_SwitchREG_Ethernet_II_MAC;
-(* KEEP = "TRUE" *) wire[8-1:0]    wTX_SwitchREG_Ethernet_II_IP4;
-(* KEEP = "TRUE" *) wire[8-1:0]    wTX_SwitchREG_Ethernet_II_UDP;
+wire[8-1:0]    wTX_SwitchREG_Ethernet_II_MAC;
+wire[8-1:0]    wTX_SwitchREG_Ethernet_II_IP4;
+wire[8-1:0]    wTX_SwitchREG_Ethernet_II_UDP;
 
 
-(* KEEP = "TRUE" *) reg [2-1:0]     RdPointerDivider  = 0;
-(* KEEP = "TRUE" *) reg             RdPointerIncPulse = 0;
+reg [2-1:0]     RdPointerDivider  = 0;
+reg             RdPointerIncPulse = 0;
 
-(* KEEP = "TRUE" *) reg [4-1:0]     LoadDataPulse = 0;
+reg [4-1:0]     LoadDataPulse = 0;
 
-(* KEEP = "TRUE" *) reg             ReadDataState = 0;
-(* KEEP = "TRUE" *) reg             ReadDataState_Full = 0;
+reg             ReadDataState = 0;
+reg             ReadDataState_Full = 0;
 
-(* KEEP = "TRUE" *) reg [8-1:0]     ShiftRegD0 = 0;
-(* KEEP = "TRUE" *) reg [8-1:0]     ShiftRegD1 = 0;
-(* KEEP = "TRUE" *) reg [8-1:0]     ShiftRegD2 = 0;
-(* KEEP = "TRUE" *) reg [8-1:0]     ShiftRegD3 = 0;
+reg [8-1:0]     ShiftRegD0 = 0;
+reg [8-1:0]     ShiftRegD1 = 0;
+reg [8-1:0]     ShiftRegD2 = 0;
+reg [8-1:0]     ShiftRegD3 = 0;
 
-(* KEEP = "TRUE" *) reg [8-1:0]     FinishPulse = 0;
+reg [8-1:0]     FinishPulse = 0;
 
-(* KEEP = "TRUE" *) reg [2-1:0]  READ_STATE=0;
+reg [2-1:0]  READ_STATE=0;
 
 // DataLength_Rd and UDP_Checksum_Rd are pipeline regs. 
 // Added to improve timing characteristics on Altera Cyclone devices
 
-(* KEEP = "TRUE" *) reg [16-1:0]    DataLength_Rd   =0;
-(* KEEP = "TRUE" *) reg [16-1:0]    UDP_Checksum_Rd =0;
+reg [16-1:0]    DataLength_Rd   =0;
+reg [16-1:0]    UDP_Checksum_Rd =0;
 
 always @(posedge Source_CLK)
 begin 

@@ -46,11 +46,11 @@ module AXISx8_UDP_TG_Controller
 );
 
 
-(* keep = "true" *) reg CommandCodeFlag =0;
+reg CommandCodeFlag =0;
 
-(* keep = "true" *) reg [15:0]PacketSize=0;
-(* keep = "true" *) reg [15:0]PacketGap=0;
-(* keep = "true" *) reg [31:0]PacketCount=0;
+reg [15:0]PacketSize=0;
+reg [15:0]PacketGap=0;
+reg [31:0]PacketCount=0;
 
 always @(posedge CLK)
 begin

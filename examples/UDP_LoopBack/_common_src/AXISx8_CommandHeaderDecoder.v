@@ -54,27 +54,27 @@ parameter COMAND_TYPE_CODE  =  8'h1
     output reg [32-1:0]             CommandReserve=0  
 );
 
-(* keep = "true" *) wire [ 8-1:0]   wTDATA0 ;
-(* keep = "true" *) wire            wTFIRST0;
-(* keep = "true" *) wire            wTVALID0;
-(* keep = "true" *) wire            wTLAST0 ;
-(* keep = "true" *) wire            wTERROR0;
-(* keep = "true" *) wire            wCRC_FLAG0;
+wire [ 8-1:0]   wTDATA0 ;
+wire            wTFIRST0;
+wire            wTVALID0;
+wire            wTLAST0 ;
+wire            wTERROR0;
+wire            wCRC_FLAG0;
 
 
 
-(* keep = "true" *) wire [32-1:0]   wTDATA1 ;
-(* keep = "true" *) wire [ 4-1:0]   wTKEEP1 ;
-(* keep = "true" *) wire            wTFIRST1;
-(* keep = "true" *) wire            wTVALI1;
-(* keep = "true" *) wire            wTLAST1 ;
-(* keep = "true" *) wire            wTERROR1;
+wire [32-1:0]   wTDATA1 ;
+wire [ 4-1:0]   wTKEEP1 ;
+wire            wTFIRST1;
+wire            wTVALI1;
+wire            wTLAST1 ;
+wire            wTERROR1;
 
-(* keep = "true" *) reg [16-1:0]BytePosition=0;
+reg [16-1:0]BytePosition=0;
 
-(* keep = "true" *) reg                      CommandPayloadFlag=0;
-(* keep = "true" *) reg                      CommandUniq_ValidFlag=0;
-(* keep = "true" *) reg                      HeaderCRC_ValidFlag=0;
+reg                      CommandPayloadFlag=0;
+reg                      CommandUniq_ValidFlag=0;
+reg                      HeaderCRC_ValidFlag=0;
 
 
 
