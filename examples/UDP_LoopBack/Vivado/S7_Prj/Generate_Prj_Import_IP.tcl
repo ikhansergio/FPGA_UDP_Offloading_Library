@@ -15,14 +15,14 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
 ##################################################################
 
 # To test this script, run the following commands from Vivado Tcl console:
-# source Generate_Prj_IPs.tcl
+# source Generate_Prj_Import_IP.tcl
 # If there is no project opened, this script will create a
 # project, but make sure you do not have an existing project
 # in the current working folder.
 
 set list_projs [get_projects -quiet]
 if { $list_projs eq "" } {
-  create_project vv_Zynq7000 vv_Zynq7000 -part xc7z020clg484-2
+  create_project vv_Spartan7 vv_Spartan7 -part xc7s25csga225-2
   set_property target_language Verilog [current_project]
   set_property simulator_language Mixed [current_project]
 }
@@ -64,28 +64,24 @@ set Sys_Clk_PLL [create_ip -name clk_wiz -vendor xilinx.com -library ip -version
 
 # User Parameters
 set_property -dict [list \
-  CONFIG.CLKIN1_JITTER_PS {200.0} \
-  CONFIG.CLKOUT1_JITTER {154.207} \
-  CONFIG.CLKOUT1_PHASE_ERROR {164.985} \
+  CONFIG.CLKOUT1_JITTER {125.247} \
+  CONFIG.CLKOUT1_PHASE_ERROR {98.575} \
   CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {125} \
-  CONFIG.CLKOUT2_JITTER {154.207} \
-  CONFIG.CLKOUT2_PHASE_ERROR {164.985} \
+  CONFIG.CLKOUT2_JITTER {125.247} \
+  CONFIG.CLKOUT2_PHASE_ERROR {98.575} \
   CONFIG.CLKOUT2_REQUESTED_OUT_FREQ {125} \
   CONFIG.CLKOUT2_REQUESTED_PHASE {90} \
   CONFIG.CLKOUT2_USED {true} \
-  CONFIG.CLKOUT3_JITTER {236.428} \
-  CONFIG.CLKOUT3_PHASE_ERROR {164.985} \
+  CONFIG.CLKOUT3_JITTER {175.402} \
+  CONFIG.CLKOUT3_PHASE_ERROR {98.575} \
   CONFIG.CLKOUT3_REQUESTED_OUT_FREQ {25} \
   CONFIG.CLKOUT3_USED {true} \
-  CONFIG.MMCM_CLKFBOUT_MULT_F {20.000} \
-  CONFIG.MMCM_CLKIN1_PERIOD {20.000} \
-  CONFIG.MMCM_CLKIN2_PERIOD {10.0} \
+  CONFIG.MMCM_CLKFBOUT_MULT_F {10.000} \
   CONFIG.MMCM_CLKOUT0_DIVIDE_F {8.000} \
   CONFIG.MMCM_CLKOUT1_DIVIDE {8} \
   CONFIG.MMCM_CLKOUT1_PHASE {90.000} \
   CONFIG.MMCM_CLKOUT2_DIVIDE {40} \
   CONFIG.NUM_OUT_CLKS {3} \
-  CONFIG.PRIM_IN_FREQ {50} \
   CONFIG.PRIM_SOURCE {No_buffer} \
   CONFIG.USE_RESET {false} \
 ] [get_ips Sys_Clk_PLL]
@@ -106,12 +102,29 @@ set XLX_DIST_FIFO_10x32 [create_ip -name fifo_generator -vendor xilinx.com -libr
 # User Parameters
 set_property -dict [list \
   CONFIG.Clock_Type_AXI {Independent_Clock} \
+  CONFIG.Data_Count_Width {5} \
+  CONFIG.Empty_Threshold_Assert_Value {4} \
+  CONFIG.Empty_Threshold_Negate_Value {5} \
+  CONFIG.FIFO_Implementation_axis {Independent_Clocks_Block_RAM} \
+  CONFIG.FIFO_Implementation_rach {Independent_Clocks_Block_RAM} \
+  CONFIG.FIFO_Implementation_rdch {Independent_Clocks_Block_RAM} \
+  CONFIG.FIFO_Implementation_wach {Independent_Clocks_Block_RAM} \
+  CONFIG.FIFO_Implementation_wdch {Independent_Clocks_Block_RAM} \
+  CONFIG.FIFO_Implementation_wrch {Independent_Clocks_Block_RAM} \
   CONFIG.Fifo_Implementation {Independent_Clocks_Distributed_RAM} \
+  CONFIG.Full_Threshold_Assert_Value {31} \
+  CONFIG.Full_Threshold_Negate_Value {30} \
   CONFIG.INTERFACE_TYPE {Native} \
   CONFIG.Input_Data_Width {10} \
   CONFIG.Input_Depth {32} \
+  CONFIG.Output_Data_Width {10} \
+  CONFIG.Output_Depth {32} \
   CONFIG.Performance_Options {First_Word_Fall_Through} \
+  CONFIG.Read_Data_Count_Width {5} \
   CONFIG.Reset_Pin {false} \
+  CONFIG.Reset_Type {Asynchronous_Reset} \
+  CONFIG.Use_Dout_Reset {false} \
+  CONFIG.Write_Data_Count_Width {5} \
   CONFIG.synchronization_stages {8} \
 ] [get_ips XLX_DIST_FIFO_10x32]
 

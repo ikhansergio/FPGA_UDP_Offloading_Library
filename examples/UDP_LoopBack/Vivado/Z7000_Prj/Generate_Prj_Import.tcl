@@ -1,0 +1,4 @@
+source Generate_Prj_Import_Repo.tcl
+source Generate_Prj_Import_IP.tcl
+source Generate_Prj_Import_BD.tcl
+
